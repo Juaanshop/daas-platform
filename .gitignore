@@ -48,3 +48,7 @@ prisma/dev.db
 *.tsbuildinfo
 next-env.d.ts
 
+# graphify (artefactos locales; rebuild con /graphify)
+graphify-out/*
+!graphify-out/GRAPH_REPORT.md
+
