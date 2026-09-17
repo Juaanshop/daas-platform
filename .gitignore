@@ -51,3 +51,7 @@ next-env.d.ts
 
 .vercel
 .env*
+# graphify (artefactos locales; rebuild con /graphify)
+graphify-out/*
+!graphify-out/GRAPH_REPORT.md
+
