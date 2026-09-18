@@ -17,25 +17,25 @@ export default async function AppLayout({
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col selection:bg-amber-500/30 selection:text-amber-300">
-      {/* Top Navbar */}
-      <header className="sticky top-0 z-40 bg-slate-900/90 backdrop-blur-md border-b border-slate-800 px-3.5 sm:px-6 lg:px-8 py-3">
+      {/* Top Navbar con protección Safe Area para notch/isla dinámica de iPhone */}
+      <header className="sticky top-0 z-40 bg-slate-950/95 backdrop-blur-xl border-b border-slate-800/80 px-3.5 sm:px-6 lg:px-8 pt-[calc(env(safe-area-inset-top,0px)+0.75rem)] pb-2.5 shadow-sm">
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-2">
           {/* Brand & Driver Status */}
-          <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
-            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-amber-500 to-orange-400 flex items-center justify-center text-slate-950 font-bold shadow-md shadow-orange-500/15 shrink-0">
-              <Bike className="w-5 h-5 sm:w-6 sm:h-6" />
+          <div className="flex items-center gap-2.5 min-w-0">
+            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-gradient-to-tr from-amber-500 to-orange-400 flex items-center justify-center text-slate-950 font-bold shadow-md shadow-orange-500/15 shrink-0">
+              <Bike className="w-4 h-4 sm:w-5 sm:h-5" />
             </div>
             <div className="min-w-0">
               <div className="flex items-center gap-1.5">
-                <span className="font-bold tracking-tight text-white block text-sm sm:text-base truncate">
+                <span className="font-bold tracking-tight text-white block text-xs sm:text-sm truncate">
                   Panel Delivery
                 </span>
-                <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-emerald-400 bg-emerald-500/10 px-1.5 py-0.5 rounded-full border border-emerald-500/20 shrink-0">
+                <span className="inline-flex items-center gap-1 text-[9px] font-semibold text-emerald-400 bg-emerald-500/10 px-1.5 py-0.5 rounded-full border border-emerald-500/20 shrink-0">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                   <span>En Línea</span>
                 </span>
               </div>
-              <span className="text-xs text-amber-400 block font-medium truncate">
+              <span className="text-[11px] sm:text-xs text-amber-400/90 block font-medium truncate">
                 {user.name} &bull; {user.phone}
               </span>
             </div>

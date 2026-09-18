@@ -139,23 +139,23 @@ export function DeliveryOrderCard({ order, onStatusUpdated }: DeliveryOrderCardP
   const recipientWa = cleanPhone ? `https://wa.me/${cleanPhone}` : null;
 
   return (
-    <div className="bg-slate-900/90 border border-slate-800 hover:border-slate-700/80 rounded-2xl p-4 sm:p-5 flex flex-col justify-between h-full gap-4 shadow-xl transition-all">
+    <div className="bg-slate-900/90 border border-slate-800 hover:border-slate-700/80 rounded-2xl p-3.5 sm:p-5 flex flex-col justify-between h-full gap-3 sm:gap-4 shadow-xl transition-all">
       {/* 1. Header con Orden, Estado, Comercio y Ganancias */}
       <div>
-        <div className="flex items-start justify-between gap-3">
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="font-mono text-base sm:text-lg font-bold text-white tracking-tight">
+        <div className="flex items-start justify-between gap-2.5">
+          <div className="min-w-0 flex-1">
+            <div className="flex items-center gap-1.5 flex-wrap">
+              <span className="font-mono text-base sm:text-lg font-black text-white tracking-tight whitespace-nowrap shrink-0">
                 {cleanOrderNumber}
               </span>
               <span
-                className={`text-xs font-semibold px-2.5 py-0.5 rounded-full border ${statusInfo.color}`}
+                className={`text-[11px] font-bold px-2 py-0.5 rounded-full border whitespace-nowrap shrink-0 ${statusInfo.color}`}
               >
                 {statusInfo.label}
               </span>
             </div>
             {merchantName && (
-              <p className="text-xs sm:text-sm text-slate-400 mt-1 font-medium">
+              <p className="text-xs sm:text-sm text-slate-400 mt-1 font-medium truncate">
                 {merchantName}
               </p>
             )}
@@ -222,15 +222,15 @@ export function DeliveryOrderCard({ order, onStatusUpdated }: DeliveryOrderCardP
           {/* Punto de Retiro (Pickup) */}
           <div className="bg-slate-900 border border-slate-800 rounded-xl p-3 shadow-xs">
             <div className="flex items-center justify-between gap-2 mb-1.5">
-              <div className="flex items-center gap-1.5">
+              <div className="flex items-center gap-1.5 min-w-0">
                 <div className="h-2.5 w-2.5 rounded-full bg-emerald-500 shrink-0 ring-4 ring-emerald-500/20" />
-                <span className="text-[11px] font-bold text-emerald-400 uppercase tracking-wide">Punto de Retiro</span>
+                <span className="text-[11px] font-bold text-emerald-400 uppercase tracking-wide truncate">Retiro</span>
               </div>
               <a
                 href={getMapsUrl(order.pickupLat, order.pickupLng, order.pickupAddress)}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 min-h-[36px] text-xs font-black text-slate-950 bg-emerald-400 hover:bg-emerald-300 rounded-lg shadow-sm transition-colors cursor-pointer"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 min-h-[34px] text-xs font-black text-slate-950 bg-emerald-400 hover:bg-emerald-300 rounded-lg shadow-sm transition-colors cursor-pointer shrink-0 whitespace-nowrap"
               >
                 <Navigation className="w-3.5 h-3.5" />
                 <span>GPS Recogida ↗</span>
@@ -242,15 +242,15 @@ export function DeliveryOrderCard({ order, onStatusUpdated }: DeliveryOrderCardP
           {/* Punto de Entrega (Dropoff) */}
           <div className="bg-slate-900 border border-slate-800 rounded-xl p-3 shadow-xs">
             <div className="flex items-center justify-between gap-2 mb-1.5">
-              <div className="flex items-center gap-1.5">
+              <div className="flex items-center gap-1.5 min-w-0">
                 <div className="h-2.5 w-2.5 rounded-full bg-rose-500 shrink-0 ring-4 ring-rose-500/20" />
-                <span className="text-[11px] font-bold text-rose-400 uppercase tracking-wide">Punto de Entrega</span>
+                <span className="text-[11px] font-bold text-rose-400 uppercase tracking-wide truncate">Entrega</span>
               </div>
               <a
                 href={getMapsUrl(order.dropoffLat, order.dropoffLng, order.dropoffAddress)}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 min-h-[36px] text-xs font-black text-white bg-rose-600 hover:bg-rose-500 rounded-lg shadow-sm transition-colors cursor-pointer"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 min-h-[34px] text-xs font-black text-white bg-rose-600 hover:bg-rose-500 rounded-lg shadow-sm transition-colors cursor-pointer shrink-0 whitespace-nowrap"
               >
                 <Navigation className="w-3.5 h-3.5" />
                 <span>GPS Destino ↗</span>
