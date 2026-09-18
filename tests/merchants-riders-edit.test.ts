@@ -104,7 +104,7 @@ export async function runEditMerchantsAndRidersTests() {
   if (
     updatedMerchant.businessName !== "Pizzería Nápoles VIP" ||
     updatedMerchant.balance !== 85.0 ||
-    updatedMerchant.user.name !== "Comercio Contacto Editado"
+    updatedMerchant.user?.name !== "Comercio Contacto Editado"
   ) {
     throw new Error("Los datos del comercio no se actualizaron correctamente en DB");
   }

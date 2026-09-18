@@ -140,7 +140,7 @@ export async function PATCH(req: NextRequest) {
     }
 
     // Si se modifica el email, validar que no pertenezca a otro usuario
-    if (email && email.toLowerCase() !== merchant.user.email.toLowerCase()) {
+    if (email && merchant.user && email.toLowerCase() !== merchant.user.email.toLowerCase()) {
       const existingUser = await prisma.user.findUnique({
         where: { email: email.toLowerCase() },
       });
@@ -152,8 +152,8 @@ export async function PATCH(req: NextRequest) {
       }
     }
 
-    // Actualizar User si vino name o email
-    if (name || email) {
+    // Actualizar User si vino name o email y existe userId
+    if ((name || email) && merchant.userId) {
       await prisma.user.update({
         where: { id: merchant.userId },
         data: {

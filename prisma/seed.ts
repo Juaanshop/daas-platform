@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import { hashPassword } from "../src/lib/auth";
 
 const prisma = new PrismaClient();
 
@@ -9,6 +10,17 @@ async function main() {
   await prisma.merchant.deleteMany();
   await prisma.rider.deleteMany();
   await prisma.user.deleteMany();
+  await prisma.deliveryUser.deleteMany();
+
+  console.log("🛵 Creando DeliveryUser principal (MVP Delivery-Centric)...");
+  const deliveryUser = await prisma.deliveryUser.create({
+    data: {
+      name: "Juan Pérez (Delivery)",
+      email: "delivery@daas.com",
+      passwordHash: hashPassword("password123"),
+      phone: "+584141234567",
+    },
+  });
 
   console.log("👤 Creando Admin...");
   await prisma.user.create({
@@ -27,6 +39,8 @@ async function main() {
       role: "MERCHANT",
       merchant: {
         create: {
+          deliveryUserId: deliveryUser.id,
+          publicToken: "burger-lab",
           businessName: "Burger Lab El Viñedo",
           address: "Calle 139 c/c Av. Monseñor Adams, El Viñedo, Valencia, Edo. Carabobo",
           latitude: 10.2135,
@@ -46,6 +60,8 @@ async function main() {
       role: "MERCHANT",
       merchant: {
         create: {
+          deliveryUserId: deliveryUser.id,
+          publicToken: "pizzeria-napoli",
           businessName: "Pizzería Napoli La Granja",
           address: "Av. Universidad c/c Av. Salvador Feo La Cruz, C.C. La Granja, Naguanagua, Edo. Carabobo",
           latitude: 10.2485,
@@ -66,6 +82,8 @@ async function main() {
       role: "MERCHANT",
       merchant: {
         create: {
+          deliveryUserId: deliveryUser.id,
+          publicToken: "rico-ricon",
           businessName: "El Rico Ricon",
           address: "Torre Banaven, PB, Av. Bolívar Norte c/c Calle 137, Urb. San José de Tarbes, Valencia, Edo. Carabobo",
           latitude: 10.2035672,
@@ -200,6 +218,7 @@ async function main() {
       recipientName: "Ignacio Albarracín",
       recipientPhone: "+58 414 556-7788",
       packageNotes: "3x Burger Criolla + Ración de Tequeños. Llamar al llegar.",
+      deliveryUserId: deliveryUser.id,
       baseFee: 1.5,
       distanceKm: 3.55,
       totalCost: 2.28, // $1.50 + (1.55km * 0.50) = $2.28
@@ -207,11 +226,36 @@ async function main() {
     },
   });
 
+  // Orden 4 (MVP Delivery-Centric): DRAFT_SUBMITTED
+  await prisma.order.create({
+    data: {
+      orderNumber: "#ORD-1004",
+      merchantId: merchantUser2.merchant!.id,
+      deliveryUserId: deliveryUser.id,
+      pickupAddress: merchantUser2.merchant!.address,
+      pickupLat: merchantUser2.merchant!.latitude,
+      pickupLng: merchantUser2.merchant!.longitude,
+      dropoffAddress: "Urb. El Viñedo, Calle 140, Valencia",
+      dropoffLat: 10.2140,
+      dropoffLng: -68.0055,
+      recipientName: "Alejandro Gómez",
+      recipientPhone: "+58 412 111-2233",
+      packageNotes: "Pedido de pizza familiar",
+      packageDescription: "Caja de pizza familiar y refresco 2L",
+      packageSize: "MEDIUM",
+      baseFee: 2.0,
+      distanceKm: 3.6,
+      totalCost: 2.8,
+      status: "DRAFT_SUBMITTED",
+    },
+  });
+
   console.log("✅ Seed de Valencia y Naguanagua completado con éxito:");
+  console.log(`- 1 DeliveryUser (${deliveryUser.email} / password123)`);
   console.log(`- 1 Admin`);
   console.log(`- 3 Comercios (${merchantUser1.merchant!.businessName}, ${merchantUser2.merchant!.businessName}, ${merchantUser3.merchant!.businessName})`);
   console.log(`- 3 Riders (${riderUser1.rider!.status}, ${riderUser2.rider!.status}, ${riderUser3.rider!.status})`);
-  console.log(`- 3 Órdenes (#ORD-1001 DELIVERED, #ORD-1002 IN_TRANSIT, #ORD-1003 PENDING)`);
+  console.log(`- 4 Órdenes (#ORD-1001 DELIVERED, #ORD-1002 IN_TRANSIT, #ORD-1003 PENDING, #ORD-1004 DRAFT_SUBMITTED)`);
 }
 
 main()

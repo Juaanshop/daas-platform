@@ -41,7 +41,22 @@ export function runMapsTests() {
   assert(parsedRaw?.lat === 10.2135, "Latitud correcta de coordenadas brutas");
   assert(parsedRaw?.lng === -68.0062, "Longitud correcta de coordenadas brutas");
 
-  // 5. Enlace inválido
+  // 5. URL resultante de maps.app.goo.gl/e5yEJbWPH4QGoYZa9
+  const expandedNaguanagua = "https://www.google.com/maps/place/5ah.+Santa+eduviges,+Puerta+Real,+Naguanagua+2005,+Carabobo/data=!4m6!3m5!1s0x8e805d003729640d:0xc8cb3afe2202549e!7e2!8m2!3d10.2402307!4d-67.99647!18m1!1e1";
+  const parsedExpanded = parseGoogleMapsInput(expandedNaguanagua);
+  assert(parsedExpanded !== null, "Parseo de URL expandida con !3d!4d no es nulo");
+  assert(parsedExpanded?.lat === 10.2402307, "Latitud 10.2402307 extraída correctamente");
+  assert(parsedExpanded?.lng === -67.99647, "Longitud -67.99647 extraída correctamente");
+  assert(parsedExpanded?.label === "5ah. Santa eduviges, Puerta Real, Naguanagua 2005, Carabobo", "Nombre de lugar extraído correctamente");
+  assert(parsedExpanded?.sourceType === "url_embedded", "Tipo de fuente detectado como url_embedded");
+
+  // 6. URL con prefijo loc: y coma codificada %2C
+  const parsedLoc = parseGoogleMapsInput("https://maps.google.com/?q=loc%3A10.2402%2C-67.9964");
+  assert(parsedLoc !== null, "Parseo con loc: y %2C no es nulo");
+  assert(parsedLoc?.lat === 10.2402, "Latitud extraída de loc:");
+  assert(parsedLoc?.lng === -67.9964, "Longitud extraída de loc:");
+
+  // 7. Enlace inválido
   const parsedInvalid = parseGoogleMapsInput("https://example.com/not-a-map");
   assert(parsedInvalid === null, "Texto sin coordenadas retorna null");
 

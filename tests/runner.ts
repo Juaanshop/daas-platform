@@ -8,6 +8,8 @@ import { runSettlementTests } from "./settlement.test";
 import { runMerchantsAndRidersTests } from "./merchants-riders.test";
 import { runDeleteAndHideTests } from "./merchants-riders-delete-hide.test";
 import { runEditMerchantsAndRidersTests } from "./merchants-riders-edit.test";
+import { runDeliveryAuthAndMerchantsTests } from "./delivery-auth-merchants.test";
+import { runMerchantQuoteAndOrderFlowTests } from "./merchant-quote-order-flow.test";
 
 async function runAllTests() {
   console.log("==========================================================");
@@ -25,6 +27,8 @@ async function runAllTests() {
     await runMerchantsAndRidersTests();
     await runDeleteAndHideTests();
     await runEditMerchantsAndRidersTests();
+    await runDeliveryAuthAndMerchantsTests();
+    await runMerchantQuoteAndOrderFlowTests();
     console.log("🎉 ¡TODOS LOS TESTS DE UNIDAD PASARON SATISFACTORIAMENTE!\n");
     process.exit(0);
   } catch (err) {

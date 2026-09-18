@@ -8,6 +8,17 @@ generator client {
   binaryTargets = ["native", "rhel-openssl-3.0.x", "debian-openssl-3.0.x"]
 }
 
+model DeliveryUser {
+  id           String     @id @default(cuid())
+  name         String
+  email        String     @unique
+  passwordHash String
+  phone        String
+  merchants    Merchant[]
+  orders       Order[]
+  createdAt    DateTime   @default(now())
+}
+
 model User {
   id        String    @id @default(cuid())
   name      String
@@ -19,19 +30,22 @@ model User {
 }
 
 model Merchant {
-  id           String            @id @default(cuid())
-  userId       String            @unique
-  user         User              @relation(fields: [userId], references: [id], onDelete: Cascade)
-  businessName String
-  address      String
-  latitude     Float
-  longitude    Float
-  phone        String
-  balance      Float             @default(0.0)
-  isActive     Boolean           @default(true)
-  orders       Order[]
-  settlements  DailySettlement[]
-  createdAt    DateTime          @default(now())
+  id             String            @id @default(cuid())
+  userId         String?           @unique
+  user           User?             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  deliveryUserId String?
+  deliveryUser   DeliveryUser?     @relation(fields: [deliveryUserId], references: [id])
+  publicToken    String?           @unique
+  businessName   String
+  address        String
+  latitude       Float
+  longitude      Float
+  phone          String
+  balance        Float             @default(0.0)
+  isActive       Boolean           @default(true)
+  orders         Order[]
+  settlements    DailySettlement[]
+  createdAt      DateTime          @default(now())
 }
 
 model Rider {
@@ -50,35 +64,42 @@ model Rider {
 }
 
 model Order {
-  id             String      @id @default(cuid())
-  orderNumber    String      @unique // Ej. #ORD-1001
-  merchantId     String
-  merchant       Merchant    @relation(fields: [merchantId], references: [id])
-  riderId        String?
-  rider          Rider?      @relation(fields: [riderId], references: [id])
+  id                 String        @id @default(cuid())
+  orderNumber        String        @unique // Ej. #ORD-1001
+  merchantId         String
+  merchant           Merchant      @relation(fields: [merchantId], references: [id])
+  deliveryUserId     String?
+  deliveryUser       DeliveryUser? @relation(fields: [deliveryUserId], references: [id])
+  riderId            String?
+  rider              Rider?        @relation(fields: [riderId], references: [id])
   
-  pickupAddress  String
-  pickupLat      Float
-  pickupLng      Float
+  pickupAddress      String
+  pickupLat          Float
+  pickupLng          Float
   
-  dropoffAddress String
-  dropoffLat     Float
-  dropoffLng     Float
-  dropoffMapUrl  String?
+  dropoffAddress     String
+  dropoffLat         Float
+  dropoffLng         Float
+  dropoffMapUrl      String?
   
-  recipientName  String
-  recipientPhone String
-  packageNotes   String?
+  recipientName      String
+  recipientPhone     String
+  packageNotes       String?
+  packageDescription String?
+  packageSize        String?       @default("MEDIUM") // SMALL, MEDIUM, LARGE
+  packagePhotoUrl    String?
   
-  baseFee        Float
-  distanceKm     Float
-  totalCost      Float
+  baseFee            Float
+  distanceKm         Float
+  totalCost          Float
+  riderEarnings      Float?
   
-  status         String      @default("PENDING") // PENDING, ASSIGNED, PICKING_UP, IN_TRANSIT, DELIVERED, CANCELLED
+  status             String        @default("PENDING") // PENDING, DRAFT_SUBMITTED, CONFIRMED_PICKUP, IN_TRANSIT, DELIVERED, CANCELLED
   
-  createdAt      DateTime    @default(now())
-  pickedUpAt     DateTime?
-  deliveredAt    DateTime?
+  createdAt          DateTime      @default(now())
+  confirmedAt        DateTime?
+  pickedUpAt         DateTime?
+  deliveredAt        DateTime?
 }
 
 model DailySettlement {
