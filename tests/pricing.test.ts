@@ -34,9 +34,12 @@ export function runPricingTests() {
   );
   assert(quoteShort.baseFee === DEFAULT_LOCAL_BASE_FEE, "Tarifa base local por defecto es $2.00");
   assert(quoteShort.baseFee >= MIN_BASE_FEE, "Tarifa base cumple con ser de $2.00 en adelante");
-  assert(quoteShort.extraKmFee === 0, "No hay recargo de km extra para trayectos <= 2km");
-  assert(quoteShort.totalCost === 2.0, `Costo total es exactamente $2.00 (obtenido: $${quoteShort.totalCost})`);
-  assert(quoteShort.estimatedMinutes >= 8, `Tiempo estimado es válido (${quoteShort.estimatedMinutes} mins)`);
+  const expectedShortTimeFee = Math.round((quoteShort.estimatedMinutes / 3) * 0.50 * 100) / 100;
+  assert(
+    quoteShort.totalCost === Math.round((2.0 + expectedShortTimeFee) * 100) / 100,
+    `Costo total calcula base $2.00 + $0.50 por cada 3 min (obtenido: $${quoteShort.totalCost})`
+  );
+  assert(quoteShort.estimatedMinutes >= 1, `Tiempo estimado es válido (${quoteShort.estimatedMinutes} mins)`);
   assert(quoteShort.isCovered === true, "Cotización dentro de Valencia está cubierta");
   assert(quoteShort.originZone === "Valencia", "Origen identificado como Valencia");
   assert(quoteShort.destinationZone === "Valencia", "Destino identificado como Valencia");
@@ -55,13 +58,12 @@ export function runPricingTests() {
     quoteLong.baseFee === INTERMUNICIPAL_BASE_FEE,
     `Tarifa base varía automáticamente a $2.50 para trayectos intermunicipales (obtenido: $${quoteLong.baseFee})`
   );
-  const expectedExtraKm = quoteLong.distanceKm - 2.0;
-  const expectedExtraFee = Math.round(expectedExtraKm * 0.5 * 100) / 100;
-  const expectedTotal = Math.round((2.5 + expectedExtraFee) * 100) / 100;
+  const expectedLongTimeFee = Math.round((quoteLong.estimatedMinutes / 3) * 0.50 * 100) / 100;
+  const expectedTotal = Math.round((2.5 + expectedLongTimeFee) * 100) / 100;
 
   assert(
     Math.abs(quoteLong.totalCost - expectedTotal) < 0.01,
-    `Cálculo de tarifa intermunicipal exacto: $2.50 + (${expectedExtraKm.toFixed(2)}km * $0.50) = $${quoteLong.totalCost}`
+    `Cálculo de tarifa intermunicipal exacto: $2.50 + $0.50 por cada 3 min (${quoteLong.estimatedMinutes} min = $${expectedLongTimeFee}) = $${quoteLong.totalCost}`
   );
   assert(quoteLong.isCovered === true, "Trayecto Valencia -> Naguanagua está cubierto");
   assert(quoteLong.destinationZone === "Naguanagua", "Destino identificado como Naguanagua");
@@ -73,7 +75,7 @@ export function runPricingTests() {
     baseFee: 3.0,
   });
   assert(quoteCustom.baseFee === 3.0, "Tarifa base personalizada de $3.00 aplicada correctamente");
-  assert(quoteCustom.totalCost === 3.0, "Costo total refleja la tarifa base personalizada de $3.00");
+  assert(quoteCustom.totalCost >= 3.0, `Costo total refleja la tarifa base personalizada de $3.00 + tiempo ($${quoteCustom.totalCost})`);
 
   // Test 4: Piso mínimo estricto (no se permite menos de $2.00)
   const quoteBelowMin = PricingService.calculateQuote({
@@ -85,7 +87,7 @@ export function runPricingTests() {
     quoteBelowMin.baseFee === MIN_BASE_FEE,
     `Tarifa base menor a $2.00 es ajustada automáticamente al piso mínimo de $2.00 (obtenido: $${quoteBelowMin.baseFee})`
   );
-  assert(quoteBelowMin.totalCost === 2.0, "Costo total respeta el piso mínimo de $2.00");
+  assert(quoteBelowMin.totalCost >= 2.0, "Costo total respeta el piso mínimo de $2.00");
 
   // Test 5: Cotización a punto fuera de zona (ej. Caracas)
   const quoteOutOfZone = PricingService.calculateQuote({

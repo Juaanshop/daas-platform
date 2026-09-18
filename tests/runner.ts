@@ -10,6 +10,8 @@ import { runDeleteAndHideTests } from "./merchants-riders-delete-hide.test";
 import { runEditMerchantsAndRidersTests } from "./merchants-riders-edit.test";
 import { runDeliveryAuthAndMerchantsTests } from "./delivery-auth-merchants.test";
 import { runMerchantQuoteAndOrderFlowTests } from "./merchant-quote-order-flow.test";
+import { runDeliveryOrdersTests } from "./delivery-orders.test";
+import { runDeliverySettlementTests } from "./delivery-settlement.test";
 
 async function runAllTests() {
   console.log("==========================================================");
@@ -29,6 +31,8 @@ async function runAllTests() {
     await runEditMerchantsAndRidersTests();
     await runDeliveryAuthAndMerchantsTests();
     await runMerchantQuoteAndOrderFlowTests();
+    await runDeliveryOrdersTests();
+    await runDeliverySettlementTests();
     console.log("🎉 ¡TODOS LOS TESTS DE UNIDAD PASARON SATISFACTORIAMENTE!\n");
     process.exit(0);
   } catch (err) {

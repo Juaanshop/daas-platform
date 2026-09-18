@@ -50,8 +50,8 @@ export async function POST(
       });
     }
 
-    // Calcular cotización
-    const quote = PricingService.calculateQuote({
+    // Calcular cotización vial real
+    const quote = await PricingService.calculateQuoteAsync({
       origin: [originLat, originLng],
       destination: [destLat, destLng],
     });

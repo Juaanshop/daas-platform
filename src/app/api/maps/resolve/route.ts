@@ -13,9 +13,12 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Extraer URL si viene acompañada de texto compartido por WhatsApp o similar
-    const urlMatch = url.match(/(https?:\/\/[^\s]+)/i);
-    const targetUrl = urlMatch ? urlMatch[1] : url.trim();
+    // Extraer URL limpia (soporta enlaces pegados consecutivamente o textos con enlaces)
+    let targetUrl = url.trim();
+    const urlMatch = url.match(/(https?:\/\/[^\s]+?)(?=(?:https?:\/\/|\s|$))/i);
+    if (urlMatch) {
+      targetUrl = urlMatch[1];
+    }
 
     // 1. Intento de parseo directo (URLs completas con @lat,lng, query params, !3d!4d o coordenadas)
     const directParsed = parseGoogleMapsInput(targetUrl);

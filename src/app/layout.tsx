@@ -1,11 +1,23 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Navbar } from "@/components/shared/Navbar";
+import { Footer } from "@/components/shared/Footer";
 import "./globals.css";
 
+export const viewport: Viewport = {
+  themeColor: "#090d16",
+  width: "device-width",
+  initialScale: 1,
+};
+
 export const metadata: Metadata = {
-  title: "DaaS Flash | Plataforma B2B Delivery-as-a-Service",
+  title: "Delivery Panel | Plataforma de Despacho",
   description:
-    "Plataforma B2B on-demand para coordinar despachos locales entre comercios gastronómicos y una flota de repartidores.",
+    "Panel operativo de despachos y liquidaciones para delivery y comercios afiliados.",
+  manifest: "/manifest.json",
+  icons: {
+    icon: "/icon-192.svg",
+    apple: "/icon-192.svg",
+  },
 };
 
 export default function RootLayout({
@@ -15,22 +27,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es" className="dark h-full antialiased">
-      <body className="min-h-full flex flex-col bg-[#090d16] text-slate-100 selection:bg-emerald-500/30 selection:text-emerald-300">
+      <body className="min-h-full flex flex-col bg-[#090d16] text-slate-100 selection:bg-amber-500/30 selection:text-amber-300">
         <Navbar />
-        <main className="max-w-7xl w-full mx-auto px-4 lg:px-8 py-8 flex-1">
+        <main className="w-full flex-1 flex flex-col">
           {children}
         </main>
-        <footer className="border-t border-white/5 py-6 text-center text-xs text-slate-400">
-          <div className="max-w-7xl mx-auto px-4 flex flex-wrap items-center justify-between gap-4">
-            <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-emerald-400" />
-              <span>DaaS Flash Engine v1.0.0 (B2B MVP)</span>
-            </div>
-            <div>
-              <span>Tarifación: Tarifa base variable desde $2.00 + $0.50/km adicional</span>
-            </div>
-          </div>
-        </footer>
+        <Footer />
       </body>
     </html>
   );

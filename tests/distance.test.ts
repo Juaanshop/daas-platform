@@ -44,9 +44,9 @@ export async function runDistanceTests() {
     assert.strictEqual(typeof result.distanceKm, "number");
     assert.strictEqual(typeof result.durationMinutes, "number");
     assert.ok(result.durationMinutes >= 8, "La duración mínima debe ser al menos 8 minutos");
-    // Al no haber clave en el entorno de pruebas, debe indicar provider 'haversine'
+    // Al no haber clave en el entorno de pruebas, debe indicar provider 'osrm' o 'haversine'
     if (!process.env.GOOGLE_MAPS_SERVER_KEY && !process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY) {
-      assert.strictEqual(result.provider, "haversine");
+      assert.ok(["osrm", "haversine"].includes(result.provider), `Provider debe ser osrm o haversine (obtenido: ${result.provider})`);
     }
   });
 
@@ -63,7 +63,7 @@ export async function runDistanceTests() {
     assert.ok(quote.totalCost >= 2.5, "Costo total consistente");
     assert.strictEqual(quote.isCovered, true, "Trayecto en zona conurbada");
     assert.strictEqual(quote.isIntermunicipal, true, "Detectado intermunicipal");
-    assert.ok(["google_maps", "haversine"].includes(quote.distanceProvider || ""));
+    assert.ok(["google_maps", "osrm", "haversine"].includes(quote.distanceProvider || ""));
   });
 
   // Test 3: Distancia punto a punto idéntico es 0

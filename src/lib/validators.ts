@@ -48,10 +48,16 @@ export const updateOrderStatusSchema = z.object({
 });
 
 export const ALLOWED_TRANSITIONS: Record<string, string[]> = {
+  // Flujo Delivery-Centric (MVP)
+  DRAFT_SUBMITTED: ["CONFIRMED_PICKUP", "CANCELLED"],
+  CONFIRMED_PICKUP: ["IN_TRANSIT", "CANCELLED"],
+  IN_TRANSIT: ["DELIVERED", "CANCELLED"],
+
+  // Flujo Legacy Multi-Rol
   PENDING: ["ASSIGNED", "CANCELLED"],
   ASSIGNED: ["PICKING_UP", "CANCELLED"],
   PICKING_UP: ["IN_TRANSIT", "CANCELLED"],
-  IN_TRANSIT: ["DELIVERED", "CANCELLED"],
+
   DELIVERED: [],
   CANCELLED: [],
 };

@@ -28,13 +28,14 @@ export interface PricingQuote {
   estimatedMinutes: number;
   baseFee: number;
   extraKmFee: number;
+  timeFee: number;
   totalCost: number;
   isCovered: boolean;
   isIntermunicipal: boolean;
   coverageError?: string;
   originZone?: Municipality | null;
   destinationZone?: Municipality | null;
-  distanceProvider?: "google_maps" | "haversine";
+  distanceProvider?: "google_maps" | "osrm" | "haversine";
   providerStatusText?: string;
 }
 
@@ -79,6 +80,10 @@ export class PricingService {
   /**
    * Cotiza una entrega dados los puntos de origen y destino [lat, lng] y tarifa base variable opcional
    * (Modo sincrónico utilizando la fórmula de Haversine)
+   *
+   * Regla de Tarifación:
+   * - Tarifa Base Mínima: $2.00 (o tarifa base personalizada / intermunicipal >= $2.00)
+   * - Recargo por tiempo: +$1.00 por cada 2 minutos al destino final de entrega ($0.50/min)
    */
   static calculateQuote(input: PricingInput): PricingQuote {
     const [lat1, lng1] = input.origin;
@@ -107,26 +112,21 @@ export class PricingService {
       baseFee = DEFAULT_LOCAL_BASE_FEE;
     }
 
-    let extraKm = 0;
-    if (distanceKm > BASE_KM_COVERAGE) {
-      extraKm = distanceKm - BASE_KM_COVERAGE;
-    }
-
-    const extraKmFee = Math.round(extraKm * EXTRA_KM_RATE * 100) / 100;
-    const totalCost = Math.round((baseFee + extraKmFee) * 100) / 100;
-
-    // Tiempo estimado = (distancia / velocidad * 60) + preparación
+    // Tiempo estimado al destino final (minutos de viaje)
     const travelMinutes = (distanceKm / AVG_SPEED_KMH) * 60;
-    const estimatedMinutes = Math.max(
-      8,
-      Math.round(travelMinutes + FIXED_PREP_MINUTES)
-    );
+    const estimatedMinutes = Math.max(1, Math.round(travelMinutes));
+
+    // Tarifa: Base de $2.00 + $0.50 por cada 3 minutos al destino final
+    const timeFee = Math.round((estimatedMinutes / 3) * 0.50 * 100) / 100;
+    const extraKmFee = timeFee; // Para retrocompatibilidad
+    const totalCost = Math.round((baseFee + timeFee) * 100) / 100;
 
     return {
       distanceKm,
       estimatedMinutes,
       baseFee,
       extraKmFee,
+      timeFee,
       totalCost,
       isCovered: coverage.isValid,
       isIntermunicipal,
@@ -143,7 +143,7 @@ export class PricingService {
    * la distancia vial exacta y tiempo de viaje con tráfico, con fallback a Haversine.
    */
   static async calculateQuoteAsync(input: PricingInput): Promise<PricingQuote> {
-    // Importación dinámica o directa de GoogleMapsDistanceService
+    // Importación dinámica de GoogleMapsDistanceService
     const { GoogleMapsDistanceService } = await import("./distance");
     const route = await GoogleMapsDistanceService.calculateRouteDistance(
       input.origin,
@@ -173,19 +173,19 @@ export class PricingService {
       baseFee = DEFAULT_LOCAL_BASE_FEE;
     }
 
-    let extraKm = 0;
-    if (distanceKm > BASE_KM_COVERAGE) {
-      extraKm = distanceKm - BASE_KM_COVERAGE;
-    }
+    const estimatedMinutes = Math.max(1, Math.round(route.durationMinutes));
 
-    const extraKmFee = Math.round(extraKm * EXTRA_KM_RATE * 100) / 100;
-    const totalCost = Math.round((baseFee + extraKmFee) * 100) / 100;
+    // Tarifa: Base de $2.00 + $0.50 por cada 3 minutos al destino final
+    const timeFee = Math.round((estimatedMinutes / 3) * 0.50 * 100) / 100;
+    const extraKmFee = timeFee;
+    const totalCost = Math.round((baseFee + timeFee) * 100) / 100;
 
     return {
       distanceKm,
-      estimatedMinutes: route.durationMinutes,
+      estimatedMinutes,
       baseFee,
       extraKmFee,
+      timeFee,
       totalCost,
       isCovered: coverage.isValid,
       isIntermunicipal,

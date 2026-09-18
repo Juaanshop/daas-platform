@@ -37,6 +37,17 @@ export interface ItemizedDispatchRecord {
   riderEarnings: number; // 80%
   platformFee: number; // 20%
   deliveredAt: string;
+  isSettled: boolean;
+  settledAt?: string | null;
+}
+
+export interface MerchantSettlementRecord {
+  merchantId: string;
+  businessName: string;
+  phone?: string;
+  totalOrders: number;
+  totalSpent: number;
+  orderNumbers: string[];
 }
 
 export interface SettlementSummary {
@@ -47,12 +58,13 @@ export interface SettlementSummary {
   totalRiderFees: number;
   totalPlatformMargin: number;
   totalKmDelivered: number;
-  merchants: {
-    merchantId: string;
-    businessName: string;
-    totalOrders: number;
-    totalSpent: number;
-  }[];
+  pendingOrders: number;
+  pendingVolume: number;
+  pendingRiderFees: number;
+  settledOrders: number;
+  settledVolume: number;
+  isDaySettled: boolean;
+  merchants: MerchantSettlementRecord[];
   riders: RiderSettlementRecord[];
   customers: CustomerRecord[];
   dispatches: ItemizedDispatchRecord[];
@@ -61,6 +73,7 @@ export interface SettlementSummary {
 export interface SettlementOptions {
   date?: string | Date;
   isAllTime?: boolean;
+  deliveryUserId?: string;
 }
 
 export class SettlementService {
@@ -104,6 +117,10 @@ export class SettlementService {
       status: "DELIVERED",
     };
 
+    if (options && !(options instanceof Date) && options.deliveryUserId) {
+      whereClause.deliveryUserId = options.deliveryUserId;
+    }
+
     if (!isAllTime && startOfDay && endOfDay) {
       whereClause.deliveredAt = {
         gte: startOfDay,
@@ -126,10 +143,7 @@ export class SettlementService {
     });
 
     // Mapeo por Comercio
-    const merchantMap = new Map<
-      string,
-      { merchantId: string; businessName: string; totalOrders: number; totalSpent: number }
-    >();
+    const merchantMap = new Map<string, MerchantSettlementRecord>();
 
     // Mapeo por Repartidor
     const riderMap = new Map<
@@ -161,6 +175,11 @@ export class SettlementService {
 
     let totalVolume = 0;
     let totalKmDelivered = 0;
+    let pendingOrders = 0;
+    let pendingVolume = 0;
+    let pendingRiderFees = 0;
+    let settledOrders = 0;
+    let settledVolume = 0;
 
     for (const order of deliveredOrders) {
       const cost = Math.round(order.totalCost * 100) / 100;
@@ -168,20 +187,38 @@ export class SettlementService {
       const platformFee = Math.round((cost - riderEarnings) * 100) / 100;
       const km = order.distanceKm || 0;
       const deliveredDateStr = order.deliveredAt ? order.deliveredAt.toISOString() : order.createdAt.toISOString();
+      const isSettled = Boolean((order as any).isSettled);
 
       totalVolume += cost;
       totalKmDelivered += km;
+
+      if (isSettled) {
+        settledOrders += 1;
+        settledVolume += cost;
+      } else {
+        pendingOrders += 1;
+        pendingVolume += cost;
+        pendingRiderFees += riderEarnings;
+      }
 
       // 1. Acumulador Comercio
       const mId = order.merchantId;
       const mExisting = merchantMap.get(mId) || {
         merchantId: mId,
         businessName: order.merchant.businessName,
+        phone: order.merchant.phone,
         totalOrders: 0,
         totalSpent: 0,
+        orderNumbers: [],
       };
       mExisting.totalOrders += 1;
       mExisting.totalSpent = Math.round((mExisting.totalSpent + cost) * 100) / 100;
+      if (order.merchant.phone && !mExisting.phone) {
+        mExisting.phone = order.merchant.phone;
+      }
+      if (!mExisting.orderNumbers.includes(order.orderNumber)) {
+        mExisting.orderNumbers.push(order.orderNumber);
+      }
       merchantMap.set(mId, mExisting);
 
       // 2. Acumulador Repartidor
@@ -239,6 +276,8 @@ export class SettlementService {
         riderEarnings,
         platformFee,
         deliveredAt: deliveredDateStr,
+        isSettled,
+        settledAt: (order as any).settledAt ? (order as any).settledAt.toISOString() : null,
       });
     }
 
@@ -263,6 +302,8 @@ export class SettlementService {
     const totalRiderFees = riders.reduce((s, r) => s + r.totalEarned, 0);
     const totalPlatformMargin = Math.round((totalVolume - totalRiderFees) * 100) / 100;
 
+    const isDaySettled = deliveredOrders.length > 0 && pendingOrders === 0;
+
     return {
       date: isAllTime ? "Histórico Acumulado" : targetDateStr,
       isAllTime,
@@ -271,6 +312,12 @@ export class SettlementService {
       totalRiderFees: Math.round(totalRiderFees * 100) / 100,
       totalPlatformMargin: Math.max(0, totalPlatformMargin),
       totalKmDelivered: Math.round(totalKmDelivered * 100) / 100,
+      pendingOrders,
+      pendingVolume: Math.round(pendingVolume * 100) / 100,
+      pendingRiderFees: Math.round(pendingRiderFees * 100) / 100,
+      settledOrders,
+      settledVolume: Math.round(settledVolume * 100) / 100,
+      isDaySettled,
       merchants,
       riders,
       customers,

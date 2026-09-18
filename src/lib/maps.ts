@@ -48,18 +48,8 @@ export function parseGoogleMapsInput(input: string): ParsedCoordinates | null {
     }
   }
 
-  // Caso 1: Parámetro @lat,lng (común en Google Maps)
-  // Ej: https://www.google.com/maps/place/.../@10.2135,-68.0062,17z/...
-  const atMatch = str.match(/@(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?)/);
-  if (atMatch) {
-    const lat = parseFloat(atMatch[1]);
-    const lng = parseFloat(atMatch[2]);
-    if (!isNaN(lat) && !isNaN(lng) && lat >= -90 && lat <= 90 && lng >= -180 && lng <= 180) {
-      return { lat, lng, label, sourceType: "url_at" };
-    }
-  }
-
-  // Caso 2: Formato embebido de Google Maps data !3d{lat}!4d{lng} o !8m2!3d...
+  // Prioridad 1: Formato embebido del PIN exacto de Google Maps: !3d{lat}!4d{lng} o !8m2!3d{lat}!4d{lng}
+  // En Google Maps, este valor representa el marcador/lugar real y debe evaluarse antes que la cámara @lat,lng
   const embeddedMatch = str.match(/!3d(-?\d+(?:\.\d+)?)(?:!4d|%214d)(-?\d+(?:\.\d+)?)/i);
   if (embeddedMatch) {
     const lat = parseFloat(embeddedMatch[1]);
@@ -69,8 +59,7 @@ export function parseGoogleMapsInput(input: string): ParsedCoordinates | null {
     }
   }
 
-  // Caso 3: Parámetros de consulta ?q=lat,lng o ?query=lat,lng o ?ll=lat,lng o ?daddr=lat,lng
-  // Soportando opcional prefijo loc: e.g. ?q=loc:10.2135,-68.0062
+  // Prioridad 2: Parámetros de consulta directos ?q=lat,lng o ?query=lat,lng o ?destination=lat,lng o ?daddr=lat,lng
   const queryMatch = str.match(/[?&](?:q|query|ll|daddr|destination)=(?:loc:)?(-?\d+(?:\.\d+)?)[,\s]+(-?\d+(?:\.\d+)?)/i);
   if (queryMatch) {
     const lat = parseFloat(queryMatch[1]);
@@ -80,13 +69,23 @@ export function parseGoogleMapsInput(input: string): ParsedCoordinates | null {
     }
   }
 
-  // Caso 4: Path con coordenadas directas: /maps/search/lat,lng o /maps/dir//lat,lng o /maps/place/lat,lng
+  // Prioridad 3: Path con coordenadas directas: /maps/search/lat,lng o /maps/dir//lat,lng o /maps/place/lat,lng
   const pathCoordsMatch = str.match(/\/maps\/(?:search|dir|place)\/(?:.*\/)?(-?\d+(?:\.\d+)?)[,\s]+(-?\d+(?:\.\d+)?)/i);
   if (pathCoordsMatch) {
     const lat = parseFloat(pathCoordsMatch[1]);
     const lng = parseFloat(pathCoordsMatch[2]);
     if (!isNaN(lat) && !isNaN(lng) && lat >= -90 && lat <= 90 && lng >= -180 && lng <= 180) {
       return { lat, lng, label, sourceType: "url_query" };
+    }
+  }
+
+  // Prioridad 4: Parámetro @lat,lng (Solo como fallback si no hay pin embebido, pues suele ser el centro de la cámara del mapa)
+  const atMatch = str.match(/@(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?)/);
+  if (atMatch) {
+    const lat = parseFloat(atMatch[1]);
+    const lng = parseFloat(atMatch[2]);
+    if (!isNaN(lat) && !isNaN(lng) && lat >= -90 && lat <= 90 && lng >= -180 && lng <= 180) {
+      return { lat, lng, label, sourceType: "url_at" };
     }
   }
 

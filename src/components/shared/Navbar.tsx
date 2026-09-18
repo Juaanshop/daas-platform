@@ -34,6 +34,15 @@ export function Navbar() {
     };
   }, []);
 
+  // Ocultar navbar genérico en el panel de delivery, el portal de comercios y login
+  if (
+    pathname.startsWith("/app") ||
+    pathname.startsWith("/m/") ||
+    pathname === "/login"
+  ) {
+    return null;
+  }
+
   const navItems = [
     {
       href: "/merchant",

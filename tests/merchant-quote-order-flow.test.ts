@@ -103,7 +103,7 @@ export async function runMerchantQuoteAndOrderFlowTests() {
   });
 
   assert(waResult.whatsappUrl.startsWith("https://wa.me/"), "URL wa.me generada correctamente");
-  assert(waResult.cleanPhone === "584141234567", "Teléfono del delivery limpio solo con dígitos");
+  assert(waResult.cleanPhone === WhatsAppService.cleanPhoneNumber(merchant.deliveryUser.phone), "Teléfono del delivery limpio solo con dígitos");
   assert(waResult.message.includes(orderNumber), "Mensaje contiene el número de orden");
   assert(waResult.message.includes(merchant.businessName), "Mensaje contiene el nombre del comercio");
   assert(waResult.message.includes("2x Combos Burger Doble"), "Mensaje contiene la descripción del paquete");

@@ -1,7 +1,21 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Store, Plus, Copy, Check, ExternalLink, MapPin, Phone, AlertCircle, Sparkles } from "lucide-react";
+import {
+  Store,
+  Plus,
+  Copy,
+  Check,
+  ExternalLink,
+  MapPin,
+  Phone,
+  AlertCircle,
+  Sparkles,
+  Edit2,
+  Trash2,
+  Power,
+  PowerOff,
+} from "lucide-react";
 
 interface MerchantItem {
   id: string;
@@ -30,8 +44,9 @@ export default function MerchantsPage() {
   const [loading, setLoading] = useState(true);
   const [copiedToken, setCopiedToken] = useState<string | null>(null);
 
-  // Modal / Form state
+  // Modal / Form state (Create or Edit)
   const [showModal, setShowModal] = useState(false);
+  const [editingMerchant, setEditingMerchant] = useState<MerchantItem | null>(null);
   const [businessName, setBusinessName] = useState("");
   const [address, setAddress] = useState("");
   const [latitude, setLatitude] = useState("10.2135");
@@ -39,6 +54,11 @@ export default function MerchantsPage() {
   const [phone, setPhone] = useState("+58 414 ");
   const [submitting, setSubmitting] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
+
+  // Confirm delete modal state
+  const [merchantToDelete, setMerchantToDelete] = useState<MerchantItem | null>(null);
+  const [deleting, setDeleting] = useState(false);
+  const [actionFeedback, setActionFeedback] = useState<string | null>(null);
 
   const fetchMerchants = async () => {
     try {
@@ -71,35 +91,108 @@ export default function MerchantsPage() {
     setLongitude(lng.toString());
   };
 
-  const handleSubmitNewMerchant = async (e: React.FormEvent) => {
+  const handleOpenCreateModal = () => {
+    setEditingMerchant(null);
+    setBusinessName("");
+    setAddress("");
+    setLatitude("10.2135");
+    setLongitude("-68.0062");
+    setPhone("+58 414 ");
+    setFormError(null);
+    setShowModal(true);
+  };
+
+  const handleOpenEditModal = (m: MerchantItem) => {
+    setEditingMerchant(m);
+    setBusinessName(m.businessName);
+    setAddress(m.address);
+    setLatitude(m.latitude.toString());
+    setLongitude(m.longitude.toString());
+    setPhone(m.phone);
+    setFormError(null);
+    setShowModal(true);
+  };
+
+  const handleToggleActive = async (m: MerchantItem) => {
+    try {
+      const res = await fetch(`/api/delivery/merchants/${m.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ isActive: !m.isActive }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || "No se pudo actualizar el estado del comercio");
+      }
+      setActionFeedback(`Comercio "${m.businessName}" ${!m.isActive ? "reactivado" : "desactivado"} exitosamente.`);
+      setTimeout(() => setActionFeedback(null), 3000);
+      await fetchMerchants();
+    } catch (err: any) {
+      alert(err.message || "Error al cambiar estado del comercio");
+    }
+  };
+
+  const handleDeleteMerchant = async () => {
+    if (!merchantToDelete) return;
+    setDeleting(true);
+    try {
+      const res = await fetch(`/api/delivery/merchants/${merchantToDelete.id}`, {
+        method: "DELETE",
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || "No se pudo eliminar el comercio");
+      }
+      setActionFeedback(data.message || `Comercio "${merchantToDelete.businessName}" procesado.`);
+      setTimeout(() => setActionFeedback(null), 3500);
+      setMerchantToDelete(null);
+      await fetchMerchants();
+    } catch (err: any) {
+      alert(err.message || "Error al eliminar el comercio");
+    } finally {
+      setDeleting(false);
+    }
+  };
+
+  const handleSubmitMerchantForm = async (e: React.FormEvent) => {
     e.preventDefault();
     setFormError(null);
     setSubmitting(true);
 
     try {
-      const res = await fetch("/api/delivery/merchants", {
-        method: "POST",
+      const payload = {
+        businessName,
+        address,
+        latitude: parseFloat(latitude),
+        longitude: parseFloat(longitude),
+        phone,
+      };
+
+      const url = editingMerchant
+        ? `/api/delivery/merchants/${editingMerchant.id}`
+        : "/api/delivery/merchants";
+      const method = editingMerchant ? "PATCH" : "POST";
+
+      const res = await fetch(url, {
+        method,
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          businessName,
-          address,
-          latitude: parseFloat(latitude),
-          longitude: parseFloat(longitude),
-          phone,
-        }),
+        body: JSON.stringify(payload),
       });
 
       const data = await res.json();
       if (!res.ok) {
-        throw new Error(data.error || "No se pudo crear el comercio");
+        throw new Error(data.error || "No se pudo guardar el comercio");
       }
 
       setShowModal(false);
+      setEditingMerchant(null);
       setBusinessName("");
       setAddress("");
+      setActionFeedback(editingMerchant ? "Datos del comercio actualizados." : "Nuevo comercio afiliado con éxito.");
+      setTimeout(() => setActionFeedback(null), 3000);
       await fetchMerchants();
     } catch (err: any) {
-      setFormError(err.message || "Error al afiliar el comercio");
+      setFormError(err.message || "Error al guardar el comercio");
     } finally {
       setSubmitting(false);
     }
@@ -117,13 +210,20 @@ export default function MerchantsPage() {
         </div>
 
         <button
-          onClick={() => setShowModal(true)}
+          onClick={handleOpenCreateModal}
           className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-bold px-4 py-2.5 rounded-xl text-sm transition-all shadow-md shadow-orange-500/10 cursor-pointer"
         >
           <Plus className="w-4 h-4" />
           <span>Afiliar Nuevo Comercio</span>
         </button>
       </div>
+
+      {actionFeedback && (
+        <div className="p-3 bg-emerald-500/10 border border-emerald-500/30 rounded-xl text-xs text-emerald-400 flex items-center gap-2 animate-in fade-in">
+          <Check className="w-4 h-4 shrink-0" />
+          <span>{actionFeedback}</span>
+        </div>
+      )}
 
       {/* Merchants List */}
       {loading ? (
@@ -138,7 +238,7 @@ export default function MerchantsPage() {
             Afilia un restaurante o negocio local para generarle su link público y comenzar a recibir solicitudes.
           </p>
           <button
-            onClick={() => setShowModal(true)}
+            onClick={handleOpenCreateModal}
             className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-4 py-2 rounded-xl text-sm transition-all cursor-pointer"
           >
             <Plus className="w-4 h-4" />
@@ -152,38 +252,93 @@ export default function MerchantsPage() {
             return (
               <div
                 key={m.id}
-                className="bg-slate-900/80 border border-slate-800 hover:border-slate-700/80 rounded-2xl p-5 flex flex-col justify-between transition-all shadow-sm"
+                className={`bg-slate-900/90 border rounded-2xl p-5 flex flex-col justify-between transition-all shadow-md ${
+                  m.isActive
+                    ? "border-slate-800 hover:border-slate-700/80"
+                    : "border-slate-800/50 opacity-75 bg-slate-900/40"
+                }`}
               >
                 <div>
+                  {/* Card Header with Status & Action Buttons */}
                   <div className="flex items-start justify-between gap-3">
-                    <div>
-                      <h3 className="text-lg font-bold text-white">{m.businessName}</h3>
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <h3 className="text-lg font-bold text-white truncate">{m.businessName}</h3>
+                        <span
+                          className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${
+                            m.isActive
+                              ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/30"
+                              : "bg-slate-800 text-slate-400 border-slate-700"
+                          }`}
+                        >
+                          {m.isActive ? "Activo" : "Desactivado"}
+                        </span>
+                      </div>
                       <div className="flex items-center gap-1.5 text-xs text-slate-400 mt-1">
-                        <Phone className="w-3.5 h-3.5 text-slate-500" />
-                        <span>{m.phone}</span>
+                        <Phone className="w-3.5 h-3.5 text-slate-500 shrink-0" />
+                        <span className="font-mono">{m.phone}</span>
                       </div>
                     </div>
-                    <span className="text-[11px] bg-slate-800 text-amber-400 border border-amber-500/20 px-2.5 py-1 rounded-full font-medium">
-                      {m._count?.orders || 0} pedidos
-                    </span>
+
+                    {/* Action Buttons: Edit, Toggle Active, Delete */}
+                    <div className="flex items-center gap-1 shrink-0 bg-slate-950/60 p-1 rounded-xl border border-slate-800/80">
+                      <button
+                        onClick={() => handleOpenEditModal(m)}
+                        className="p-1.5 text-slate-400 hover:text-amber-400 hover:bg-slate-800/80 rounded-lg transition-colors cursor-pointer"
+                        title="Editar datos del comercio"
+                      >
+                        <Edit2 className="w-4 h-4" />
+                      </button>
+
+                      <button
+                        onClick={() => handleToggleActive(m)}
+                        className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
+                          m.isActive
+                            ? "text-emerald-400 hover:text-amber-400 hover:bg-slate-800/80"
+                            : "text-slate-500 hover:text-emerald-400 hover:bg-slate-800/80"
+                        }`}
+                        title={m.isActive ? "Desactivar comercio" : "Activar comercio"}
+                      >
+                        {m.isActive ? <Power className="w-4 h-4" /> : <PowerOff className="w-4 h-4" />}
+                      </button>
+
+                      <button
+                        onClick={() => setMerchantToDelete(m)}
+                        className="p-1.5 text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 rounded-lg transition-colors cursor-pointer"
+                        title="Eliminar comercio"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
                   </div>
 
-                  <div className="flex items-start gap-1.5 text-xs text-slate-400 mt-3 bg-slate-950/40 p-2.5 rounded-lg border border-slate-800/60">
-                    <MapPin className="w-4 h-4 text-amber-500 flex-shrink-0 mt-0.5" />
-                    <span className="line-clamp-2">{m.address}</span>
+                  <div className="flex items-start gap-1.5 text-xs text-slate-400 mt-3 bg-slate-950/60 p-2.5 rounded-xl border border-slate-800/60">
+                    <MapPin className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+                    <span className="line-clamp-2 leading-relaxed text-slate-300">{m.address}</span>
+                  </div>
+
+                  <div className="mt-2.5 flex items-center justify-between text-xs text-slate-400 px-1">
+                    <span>
+                      Total órdenes procesadas:{" "}
+                      <strong className="text-slate-200">{m._count?.orders || 0}</strong>
+                    </span>
+                    <span className="text-[11px] font-mono text-slate-400">
+                      {m.latitude.toFixed(4)}, {m.longitude.toFixed(4)}
+                    </span>
                   </div>
                 </div>
 
-                <div className="mt-5 pt-4 border-t border-slate-800/80">
+                {/* Public Link Section */}
+                <div className="mt-4 pt-3.5 border-t border-slate-800/80">
                   <div className="flex items-center justify-between gap-2 mb-2">
-                    <span className="text-[11px] uppercase tracking-wider text-slate-500 font-semibold">
+                    <span className="text-[11px] uppercase tracking-wider text-slate-400 font-semibold">
                       Link del comercio
                     </span>
                     <a
                       href={`/m/${m.publicToken}`}
                       target="_blank"
                       rel="noreferrer"
-                      className="text-xs text-slate-400 hover:text-white flex items-center gap-1 transition-colors"
+                      className="text-xs text-slate-400 hover:text-amber-400 flex items-center gap-1 transition-colors"
                     >
                       <span>Abrir vista previa</span>
                       <ExternalLink className="w-3 h-3" />
@@ -223,16 +378,18 @@ export default function MerchantsPage() {
         </div>
       )}
 
-      {/* Modal: Afiliar Nuevo Comercio */}
+      {/* Modal: Crear o Editar Comercio */}
       {showModal && (
-        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-xs flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-xs flex items-center justify-center p-4">
           <div className="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-lg p-6 shadow-2xl overflow-y-auto max-h-[90vh]">
             <div className="flex items-center justify-between mb-5">
               <div className="flex items-center gap-2">
                 <div className="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-400 flex items-center justify-center">
-                  <Store className="w-4 h-4" />
+                  {editingMerchant ? <Edit2 className="w-4 h-4" /> : <Store className="w-4 h-4" />}
                 </div>
-                <h2 className="text-lg font-bold text-white">Afiliar Nuevo Comercio</h2>
+                <h2 className="text-lg font-bold text-white">
+                  {editingMerchant ? "Editar Datos del Comercio" : "Afiliar Nuevo Comercio"}
+                </h2>
               </div>
               <button
                 onClick={() => setShowModal(false)}
@@ -249,7 +406,7 @@ export default function MerchantsPage() {
               </div>
             )}
 
-            <form onSubmit={handleSubmitNewMerchant} className="space-y-4 text-sm">
+            <form onSubmit={handleSubmitMerchantForm} className="space-y-4 text-sm">
               <div>
                 <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">
                   Nombre Comercial
@@ -348,19 +505,69 @@ export default function MerchantsPage() {
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-5 py-2.5 rounded-xl text-xs transition-all disabled:opacity-50 cursor-pointer flex items-center gap-1.5"
+                  className="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-5 py-2.5 rounded-xl text-xs transition-all disabled:opacity-50 cursor-pointer flex items-center gap-1.5 shadow-sm shadow-amber-500/10"
                 >
                   {submitting ? (
                     <span className="inline-block w-4 h-4 border-2 border-slate-950 border-t-transparent rounded-full animate-spin" />
                   ) : (
                     <>
                       <Sparkles className="w-3.5 h-3.5" />
-                      <span>Guardar y Generar Link</span>
+                      <span>{editingMerchant ? "Guardar Cambios" : "Guardar y Generar Link"}</span>
                     </>
                   )}
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Modal: Confirmar Eliminación */}
+      {merchantToDelete && (
+        <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-xs flex items-center justify-center p-4 animate-in fade-in">
+          <div className="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-md p-6 shadow-2xl space-y-4">
+            <div className="w-12 h-12 rounded-full bg-rose-500/10 text-rose-400 flex items-center justify-center mx-auto">
+              <Trash2 className="w-6 h-6" />
+            </div>
+
+            <div className="text-center">
+              <h3 className="text-lg font-bold text-white">¿Eliminar este comercio?</h3>
+              <p className="text-xs text-slate-400 mt-1">
+                Vas a procesar el comercio{" "}
+                <strong className="text-slate-200">"{merchantToDelete.businessName}"</strong>.
+              </p>
+              {merchantToDelete._count?.orders && merchantToDelete._count.orders > 0 ? (
+                <div className="mt-3 p-3 bg-amber-500/10 border border-amber-500/20 rounded-xl text-left text-xs text-amber-400">
+                  <p className="font-semibold">⚠️ Este comercio tiene {merchantToDelete._count.orders} órdenes registradas.</p>
+                  <p className="text-[11px] text-amber-300/80 mt-0.5">
+                    Para resguardar el historial contable y balances, el comercio será <strong>desactivado</strong> en lugar de borrado físico.
+                  </p>
+                </div>
+              ) : (
+                <p className="text-[11px] text-slate-500 mt-2">
+                  No cuenta con órdenes asociadas, por lo que será eliminado de forma definitiva.
+                </p>
+              )}
+            </div>
+
+            <div className="flex justify-end gap-2.5 pt-2 border-t border-slate-800">
+              <button
+                type="button"
+                disabled={deleting}
+                onClick={() => setMerchantToDelete(null)}
+                className="px-4 py-2 text-xs text-slate-400 hover:text-white transition-colors cursor-pointer"
+              >
+                Cancelar
+              </button>
+              <button
+                type="button"
+                disabled={deleting}
+                onClick={handleDeleteMerchant}
+                className="bg-rose-600 hover:bg-rose-500 text-white font-bold px-4 py-2 rounded-xl text-xs transition-colors cursor-pointer disabled:opacity-50"
+              >
+                {deleting ? "Procesando..." : "Confirmar Eliminación"}
+              </button>
+            </div>
           </div>
         </div>
       )}

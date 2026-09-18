@@ -57,26 +57,26 @@ export class WhatsAppService {
 
     const riderFee = (data.totalCost * 0.8).toFixed(2);
 
-    const message = `🛵 *NUEVO DESPACHO ASIGNADO - DaaS Flash*
+    const message = `*NUEVO DESPACHO ASIGNADO - DaaS Flash*
 Hola *${data.riderName}*, se te ha asignado el despacho *${data.orderNumber}*.
-💰 *Tu ganancia estimada:* $${riderFee}
+• *Tu ganancia estimada:* $${riderFee}
 
 ━━━━━━━━━━━━━━━━━━━━
-🏪 *1. RETIRO EN COMERCIO:*
+*1. RETIRO EN COMERCIO:*
 • *Local:* ${data.merchantName}
 • *Dirección:* ${data.pickupAddress}
 • *Teléfono:* ${data.merchantPhone}
-📍 *Mapa Retiro:* ${pickupMapUrl}
+• *Mapa Retiro:* ${pickupMapUrl}
 
 ━━━━━━━━━━━━━━━━━━━━
-👤 *2. ENTREGA A CLIENTE:*
+*2. ENTREGA A CLIENTE:*
 • *Destinatario:* ${data.recipientName}
 • *Teléfono:* ${data.recipientPhone}
 • *Dirección:* ${data.dropoffAddress}
-${data.packageNotes ? `📝 *Instrucciones:* ${data.packageNotes}\n` : ""}📍 *Link Google Maps Destino:*
+${data.packageNotes ? `• *Instrucciones:* ${data.packageNotes}\n` : ""}• *Link Google Maps Destino:*
 ${dropoffMapUrl}
 
-🗺️ *Iniciar Navegación GPS:*
+• *Iniciar Navegación GPS:*
 ${navigationUrl}
 
 ━━━━━━━━━━━━━━━━━━━━
@@ -138,21 +138,21 @@ _¡Por favor confirma la recepción y conduce con precaución!_`;
     const packageSizeLabel = sizeLabels[params.packageSize] || params.packageSize;
     const navUrl = getGoogleMapsNavigationUrl(params.dropoffLat, params.dropoffLng);
 
-    const message = `🛵 *Nueva solicitud de envío — ${params.orderNumber}*
+    const message = `*Nueva solicitud de envío — ${params.orderNumber}*
 
-🏪 *Comercio:* ${params.businessName}
-📦 *Paquete:* ${params.packageDescription} (${packageSizeLabel})
-👤 *Quien recibe:* ${params.recipientName} — ${params.recipientPhone}
+• *Comercio:* ${params.businessName}
+• *Paquete:* ${params.packageDescription} (${packageSizeLabel})
+• *Quien recibe:* ${params.recipientName} — ${params.recipientPhone}
 
-📍 *Retiro:* ${params.pickupAddress}
-🏁 *Entrega:* ${params.dropoffAddress}
-🗺️ *Ubicación mapa:* ${navUrl}
+• *Retiro:* ${params.pickupAddress}
+• *Entrega:* ${params.dropoffAddress}
+• *Ubicación mapa:* ${navUrl}
 
-📏 *Distancia:* ${params.distanceKm.toFixed(2)} km
-💵 *Tarifa:* $${params.totalCost.toFixed(2)}
-💰 *Tu ganancia estimada:* $${params.riderEarnings.toFixed(2)}
+• *Distancia:* ${params.distanceKm.toFixed(2)} km
+• *Tarifa:* $${params.totalCost.toFixed(2)}
+• *Tu ganancia estimada:* $${params.riderEarnings.toFixed(2)}
 
-📲 *Abre tu panel para confirmar:*
+*Abre tu panel para confirmar:*
 ${params.appOrderUrl}`;
 
     const whatsappUrl = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(message)}`;
@@ -178,14 +178,51 @@ ${params.appOrderUrl}`;
     const cleanPhone = this.cleanPhoneNumber(params.recipientPhone);
     const message = `Hola, soy *${params.deliveryName}*. Ya retiré tu pedido en *${params.businessName}* y voy en camino a entregártelo.
 
-⏱️ Llego en aproximadamente *${params.estimatedMinutes} min*. Si necesitas indicar algo de la entrega, responde este mensaje.
-
-📍 *Destino:* ${params.dropoffAddress}`;
+• Llego en aproximadamente *${params.estimatedMinutes} min*. Si necesitas indicar algo de la entrega, responde este mensaje.
+• *Destino:* ${params.dropoffAddress}`;
 
     const whatsappUrl = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(message)}`;
 
     return {
       phone: params.recipientPhone,
+      cleanPhone,
+      message,
+      whatsappUrl,
+    };
+  }
+
+  /**
+   * Genera el mensaje de cobro y liquidación diaria para enviar al comercio por WhatsApp
+   */
+  static generateDailySettlementToMerchant(params: {
+    merchantName: string;
+    merchantPhone: string;
+    deliveryName: string;
+    date: string;
+    ordersCount: number;
+    totalAmount: number;
+    orderNumbers: string[];
+  }): WhatsAppNotificationResult {
+    const cleanPhone = this.cleanPhoneNumber(params.merchantPhone);
+    const ordersList = params.orderNumbers.length > 0 
+      ? params.orderNumbers.slice(0, 8).join(", ") + (params.orderNumbers.length > 8 ? ` y ${params.orderNumbers.length - 8} más` : "")
+      : "N/A";
+
+    const message = `*CIERRE Y LIQUIDACIÓN DIARIA — ${params.merchantName}* 🛵📊
+
+Hola, te saluda *${params.deliveryName}*. Adjunto el resumen de servicios de delivery completados para tu local:
+
+📅 *Fecha:* ${params.date}
+📦 *Despachos completados:* ${params.ordersCount}
+🧾 *Órdenes:* ${ordersList}
+💵 *TOTAL A LIQUIDAR:* $${params.totalAmount.toFixed(2)}
+
+_Por favor confirmar la recepción para coordinar el pago correspondiente._ ¡Gracias por tu preferencia! 🙌`;
+
+    const whatsappUrl = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(message)}`;
+
+    return {
+      phone: params.merchantPhone,
       cleanPhone,
       message,
       whatsappUrl,

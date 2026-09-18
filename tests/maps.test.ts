@@ -56,7 +56,15 @@ export function runMapsTests() {
   assert(parsedLoc?.lat === 10.2402, "Latitud extraída de loc:");
   assert(parsedLoc?.lng === -67.9964, "Longitud extraída de loc:");
 
-  // 7. Enlace inválido
+  // 7. URL con cámara distinta al pin (Centro Comercial San Diego: cámara @10.2059868 vs pin !3d10.2232749)
+  const sanDiegoUrl = "https://www.google.com/maps/place/Centro+Comercial+San+Diego/@10.2059868,-68.0165651,13z/data=!4m6!3m5!1s0x8e805d3a6bcf1205:0x162edfb637bca30c!8m2!3d10.2232749!4d-67.9655051!16s%2Fg%2F1tlmpcnm";
+  const parsedSanDiego = parseGoogleMapsInput(sanDiegoUrl);
+  assert(parsedSanDiego !== null, "Parseo de URL San Diego no es nulo");
+  assert(parsedSanDiego?.lat === 10.2232749, "Latitud extrae el pin 10.2232749 y no la cámara 10.2059");
+  assert(parsedSanDiego?.lng === -67.9655051, "Longitud extrae el pin -67.9655051 y no la cámara -68.0165");
+  assert(parsedSanDiego?.label === "Centro Comercial San Diego", "Nombre de lugar Centro Comercial San Diego extraído correctamente");
+
+  // 8. Enlace inválido
   const parsedInvalid = parseGoogleMapsInput("https://example.com/not-a-map");
   assert(parsedInvalid === null, "Texto sin coordenadas retorna null");
 

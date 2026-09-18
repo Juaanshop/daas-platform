@@ -4,13 +4,16 @@ import { hashPassword } from "../src/lib/auth";
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log("🌱 Limpiando base de datos...");
-  await prisma.dailySettlement.deleteMany();
-  await prisma.order.deleteMany();
-  await prisma.merchant.deleteMany();
-  await prisma.rider.deleteMany();
-  await prisma.user.deleteMany();
-  await prisma.deliveryUser.deleteMany();
+  const existingDelivery = await prisma.deliveryUser.findUnique({
+    where: { email: "delivery@daas.com" },
+  });
+
+  if (existingDelivery) {
+    console.log("ℹ️ DeliveryUser ya existe en la base de datos. Omitiendo seed para proteger datos de producción.");
+    return;
+  }
+
+  console.log("🌱 Inicializando base de datos nueva...");
 
   console.log("🛵 Creando DeliveryUser principal (MVP Delivery-Centric)...");
   const deliveryUser = await prisma.deliveryUser.create({
@@ -18,7 +21,7 @@ async function main() {
       name: "Juan Pérez (Delivery)",
       email: "delivery@daas.com",
       passwordHash: hashPassword("password123"),
-      phone: "+584141234567",
+      phone: "+584144171864",
     },
   });
 

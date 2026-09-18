@@ -143,12 +143,26 @@ export default function PublicOrderForm({ merchant }: { merchant: MerchantData }
     }
   };
 
+  // Limpia enlaces duplicados o pegados en cadena (ej: https://...https://...)
+  const cleanPastedUrl = (input: string): string => {
+    if (!input) return "";
+    const trimmed = input.trim();
+    const match = trimmed.match(/(https?:\/\/[^\s]+?)(?=(?:https?:\/\/|\s|$))/i);
+    if (match) {
+      return match[1];
+    }
+    return trimmed;
+  };
+
   const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   // Parse Google Maps / WhatsApp link con auto-detección robusta
   const handleResolveLink = async (urlToTest?: string, isSilent = false) => {
-    const raw = (urlToTest !== undefined ? urlToTest : pastedUrl).trim();
+    const raw = cleanPastedUrl((urlToTest !== undefined ? urlToTest : pastedUrl).trim());
     if (!raw) return;
+
+    // Asegurar que el input muestre la URL limpia sin duplicados
+    setPastedUrl(raw);
 
     if (debounceTimerRef.current) {
       clearTimeout(debounceTimerRef.current);
@@ -192,14 +206,15 @@ export default function PublicOrderForm({ merchant }: { merchant: MerchantData }
   };
 
   const handleUrlInputChange = (val: string) => {
-    setPastedUrl(val);
+    const cleaned = cleanPastedUrl(val);
+    setPastedUrl(cleaned);
     setQuoteError(null);
 
     if (debounceTimerRef.current) {
       clearTimeout(debounceTimerRef.current);
     }
 
-    const trimmed = val.trim();
+    const trimmed = cleaned.trim();
     const isMapsCandidate =
       trimmed.includes("goo.gl") ||
       trimmed.includes("maps.app") ||
@@ -603,10 +618,12 @@ export default function PublicOrderForm({ merchant }: { merchant: MerchantData }
                         value={pastedUrl}
                         onChange={(e) => handleUrlInputChange(e.target.value)}
                         onPaste={(e) => {
-                          const val = e.clipboardData.getData("text");
-                          if (val) {
-                            setPastedUrl(val);
-                            handleResolveLink(val, false);
+                          e.preventDefault();
+                          const val = e.clipboardData?.getData("text") || "";
+                          const clean = cleanPastedUrl(val);
+                          if (clean) {
+                            setPastedUrl(clean);
+                            handleResolveLink(clean, false);
                           }
                         }}
                         onKeyDown={(e) => {
@@ -621,15 +638,18 @@ export default function PublicOrderForm({ merchant }: { merchant: MerchantData }
                     </div>
                     <button
                       type="button"
-                      onClick={() => handleResolveLink()}
-                      disabled={resolvingLink || !pastedUrl.trim()}
-                      className="bg-amber-500 hover:bg-amber-400 disabled:opacity-50 text-slate-950 font-bold px-3 py-2 rounded-xl text-xs flex items-center gap-1 cursor-pointer flex-shrink-0"
+                      onClick={() => handleResolveLink(pastedUrl, false)}
+                      disabled={!pastedUrl.trim()}
+                      className="bg-amber-500 hover:bg-amber-400 active:scale-95 disabled:opacity-40 disabled:pointer-events-none text-slate-950 font-bold px-3.5 py-2 rounded-xl text-xs flex items-center gap-1.5 cursor-pointer flex-shrink-0 transition-all shadow-md shadow-amber-500/10"
                     >
                       {resolvingLink ? (
-                        <span className="w-3.5 h-3.5 border-2 border-slate-950 border-t-transparent rounded-full animate-spin" />
+                        <>
+                          <span className="w-3.5 h-3.5 border-2 border-slate-950 border-t-transparent rounded-full animate-spin" />
+                          <span>Detectando...</span>
+                        </>
                       ) : (
                         <>
-                          <Navigation className="w-3 h-3" />
+                          <Navigation className="w-3.5 h-3.5 fill-slate-950/20" />
                           <span>Detectar</span>
                         </>
                       )}

@@ -88,8 +88,8 @@ export async function POST(
       );
     }
 
-    // 4. Calcular tarifas con PricingService
-    const quote = PricingService.calculateQuote({
+    // 4. Calcular tarifas con PricingService con ruteo vial real
+    const quote = await PricingService.calculateQuoteAsync({
       origin: [oLat, oLng],
       destination: [dLat, dLng],
     });

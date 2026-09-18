@@ -1,7 +1,8 @@
 import { getCurrentDeliveryUser } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import Link from "next/link";
-import { Store, Package, ArrowRight, Share2, PlusCircle, CheckCircle2 } from "lucide-react";
+import { Store, Package, ArrowRight, Share2, PlusCircle, CheckCircle2, DollarSign, TrendingUp } from "lucide-react";
+import { SettlementService } from "@/services/settlement";
 
 export const dynamic = "force-dynamic";
 
@@ -31,6 +32,10 @@ export default async function AppDashboardPage() {
     (o) => o.status === "DRAFT_SUBMITTED" || o.status === "CONFIRMED_PICKUP" || o.status === "IN_TRANSIT"
   );
 
+  const todaySettlement = await SettlementService.getDailySettlement({
+    deliveryUserId: user.id,
+  });
+
   return (
     <div className="space-y-8">
       {/* Header Banner */}
@@ -50,11 +55,18 @@ export default async function AppDashboardPage() {
             <PlusCircle className="w-4 h-4" />
             <span>Afiliar Comercio y Obtener Link</span>
           </Link>
+          <Link
+            href="/app/settlements"
+            className="inline-flex items-center gap-2 bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold px-4 py-2.5 rounded-xl text-sm transition-all border border-slate-700"
+          >
+            <DollarSign className="w-4 h-4 text-emerald-400" />
+            <span>Cierre Diario & Cobranzas</span>
+          </Link>
         </div>
       </div>
 
       {/* Metrics Row */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-5">
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
@@ -81,7 +93,44 @@ export default async function AppDashboardPage() {
           <p className="text-xs text-slate-500 mt-1">Pedidos pendientes o en tránsito</p>
         </div>
 
-        <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-5 sm:col-span-2 lg:col-span-1">
+        {/* Ganancia / Pendiente Hoy (Se oculta si ya se cobró todo lo de hoy) */}
+        {todaySettlement.pendingOrders > 0 ? (
+          <div className="bg-slate-900/60 border border-amber-500/30 rounded-2xl p-5">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-semibold text-amber-400 uppercase tracking-wider">
+                Por Cobrar Hoy (100%)
+              </span>
+              <div className="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-400 flex items-center justify-center">
+                <TrendingUp className="w-4 h-4" />
+              </div>
+            </div>
+            <div className="text-3xl font-extrabold text-amber-400 mt-3 font-mono">
+              ${todaySettlement.pendingVolume.toFixed(2)}
+            </div>
+            <p className="text-xs text-slate-500 mt-1">
+              {todaySettlement.pendingOrders} {todaySettlement.pendingOrders === 1 ? "carrera pendiente" : "carreras pendientes"}
+            </p>
+          </div>
+        ) : todaySettlement.totalOrders > 0 ? (
+          <div className="bg-slate-900/60 border border-emerald-500/30 rounded-2xl p-5">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-semibold text-emerald-400 uppercase tracking-wider">
+                Día Cobrado (100%)
+              </span>
+              <div className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center">
+                <CheckCircle2 className="w-4 h-4" />
+              </div>
+            </div>
+            <div className="text-3xl font-extrabold text-emerald-400 mt-3 font-mono">
+              ${todaySettlement.totalVolume.toFixed(2)}
+            </div>
+            <p className="text-xs text-emerald-500/80 mt-1">
+              {todaySettlement.totalOrders} {todaySettlement.totalOrders === 1 ? "carrera cobrada" : "carreras cobradas"}
+            </p>
+          </div>
+        ) : null}
+
+        <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-5">
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
               Tu WhatsApp Vinculado
@@ -90,8 +139,8 @@ export default async function AppDashboardPage() {
               <CheckCircle2 className="w-4 h-4" />
             </div>
           </div>
-          <div className="text-lg font-bold text-white mt-3">{user!.phone}</div>
-          <p className="text-xs text-slate-500 mt-1">Número donde recibirás los chats de los pedidos</p>
+          <div className="text-lg font-bold text-white mt-3 truncate">{user!.phone}</div>
+          <p className="text-xs text-slate-500 mt-1">Número receptor de alertas</p>
         </div>
       </div>
 
@@ -163,6 +212,13 @@ export default async function AppDashboardPage() {
             <h2 className="text-lg font-bold text-white">Solicitudes de Envío Recientes</h2>
             <p className="text-xs text-slate-400">Pedidos generados desde los links de tus comercios afiliados</p>
           </div>
+          <Link
+            href="/app/orders"
+            className="text-xs font-semibold text-amber-400 hover:text-amber-300 flex items-center gap-1"
+          >
+            <span>Gestionar todos</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </Link>
         </div>
 
         {orders.length === 0 ? (
@@ -234,11 +290,11 @@ export default async function AppDashboardPage() {
 
                   <div className="flex items-center justify-between sm:justify-end gap-6 sm:border-l sm:border-slate-700/60 sm:pl-6">
                     <div>
-                      <div className="text-[10px] text-slate-400 uppercase">Tarifa / Ganancia</div>
-                      <div className="text-sm font-bold text-white">
+                      <div className="text-[10px] text-slate-400 uppercase font-semibold">Tarifa (100%)</div>
+                      <div className="text-sm font-bold text-white font-mono">
                         ${o.totalCost.toFixed(2)}{" "}
                         <span className="text-emerald-400 text-xs font-normal">
-                          (+$Recibe: ${(o.riderEarnings || o.totalCost * 0.8).toFixed(2)})
+                          (100% para ti)
                         </span>
                       </div>
                       <div className="text-[10px] text-slate-500">{o.distanceKm.toFixed(2)} km</div>
