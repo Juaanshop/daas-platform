@@ -132,48 +132,50 @@ export default function DeliverySettlementsPage() {
         </div>
 
         {/* Date / Period Controls & Confirm Global Action */}
-        <div className="flex flex-wrap items-center gap-2.5">
-          <div className="bg-slate-900 border border-slate-800 p-1 rounded-xl flex items-center gap-1 text-xs">
-            <button
-              onClick={() => setViewMode("daily")}
-              className={`px-3 py-1.5 rounded-lg font-bold transition-all ${
-                viewMode === "daily"
-                  ? "bg-amber-500 text-slate-950 shadow"
-                  : "text-slate-400 hover:text-white"
-              }`}
-            >
-              Día Específico
-            </button>
-            <button
-              onClick={() => setViewMode("all")}
-              className={`px-3 py-1.5 rounded-lg font-bold transition-all ${
-                viewMode === "all"
-                  ? "bg-amber-500 text-slate-950 shadow"
-                  : "text-slate-400 hover:text-white"
-              }`}
-            >
-              Histórico
-            </button>
-          </div>
-
-          {viewMode === "daily" && (
-            <div className="flex items-center gap-2 bg-slate-900 border border-slate-800 px-3 py-1 rounded-xl">
-              <Calendar className="w-4 h-4 text-amber-400" />
-              <input
-                type="date"
-                value={selectedDate}
-                onChange={(e) => setSelectedDate(e.target.value)}
-                className="bg-transparent text-xs text-white outline-none cursor-pointer"
-              />
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 w-full sm:w-auto">
+          <div className="flex items-center gap-2">
+            <div className="bg-slate-900 border border-slate-800 p-1 rounded-xl flex items-center gap-1 text-xs flex-1 sm:flex-none">
+              <button
+                onClick={() => setViewMode("daily")}
+                className={`flex-1 sm:flex-none px-3 py-2 sm:py-1.5 rounded-lg font-bold transition-all cursor-pointer ${
+                  viewMode === "daily"
+                    ? "bg-amber-500 text-slate-950 shadow"
+                    : "text-slate-400 hover:text-white"
+                }`}
+              >
+                Día Específico
+              </button>
+              <button
+                onClick={() => setViewMode("all")}
+                className={`flex-1 sm:flex-none px-3 py-2 sm:py-1.5 rounded-lg font-bold transition-all cursor-pointer ${
+                  viewMode === "all"
+                    ? "bg-amber-500 text-slate-950 shadow"
+                    : "text-slate-400 hover:text-white"
+                }`}
+              >
+                Histórico
+              </button>
             </div>
-          )}
+
+            {viewMode === "daily" && (
+              <div className="flex items-center gap-2 bg-slate-900 border border-slate-800 px-3 py-2 sm:py-1.5 rounded-xl flex-1 sm:flex-none">
+                <Calendar className="w-4 h-4 text-amber-400 shrink-0" />
+                <input
+                  type="date"
+                  value={selectedDate}
+                  onChange={(e) => setSelectedDate(e.target.value)}
+                  className="bg-transparent text-xs text-white outline-none cursor-pointer w-full"
+                />
+              </div>
+            )}
+          </div>
 
           {/* Botón para confirmar que cobró lo del día */}
           {hasPendingSettlement && (
             <Button
               onClick={() => handleMarkAsSettled()}
               disabled={isSettling}
-              className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-4 py-2 rounded-xl text-xs flex items-center gap-1.5 shadow-md shadow-emerald-600/20"
+              className="w-full sm:w-auto min-h-[44px] bg-emerald-600 hover:bg-emerald-500 text-white font-black px-4 py-2.5 rounded-xl text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/20 active:scale-95 cursor-pointer"
             >
               <CheckCircle2 className="w-4 h-4" />
               <span>{isSettling ? "Guardando..." : "Confirmar Cobro del Día"}</span>
@@ -287,7 +289,7 @@ export default function DeliverySettlementsPage() {
               placeholder="Buscar comercio u orden..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-slate-900/80 border border-slate-800 rounded-xl pl-10 pr-4 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 transition-colors"
+              className="w-full bg-slate-900/80 border border-slate-800 rounded-xl pl-10 pr-4 py-2.5 text-base sm:text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 transition-colors"
             />
           </div>
 
@@ -358,7 +360,7 @@ export default function DeliverySettlementsPage() {
                           href={m.whatsappUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="w-full flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2 px-4 rounded-xl text-xs transition-all shadow-md shadow-emerald-600/20"
+                          className="w-full min-h-[42px] flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 px-4 rounded-xl text-xs transition-all shadow-md shadow-emerald-600/20 active:scale-95 cursor-pointer"
                         >
                           <MessageSquare className="w-4 h-4 fill-white" />
                           <span>Cobrar por WhatsApp</span>
@@ -368,7 +370,7 @@ export default function DeliverySettlementsPage() {
                         onClick={() => handleMarkAsSettled({ merchantId: m.merchantId })}
                         disabled={isSettling}
                         variant="outline"
-                        className="w-full border-slate-700 hover:border-emerald-500 hover:bg-emerald-500/10 text-slate-300 hover:text-emerald-400 font-medium py-2 rounded-xl text-xs flex items-center justify-center gap-1.5 transition-all"
+                        className="w-full min-h-[42px] border-slate-700 hover:border-emerald-500 hover:bg-emerald-500/10 text-slate-300 hover:text-emerald-400 font-bold py-2.5 rounded-xl text-xs flex items-center justify-center gap-1.5 transition-all active:scale-95 cursor-pointer"
                       >
                         <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
                         <span>Marcar Comercio Cobrado</span>

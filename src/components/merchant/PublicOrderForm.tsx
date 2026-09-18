@@ -229,6 +229,21 @@ export default function PublicOrderForm({ merchant }: { merchant: MerchantData }
     }
   };
 
+  const handlePasteFromClipboard = async () => {
+    try {
+      if (typeof navigator !== "undefined" && navigator.clipboard && navigator.clipboard.readText) {
+        const text = await navigator.clipboard.readText();
+        if (text) {
+          const clean = cleanPastedUrl(text);
+          setPastedUrl(clean);
+          handleResolveLink(clean, false);
+        }
+      }
+    } catch {
+      // Ignorar si el usuario no tiene permisos de portapapeles concedidos
+    }
+  };
+
   // Recalcular cotización en tiempo real al cambiar coordenadas
   useEffect(() => {
     if (dropoffLat === null || dropoffLng === null) {
@@ -507,7 +522,7 @@ export default function PublicOrderForm({ merchant }: { merchant: MerchantData }
                 value={packageDescription}
                 onChange={(e) => setPackageDescription(e.target.value)}
                 placeholder="Ej. 2x Hamburguesas dobles con papas y refresco"
-                className="w-full bg-slate-950 border border-slate-700/80 rounded-xl px-3.5 py-2.5 text-white text-xs placeholder:text-slate-500 focus:outline-none focus:border-amber-500"
+                className="w-full bg-slate-950 border border-slate-700/80 rounded-xl px-3.5 py-2.5 text-white text-base sm:text-xs placeholder:text-slate-500 focus:outline-none focus:border-amber-500"
               />
             </div>
 
@@ -518,14 +533,14 @@ export default function PublicOrderForm({ merchant }: { merchant: MerchantData }
                   Nombre Destinatario <span className="text-amber-400">*</span>
                 </label>
                 <div className="relative">
-                  <User className="absolute left-3 top-2.5 w-4 h-4 text-slate-500" />
+                  <User className="absolute left-3 top-3 w-4 h-4 text-slate-500" />
                   <input
                     type="text"
                     required
                     value={recipientName}
                     onChange={(e) => setRecipientName(e.target.value)}
                     placeholder="Ej. Roberto Sánchez"
-                    className="w-full bg-slate-950 border border-slate-700/80 rounded-xl pl-9 pr-3 py-2 text-white text-xs placeholder:text-slate-500 focus:outline-none focus:border-amber-500"
+                    className="w-full bg-slate-950 border border-slate-700/80 rounded-xl pl-9 pr-3 py-2.5 text-white text-base sm:text-xs placeholder:text-slate-500 focus:outline-none focus:border-amber-500"
                   />
                 </div>
               </div>
@@ -539,7 +554,7 @@ export default function PublicOrderForm({ merchant }: { merchant: MerchantData }
                   <select
                     value={phoneOperator}
                     onChange={(e) => setPhoneOperator(e.target.value)}
-                    className="bg-slate-950 border border-slate-700/80 rounded-xl px-2 py-2 text-white text-xs font-semibold focus:outline-none focus:border-amber-500 cursor-pointer flex-shrink-0"
+                    className="bg-slate-950 border border-slate-700/80 rounded-xl px-2 py-2.5 text-white text-base sm:text-xs font-semibold focus:outline-none focus:border-amber-500 cursor-pointer flex-shrink-0"
                   >
                     {PHONE_OPERATORS.map((op) => (
                       <option key={op.prefix} value={op.prefix} className="bg-slate-900 text-white">
@@ -549,7 +564,7 @@ export default function PublicOrderForm({ merchant }: { merchant: MerchantData }
                   </select>
 
                   <div className="relative flex-1">
-                    <Phone className="absolute left-2.5 top-2.5 w-3.5 h-3.5 text-slate-500" />
+                    <Phone className="absolute left-2.5 top-3 w-3.5 h-3.5 text-slate-500" />
                     <input
                       type="tel"
                       inputMode="numeric"
@@ -559,7 +574,7 @@ export default function PublicOrderForm({ merchant }: { merchant: MerchantData }
                       onChange={(e) => handlePhoneChange(e.target.value)}
                       placeholder={phoneOperator === "OTHER" ? "+584121234567" : "8589530"}
                       maxLength={phoneOperator === "OTHER" ? 16 : 8}
-                      className="w-full bg-slate-950 border border-slate-700/80 rounded-xl pl-8 pr-3 py-2 text-white text-xs font-mono placeholder:text-slate-500 focus:outline-none focus:border-amber-500 tracking-wide"
+                      className="w-full bg-slate-950 border border-slate-700/80 rounded-xl pl-8 pr-3 py-2.5 text-white text-base sm:text-xs font-mono placeholder:text-slate-500 focus:outline-none focus:border-amber-500 tracking-wide"
                     />
                   </div>
                 </div>
@@ -609,10 +624,19 @@ export default function PublicOrderForm({ merchant }: { merchant: MerchantData }
               </div>
 
               {destinationMode === "paste" ? (
-                <div className="space-y-2">
+                <div className="space-y-2.5">
+                  <button
+                    type="button"
+                    onClick={handlePasteFromClipboard}
+                    className="w-full py-2.5 px-3 bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 font-bold rounded-xl border border-amber-500/30 flex items-center justify-center gap-2 text-xs transition-all active:scale-95 cursor-pointer shadow-xs"
+                  >
+                    <Sparkles className="w-3.5 h-3.5" />
+                    <span>📋 Pegar enlace desde el portapapeles</span>
+                  </button>
+
                   <div className="flex gap-2">
                     <div className="relative flex-1">
-                      <LinkIcon className="absolute left-3 top-2.5 w-3.5 h-3.5 text-slate-500" />
+                      <LinkIcon className="absolute left-3 top-3 w-3.5 h-3.5 text-slate-500" />
                       <input
                         type="text"
                         value={pastedUrl}
@@ -632,15 +656,15 @@ export default function PublicOrderForm({ merchant }: { merchant: MerchantData }
                             handleResolveLink(pastedUrl, false);
                           }
                         }}
-                        placeholder="Pega el link de Google Maps o WhatsApp..."
-                        className="w-full bg-slate-950 border border-slate-700/80 rounded-xl pl-8 pr-3 py-2 text-white text-xs placeholder:text-slate-500 focus:outline-none focus:border-amber-500"
+                        placeholder="O escribe o pega el link aquí..."
+                        className="w-full bg-slate-950 border border-slate-700/80 rounded-xl pl-8 pr-3 py-2.5 text-white text-base sm:text-xs placeholder:text-slate-500 focus:outline-none focus:border-amber-500"
                       />
                     </div>
                     <button
                       type="button"
                       onClick={() => handleResolveLink(pastedUrl, false)}
                       disabled={!pastedUrl.trim()}
-                      className="bg-amber-500 hover:bg-amber-400 active:scale-95 disabled:opacity-40 disabled:pointer-events-none text-slate-950 font-bold px-3.5 py-2 rounded-xl text-xs flex items-center gap-1.5 cursor-pointer flex-shrink-0 transition-all shadow-md shadow-amber-500/10"
+                      className="bg-amber-500 hover:bg-amber-400 active:scale-95 disabled:opacity-40 disabled:pointer-events-none text-slate-950 font-bold px-3.5 py-2.5 rounded-xl text-xs flex items-center gap-1.5 cursor-pointer flex-shrink-0 transition-all shadow-md shadow-amber-500/10"
                     >
                       {resolvingLink ? (
                         <>
@@ -829,7 +853,7 @@ export default function PublicOrderForm({ merchant }: { merchant: MerchantData }
                 value={packageNotes}
                 onChange={(e) => setPackageNotes(e.target.value)}
                 placeholder="Ej. Tocar timbre 3B, llevar vuelto de $20"
-                className="w-full bg-slate-950 border border-slate-700/80 rounded-xl px-3.5 py-2 text-white text-xs placeholder:text-slate-500 focus:outline-none focus:border-amber-500"
+                className="w-full bg-slate-950 border border-slate-700/80 rounded-xl px-3.5 py-2.5 text-white text-base sm:text-xs placeholder:text-slate-500 focus:outline-none focus:border-amber-500"
               />
             </div>
 
@@ -853,7 +877,7 @@ export default function PublicOrderForm({ merchant }: { merchant: MerchantData }
               type="button"
               onClick={() => handleSubmitOrder()}
               disabled={submitting || !quote}
-              className="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-black py-3.5 px-4 rounded-xl transition-all shadow-xl shadow-orange-500/20 flex items-center justify-center gap-2 text-sm disabled:opacity-40 cursor-pointer"
+              className="w-full min-h-[50px] bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-black py-3.5 px-4 rounded-xl transition-all shadow-xl shadow-orange-500/20 flex items-center justify-center gap-2 text-sm disabled:opacity-40 cursor-pointer active:scale-95"
             >
               {submitting ? (
                 <span className="w-4 h-4 border-2 border-slate-950 border-t-transparent rounded-full animate-spin" />

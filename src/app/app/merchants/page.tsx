@@ -15,6 +15,8 @@ import {
   Trash2,
   Power,
   PowerOff,
+  MessageCircle,
+  Share2,
 } from "lucide-react";
 
 interface MerchantItem {
@@ -84,6 +86,28 @@ export default function MerchantsPage() {
     navigator.clipboard.writeText(fullUrl);
     setCopiedToken(token);
     setTimeout(() => setCopiedToken(null), 2500);
+  };
+
+  const handleShareWhatsApp = (m: MerchantItem) => {
+    const origin = typeof window !== "undefined" ? window.location.origin : "https://daas-platform-pink.vercel.app";
+    const fullUrl = `${origin}/m/${m.publicToken}`;
+    const message = `¡Hola ${m.businessName}! Aquí tienes tu enlace exclusivo para solicitar delivery al instante:\n\n${fullUrl}\n\nGuárdalo para solicitar tus carreras con cálculo de tarifa inmediato.`;
+
+    if (typeof navigator !== "undefined" && navigator.share) {
+      navigator
+        .share({
+          title: `Link de Despacho - ${m.businessName}`,
+          text: message,
+          url: fullUrl,
+        })
+        .catch(() => {
+          const waUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
+          window.open(waUrl, "_blank", "noopener,noreferrer");
+        });
+    } else {
+      const waUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
+      window.open(waUrl, "_blank", "noopener,noreferrer");
+    }
   };
 
   const handleApplyPreset = (lat: number, lng: number) => {
@@ -345,31 +369,42 @@ export default function MerchantsPage() {
                     </a>
                   </div>
 
-                  <div className="flex items-center gap-2">
-                    <div className="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs font-mono text-slate-300 truncate">
+                  <div className="space-y-2">
+                    <div className="bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs font-mono text-slate-300 truncate">
                       {typeof window !== "undefined" ? window.location.origin : ""}/m/{m.publicToken}
                     </div>
 
-                    <button
-                      onClick={() => handleCopyLink(m.publicToken)}
-                      className={`px-3 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer ${
-                        isCopied
-                          ? "bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/20"
-                          : "bg-amber-500 hover:bg-amber-400 text-slate-950 shadow-md shadow-orange-500/10"
-                      }`}
-                    >
-                      {isCopied ? (
-                        <>
-                          <Check className="w-3.5 h-3.5" />
-                          <span>¡Copiado!</span>
-                        </>
-                      ) : (
-                        <>
-                          <Copy className="w-3.5 h-3.5" />
-                          <span>Copiar Link</span>
-                        </>
-                      )}
-                    </button>
+                    <div className="grid grid-cols-2 gap-2">
+                      <button
+                        onClick={() => handleCopyLink(m.publicToken)}
+                        className={`w-full py-2.5 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer active:scale-95 ${
+                          isCopied
+                            ? "bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/20"
+                            : "bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700"
+                        }`}
+                      >
+                        {isCopied ? (
+                          <>
+                            <Check className="w-3.5 h-3.5" />
+                            <span>¡Copiado!</span>
+                          </>
+                        ) : (
+                          <>
+                            <Copy className="w-3.5 h-3.5" />
+                            <span>Copiar Link</span>
+                          </>
+                        )}
+                      </button>
+
+                      <button
+                        onClick={() => handleShareWhatsApp(m)}
+                        className="w-full py-2.5 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer bg-emerald-500 hover:bg-emerald-400 text-slate-950 shadow-md shadow-emerald-500/15 active:scale-95"
+                        title="Enviar link por WhatsApp al cliente"
+                      >
+                        <MessageCircle className="w-3.5 h-3.5" />
+                        <span>Compartir WA</span>
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -378,22 +413,22 @@ export default function MerchantsPage() {
         </div>
       )}
 
-      {/* Modal: Crear o Editar Comercio */}
+      {/* Modal: Crear o Editar Comercio (Adaptado a Bottom Sheet en Móvil) */}
       {showModal && (
-        <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-lg p-6 shadow-2xl overflow-y-auto max-h-[90vh]">
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4">
+          <div className="bg-slate-900 border-t sm:border border-slate-800 rounded-t-3xl sm:rounded-2xl w-full max-w-lg p-5 sm:p-6 shadow-2xl overflow-y-auto max-h-[88vh]">
             <div className="flex items-center justify-between mb-5">
               <div className="flex items-center gap-2">
                 <div className="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-400 flex items-center justify-center">
                   {editingMerchant ? <Edit2 className="w-4 h-4" /> : <Store className="w-4 h-4" />}
                 </div>
-                <h2 className="text-lg font-bold text-white">
+                <h2 className="text-base sm:text-lg font-bold text-white">
                   {editingMerchant ? "Editar Datos del Comercio" : "Afiliar Nuevo Comercio"}
                 </h2>
               </div>
               <button
                 onClick={() => setShowModal(false)}
-                className="text-slate-400 hover:text-white text-lg font-semibold cursor-pointer"
+                className="w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center text-sm font-semibold cursor-pointer"
               >
                 ✕
               </button>
@@ -417,7 +452,7 @@ export default function MerchantsPage() {
                   value={businessName}
                   onChange={(e) => setBusinessName(e.target.value)}
                   placeholder="Ej. Hamburguesas El Viñedo"
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2.5 text-white placeholder:text-slate-500 focus:outline-none focus:border-amber-500"
+                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-3 text-white text-base sm:text-sm placeholder:text-slate-500 focus:outline-none focus:border-amber-500"
                 />
               </div>
 
@@ -426,12 +461,13 @@ export default function MerchantsPage() {
                   Teléfono de Contacto (WhatsApp del Comercio)
                 </label>
                 <input
-                  type="text"
+                  type="tel"
+                  inputMode="tel"
                   required
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                   placeholder="+58 414 123-4567"
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2.5 text-white placeholder:text-slate-500 focus:outline-none focus:border-amber-500"
+                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-3 text-white text-base sm:text-sm placeholder:text-slate-500 focus:outline-none focus:border-amber-500"
                 />
               </div>
 
@@ -445,16 +481,16 @@ export default function MerchantsPage() {
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
                   placeholder="Calle 139, El Viñedo, Valencia, Carabobo"
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2 text-white placeholder:text-slate-500 focus:outline-none focus:border-amber-500 resize-none text-xs"
+                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2.5 text-white text-base sm:text-xs placeholder:text-slate-500 focus:outline-none focus:border-amber-500 resize-none"
                 />
               </div>
 
               <div>
                 <div className="flex items-center justify-between mb-1">
                   <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider">
-                    Ubicación Geográfica (Latitud / Longitud)
+                    Ubicación Geográfica (Coordenadas)
                   </label>
-                  <span className="text-[11px] text-slate-400">Valencia, Naguanagua o San Diego</span>
+                  <span className="text-[11px] text-slate-400">Valencia, Naguanagua, San Diego</span>
                 </div>
 
                 <div className="grid grid-cols-2 gap-3 mb-2">
@@ -465,7 +501,7 @@ export default function MerchantsPage() {
                     value={latitude}
                     onChange={(e) => setLatitude(e.target.value)}
                     placeholder="Latitud (ej. 10.2135)"
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white text-xs"
+                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2.5 text-white text-base sm:text-xs"
                   />
                   <input
                     type="number"
@@ -474,19 +510,19 @@ export default function MerchantsPage() {
                     value={longitude}
                     onChange={(e) => setLongitude(e.target.value)}
                     placeholder="Longitud (ej. -68.0062)"
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-white text-xs"
+                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2.5 text-white text-base sm:text-xs"
                   />
                 </div>
 
-                {/* Zona Presets */}
-                <div className="flex flex-wrap gap-1.5 pt-1">
-                  <span className="text-[10px] text-slate-500 self-center mr-1">Zonas rápidas:</span>
+                {/* Zona Presets como carrusel táctil deslizable */}
+                <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none touch-pan-x">
+                  <span className="text-[10px] text-slate-500 shrink-0 mr-1">Zonas rápidas:</span>
                   {PRESET_ZONES.map((z) => (
                     <button
                       key={z.name}
                       type="button"
                       onClick={() => handleApplyPreset(z.lat, z.lng)}
-                      className="text-[10px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2 py-0.5 rounded-md border border-slate-700 transition-colors cursor-pointer"
+                      className="text-[10px] whitespace-nowrap bg-slate-800 hover:bg-slate-700 text-slate-300 px-2.5 py-1 rounded-lg border border-slate-700 transition-colors cursor-pointer active:scale-95 shrink-0"
                     >
                       {z.name}
                     </button>
@@ -494,24 +530,24 @@ export default function MerchantsPage() {
                 </div>
               </div>
 
-              <div className="flex justify-end gap-3 pt-3 border-t border-slate-800">
+              <div className="flex justify-end gap-3 pt-4 border-t border-slate-800">
                 <button
                   type="button"
                   onClick={() => setShowModal(false)}
-                  className="px-4 py-2 text-xs text-slate-400 hover:text-white transition-colors cursor-pointer"
+                  className="px-4 py-2.5 text-xs text-slate-400 hover:text-white transition-colors cursor-pointer"
                 >
                   Cancelar
                 </button>
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-5 py-2.5 rounded-xl text-xs transition-all disabled:opacity-50 cursor-pointer flex items-center gap-1.5 shadow-sm shadow-amber-500/10"
+                  className="min-h-[46px] bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-black px-5 py-2.5 rounded-xl text-xs sm:text-sm transition-all disabled:opacity-50 cursor-pointer flex items-center gap-2 shadow-md shadow-orange-500/15 active:scale-95"
                 >
                   {submitting ? (
                     <span className="inline-block w-4 h-4 border-2 border-slate-950 border-t-transparent rounded-full animate-spin" />
                   ) : (
                     <>
-                      <Sparkles className="w-3.5 h-3.5" />
+                      <Sparkles className="w-4 h-4" />
                       <span>{editingMerchant ? "Guardar Cambios" : "Guardar y Generar Link"}</span>
                     </>
                   )}

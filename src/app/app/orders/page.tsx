@@ -43,7 +43,7 @@ export default function DeliveryOrdersPage() {
 
   const totalEarnings = orders
     .filter((o) => o.status === "DELIVERED")
-    .reduce((sum, o) => sum + (o.riderEarnings || o.totalCost * 0.8), 0);
+    .reduce((sum, o) => sum + (o.riderEarnings || o.totalCost || 0), 0);
 
   const filterButtons = [
     { key: "all", label: "Todas" },
@@ -53,8 +53,8 @@ export default function DeliveryOrdersPage() {
   ];
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-slate-900/60 border border-slate-800 rounded-2xl p-5">
+    <div className="space-y-5">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-slate-900/60 border border-slate-800 rounded-2xl p-4 sm:p-5">
         <div>
           <h1 className="text-xl sm:text-2xl font-bold text-white flex items-center gap-2">
             <Bike className="w-6 h-6 text-amber-400" />
@@ -65,18 +65,18 @@ export default function DeliveryOrdersPage() {
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
-          <div className="bg-slate-800/80 border border-slate-700 px-4 py-2.5 rounded-xl">
+        <div className="flex items-center justify-between sm:justify-end gap-3">
+          <div className="bg-slate-800/80 border border-slate-700 px-3.5 py-2 rounded-xl">
             <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider block">
-              Ganancias Completadas
+              Ganancias (100%)
             </span>
-            <span className="text-xl font-extrabold text-emerald-400">
+            <span className="text-lg sm:text-xl font-extrabold text-emerald-400 font-mono">
               ${totalEarnings.toFixed(2)}
             </span>
           </div>
           <button
             onClick={fetchOrders}
-            className="p-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white rounded-xl transition-all cursor-pointer"
+            className="p-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white rounded-xl transition-all cursor-pointer active:scale-95"
             title="Actualizar lista"
           >
             <RefreshCw className={`w-4 h-4 ${loading ? "animate-spin" : ""}`} />
@@ -84,14 +84,15 @@ export default function DeliveryOrdersPage() {
         </div>
       </div>
 
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
-        <div className="flex items-center gap-1.5 bg-slate-900/60 border border-slate-800 p-1 rounded-xl w-full sm:w-auto overflow-x-auto">
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+        {/* Horizontal scrollable filter pills for mobile */}
+        <div className="flex items-center gap-1.5 bg-slate-900/80 border border-slate-800 p-1 rounded-xl overflow-x-auto scrollbar-none touch-pan-x">
           {filterButtons.map((btn) => (
             <button
               key={btn.key}
               onClick={() => setFilter(btn.key)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
-                filter === btn.key ? "bg-amber-500 text-slate-950" : "text-slate-400 hover:text-white"
+              className={`flex-1 sm:flex-none px-3.5 py-2 rounded-lg text-xs font-bold transition-all whitespace-nowrap cursor-pointer active:scale-95 text-center ${
+                filter === btn.key ? "bg-amber-500 text-slate-950 shadow-md shadow-amber-500/20" : "text-slate-400 hover:text-white"
               }`}
             >
               {btn.label}
@@ -100,13 +101,13 @@ export default function DeliveryOrdersPage() {
         </div>
 
         <div className="relative w-full sm:w-72">
-          <Search className="w-4 h-4 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
+          <Search className="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
           <input
             type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Buscar por orden, cliente o zona..."
-            className="w-full bg-slate-900/60 border border-slate-800 text-xs text-white pl-9 pr-4 py-2 rounded-xl focus:outline-none focus:border-amber-400"
+            className="w-full bg-slate-900/80 border border-slate-800 text-base sm:text-xs text-white pl-9 pr-4 py-2.5 rounded-xl focus:outline-none focus:border-amber-400 transition-colors"
           />
         </div>
       </div>
