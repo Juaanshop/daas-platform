@@ -18,7 +18,7 @@ async function main() {
   console.log("🛵 Creando DeliveryUser principal (MVP Delivery-Centric)...");
   const deliveryUser = await prisma.deliveryUser.create({
     data: {
-      name: "Juan Pérez (Delivery)",
+      name: "Juan Romero",
       email: "delivery@daas.com",
       passwordHash: hashPassword("password123"),
       phone: "+584144171864",
