@@ -16,9 +16,14 @@ export const metadata: Metadata = {
   description:
     "Panel operativo de despachos y liquidaciones para delivery y comercios afiliados.",
   manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "Delivery Panel",
+  },
   icons: {
     icon: "/icon-192.svg",
-    apple: "/icon-192.svg",
+    apple: "/apple-touch-icon.png",
   },
 };
 
