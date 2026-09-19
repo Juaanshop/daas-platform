@@ -45,14 +45,14 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-950 flex items-center justify-center p-4">
-      <div className="w-full max-w-md bg-slate-800/90 border border-slate-700/80 rounded-2xl p-8 shadow-2xl backdrop-blur-sm">
+    <div className="min-h-screen bg-[#080808] flex items-center justify-center p-4">
+      <div className="w-full max-w-md bg-[#101010] border border-[#282828] rounded-2xl p-8 shadow-2xl backdrop-blur-sm">
         <div className="flex flex-col items-center text-center mb-8">
-          <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-amber-500 to-orange-400 flex items-center justify-center shadow-lg shadow-orange-500/20 mb-4">
-            <Bike className="w-9 h-9 text-slate-950" />
+          <div className="w-16 h-16 rounded-2xl bg-[#BBEB42] flex items-center justify-center shadow-lg shadow-[#BBEB42]/20 mb-4">
+            <Bike className="w-9 h-9 text-[#080808]" />
           </div>
           <h1 className="text-2xl font-bold text-white tracking-tight">Panel del Repartidor</h1>
-          <p className="text-sm text-slate-400 mt-1">
+          <p className="text-sm text-[#888888] mt-1">
             Acceso exclusivo para gestión de comercios afiliados y pedidos
           </p>
         </div>
@@ -66,35 +66,35 @@ export default function LoginPage() {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
+            <label className="block text-xs font-semibold text-[#D1D1D1] uppercase tracking-wider mb-2">
               Correo Electrónico
             </label>
             <div className="relative">
-              <Mail className="absolute left-3.5 top-3.5 w-5 h-5 text-slate-400" />
+              <Mail className="absolute left-3.5 top-3.5 w-5 h-5 text-[#888888]" />
               <input
                 type="email"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="ejemplo@delivery.com"
-                className="w-full bg-slate-900/80 border border-slate-700 rounded-xl pl-11 pr-4 py-3 text-white text-base sm:text-sm placeholder:text-slate-500 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all"
+                className="w-full bg-[#191919] border border-[#282828] rounded-xl pl-11 pr-4 py-3 text-white text-base sm:text-sm placeholder:text-[#5D5D5D] focus:outline-none focus:border-[#BBEB42] focus:ring-1 focus:ring-[#BBEB42] transition-all"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
+            <label className="block text-xs font-semibold text-[#D1D1D1] uppercase tracking-wider mb-2">
               Contraseña
             </label>
             <div className="relative">
-              <Lock className="absolute left-3.5 top-3.5 w-5 h-5 text-slate-400" />
+              <Lock className="absolute left-3.5 top-3.5 w-5 h-5 text-[#888888]" />
               <input
                 type="password"
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full bg-slate-900/80 border border-slate-700 rounded-xl pl-11 pr-4 py-3 text-white text-base sm:text-sm placeholder:text-slate-500 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all"
+                className="w-full bg-[#191919] border border-[#282828] rounded-xl pl-11 pr-4 py-3 text-white text-base sm:text-sm placeholder:text-[#5D5D5D] focus:outline-none focus:border-[#BBEB42] focus:ring-1 focus:ring-[#BBEB42] transition-all"
               />
             </div>
           </div>
@@ -102,10 +102,10 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full mt-2 min-h-[50px] bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-black py-3.5 px-4 rounded-xl transition-all shadow-lg shadow-orange-500/20 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer active:scale-95"
+            className="w-full mt-2 min-h-[50px] bg-[#BBEB42] hover:bg-[#CDF561] text-[#080808] font-black py-3.5 px-4 rounded-xl transition-all shadow-lg shadow-[#BBEB42]/15 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer active:scale-95"
           >
             {loading ? (
-              <span className="inline-block w-5 h-5 border-2 border-slate-950 border-t-transparent rounded-full animate-spin" />
+              <span className="inline-block w-5 h-5 border-2 border-[#080808] border-t-transparent rounded-full animate-spin" />
             ) : (
               <>
                 <span>Ingresar al Panel</span>
@@ -115,12 +115,12 @@ export default function LoginPage() {
           </button>
         </form>
 
-        <div className="mt-8 pt-6 border-t border-slate-700/60 text-center">
-          <p className="text-xs text-slate-400 mb-3">¿Probando el sistema por primera vez?</p>
+        <div className="mt-8 pt-6 border-t border-[#282828] text-center">
+          <p className="text-xs text-[#888888] mb-3">¿Probando el sistema por primera vez?</p>
           <button
             type="button"
             onClick={handleFillDemo}
-            className="text-xs font-semibold text-amber-400 hover:text-amber-300 flex items-center justify-center gap-1.5 mx-auto py-1 px-3 rounded-lg bg-amber-500/10 border border-amber-500/20 hover:bg-amber-500/20 transition-all cursor-pointer"
+            className="text-xs font-bold text-[#BBEB42] hover:text-[#CDF561] flex items-center justify-center gap-1.5 mx-auto py-1.5 px-3 rounded-lg bg-[#BBEB42]/10 border border-[#BBEB42]/25 hover:bg-[#BBEB42]/20 transition-all cursor-pointer"
           >
             <CheckCircle2 className="w-3.5 h-3.5" />
             Cargar credenciales de prueba (delivery@daas.com)

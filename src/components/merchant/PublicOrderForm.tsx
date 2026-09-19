@@ -405,32 +405,32 @@ export default function PublicOrderForm({ merchant }: { merchant: MerchantData }
   // VISTA DE ÉXITO CON BOTÓN WHATSAPP
   if (orderCreated) {
     return (
-      <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 text-center space-y-5 shadow-2xl animate-in fade-in zoom-in duration-200">
-        <div className="w-14 h-14 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto">
+      <div className="bg-[#101010] border border-[#282828] rounded-2xl p-6 text-center space-y-5 shadow-2xl animate-in fade-in zoom-in duration-200">
+        <div className="w-14 h-14 rounded-full bg-[#BBEB42]/10 border border-[#BBEB42]/25 text-[#BBEB42] flex items-center justify-center mx-auto">
           <CheckCircle2 className="w-8 h-8" />
         </div>
 
         <div>
-          <span className="text-[11px] uppercase tracking-wider text-emerald-400 font-bold bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-emerald-500/20">
+          <span className="text-[11px] uppercase tracking-wider text-[#BBEB42] font-bold bg-[#BBEB42]/10 px-2.5 py-0.5 rounded-full border border-[#BBEB42]/25">
             ¡Solicitud Registrada!
           </span>
           <h2 className="text-xl font-black text-white mt-2">
             Orden {orderCreated.orderNumber}
           </h2>
-          <p className="text-xs text-slate-400 mt-1 max-w-sm mx-auto">
+          <p className="text-xs text-[#888888] mt-1 max-w-sm mx-auto">
             El pedido ya está en el panel de tu repartidor{" "}
-            <strong className="text-slate-200">{merchant.deliveryUser?.name || "Delivery"}</strong>.
+            <strong className="text-white">{merchant.deliveryUser?.name || "Delivery"}</strong>.
           </p>
         </div>
 
-        <div className="bg-slate-950/60 border border-slate-800 rounded-xl p-3.5 max-w-sm mx-auto text-xs text-slate-300 space-y-1.5 text-left">
+        <div className="bg-[#191919] border border-[#282828] rounded-xl p-3.5 max-w-sm mx-auto text-xs text-[#D1D1D1] space-y-1.5 text-left">
           <div className="flex justify-between">
-            <span className="text-slate-500">Distancia:</span>
-            <span className="font-bold text-white">{orderCreated.distanceKm.toFixed(2)} km</span>
+            <span className="text-[#888888]">Distancia:</span>
+            <span className="font-bold text-white font-mono">{orderCreated.distanceKm.toFixed(2)} km</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-slate-500">Tarifa de Carrera:</span>
-            <span className="font-bold text-amber-400 text-sm">${orderCreated.totalCost.toFixed(2)}</span>
+            <span className="text-[#888888]">Tarifa de Carrera:</span>
+            <span className="font-bold text-[#BBEB42] text-sm font-mono">${orderCreated.totalCost.toFixed(2)}</span>
           </div>
         </div>
 
@@ -439,19 +439,19 @@ export default function PublicOrderForm({ merchant }: { merchant: MerchantData }
             href={orderCreated.whatsappUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3.5 px-4 rounded-xl shadow-lg shadow-emerald-600/20 flex items-center justify-center gap-2 transition-all cursor-pointer text-sm"
+            className="w-full bg-[#25D366] hover:bg-[#20ba5a] text-black font-black py-3.5 px-4 rounded-xl shadow-lg flex items-center justify-center gap-2 transition-all cursor-pointer text-sm active:scale-95"
           >
-            <MessageCircle className="w-5 h-5 fill-current" />
+            <MessageCircle className="w-5 h-5 fill-black" />
             <span>Abrir WhatsApp y Notificar al Repartidor</span>
           </a>
 
-          <p className="text-[10px] text-slate-500">
+          <p className="text-[10px] text-[#6D6D6D]">
             El repartidor ya puede ver el pedido en su panel aunque no envíes el chat.
           </p>
 
           <button
             onClick={handleResetForm}
-            className="w-full mt-3 bg-slate-800/80 hover:bg-slate-800 text-slate-300 font-semibold py-2 px-3 rounded-lg text-xs transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+            className="w-full mt-3 bg-[#191919] hover:bg-[#282828] text-[#D1D1D1] font-semibold py-2 px-3 rounded-lg text-xs transition-colors flex items-center justify-center gap-1.5 cursor-pointer border border-[#282828]"
           >
             <RotateCcw className="w-3.5 h-3.5" />
             <span>Crear otra solicitud</span>
@@ -464,17 +464,17 @@ export default function PublicOrderForm({ merchant }: { merchant: MerchantData }
   return (
     <div className="space-y-3.5">
       {/* Stepper Tabs */}
-      <div className="grid grid-cols-2 gap-2 bg-slate-900/60 p-1 rounded-xl border border-slate-800 text-xs">
+      <div className="grid grid-cols-2 gap-2 bg-[#101010] p-1 rounded-xl border border-[#282828] text-xs">
         <button
           type="button"
           onClick={() => setCurrentStep(1)}
           className={`flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg font-bold transition-all cursor-pointer ${
             currentStep === 1
-              ? "bg-amber-500 text-slate-950 shadow-sm"
-              : "text-slate-400 hover:text-white"
+              ? "bg-[#BBEB42] text-[#080808] font-black shadow-sm"
+              : "text-[#888888] hover:text-white"
           }`}
         >
-          <span className="w-4 h-4 rounded-full bg-slate-950/20 flex items-center justify-center text-[10px]">1</span>
+          <span className="w-4 h-4 rounded-full bg-[#080808]/20 flex items-center justify-center text-[10px]">1</span>
           <span>Obligatorio</span>
         </button>
 
@@ -489,11 +489,11 @@ export default function PublicOrderForm({ merchant }: { merchant: MerchantData }
           }}
           className={`flex items-center justify-center gap-1.5 py-2 px-3 rounded-lg font-bold transition-all cursor-pointer ${
             currentStep === 2
-              ? "bg-amber-500 text-slate-950 shadow-sm"
-              : "text-slate-400 hover:text-white"
+              ? "bg-[#BBEB42] text-[#080808] font-black shadow-sm"
+              : "text-[#888888] hover:text-white"
           }`}
         >
-          <span className="w-4 h-4 rounded-full bg-slate-950/20 flex items-center justify-center text-[10px]">2</span>
+          <span className="w-4 h-4 rounded-full bg-[#080808]/20 flex items-center justify-center text-[10px]">2</span>
           <span>Opciones & Confirmar</span>
         </button>
       </div>
@@ -510,11 +510,11 @@ export default function PublicOrderForm({ merchant }: { merchant: MerchantData }
       {/* ========================================================= */}
       {currentStep === 1 && (
         <div className="space-y-3.5 animate-in fade-in duration-150">
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-5 space-y-3 shadow-md">
+          <div className="bg-[#101010] border border-[#282828] rounded-2xl p-4 sm:p-5 space-y-3 shadow-md">
             {/* 1. Descripción */}
             <div>
-              <label className="block text-[11px] font-semibold text-slate-300 uppercase tracking-wider mb-1">
-                ¿Qué vas a enviar? <span className="text-amber-400">*</span>
+              <label className="block text-[11px] font-semibold text-[#D1D1D1] uppercase tracking-wider mb-1">
+                ¿Qué vas a enviar? <span className="text-[#BBEB42]">*</span>
               </label>
               <input
                 type="text"
@@ -522,49 +522,49 @@ export default function PublicOrderForm({ merchant }: { merchant: MerchantData }
                 value={packageDescription}
                 onChange={(e) => setPackageDescription(e.target.value)}
                 placeholder="Ej. 2 hamburguesas, 1 refresco..."
-                className="w-full bg-slate-950 border border-slate-700/80 rounded-xl px-3.5 py-2.5 text-white text-base sm:text-xs placeholder:text-slate-500 focus:outline-none focus:border-amber-500"
+                className="w-full bg-[#191919] border border-[#282828] rounded-xl px-3.5 py-2.5 text-white text-base sm:text-xs placeholder:text-[#5D5D5D] focus:outline-none focus:border-[#BBEB42]"
               />
             </div>
 
             {/* 2. Quien recibe & Teléfono con selector de operadora */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
-                <label className="block text-[11px] font-semibold text-slate-300 uppercase tracking-wider mb-1">
-                  Nombre Destinatario <span className="text-amber-400">*</span>
+                <label className="block text-[11px] font-semibold text-[#D1D1D1] uppercase tracking-wider mb-1">
+                  Nombre Destinatario <span className="text-[#BBEB42]">*</span>
                 </label>
                 <div className="relative">
-                  <User className="absolute left-3 top-3 w-4 h-4 text-slate-500" />
+                  <User className="absolute left-3 top-3 w-4 h-4 text-[#888888]" />
                   <input
                     type="text"
                     required
                     value={recipientName}
                     onChange={(e) => setRecipientName(e.target.value)}
                     placeholder="Ej. Roberto Sánchez"
-                    className="w-full bg-slate-950 border border-slate-700/80 rounded-xl pl-9 pr-3 py-2.5 text-white text-base sm:text-xs placeholder:text-slate-500 focus:outline-none focus:border-amber-500"
+                    className="w-full bg-[#191919] border border-[#282828] rounded-xl pl-9 pr-3 py-2.5 text-white text-base sm:text-xs placeholder:text-[#5D5D5D] focus:outline-none focus:border-[#BBEB42]"
                   />
                 </div>
               </div>
 
               {/* Teléfono Móvil Accesible */}
               <div>
-                <label className="block text-[11px] font-semibold text-slate-300 uppercase tracking-wider mb-1">
-                  Teléfono Celular (WhatsApp) <span className="text-amber-400">*</span>
+                <label className="block text-[11px] font-semibold text-[#D1D1D1] uppercase tracking-wider mb-1">
+                  Teléfono Celular (WhatsApp) <span className="text-[#BBEB42]">*</span>
                 </label>
                 <div className="flex gap-1.5">
                   <select
                     value={phoneOperator}
                     onChange={(e) => setPhoneOperator(e.target.value)}
-                    className="bg-slate-950 border border-slate-700/80 rounded-xl px-2 py-2.5 text-white text-base sm:text-xs font-semibold focus:outline-none focus:border-amber-500 cursor-pointer flex-shrink-0"
+                    className="bg-[#191919] border border-[#282828] rounded-xl px-2 py-2.5 text-white text-base sm:text-xs font-semibold focus:outline-none focus:border-[#BBEB42] cursor-pointer flex-shrink-0"
                   >
                     {PHONE_OPERATORS.map((op) => (
-                      <option key={op.prefix} value={op.prefix} className="bg-slate-900 text-white">
+                      <option key={op.prefix} value={op.prefix} className="bg-[#101010] text-white">
                         {op.label}
                       </option>
                     ))}
                   </select>
 
                   <div className="relative flex-1">
-                    <Phone className="absolute left-2.5 top-3 w-3.5 h-3.5 text-slate-500" />
+                    <Phone className="absolute left-2.5 top-3 w-3.5 h-3.5 text-[#888888]" />
                     <input
                       type="tel"
                       inputMode="numeric"
@@ -574,13 +574,13 @@ export default function PublicOrderForm({ merchant }: { merchant: MerchantData }
                       onChange={(e) => handlePhoneChange(e.target.value)}
                       placeholder={phoneOperator === "OTHER" ? "+584121234567" : "8589530"}
                       maxLength={phoneOperator === "OTHER" ? 16 : 8}
-                      className="w-full bg-slate-950 border border-slate-700/80 rounded-xl pl-8 pr-3 py-2.5 text-white text-base sm:text-xs font-mono placeholder:text-slate-500 focus:outline-none focus:border-amber-500 tracking-wide"
+                      className="w-full bg-[#191919] border border-[#282828] rounded-xl pl-8 pr-3 py-2.5 text-white text-base sm:text-xs font-mono placeholder:text-[#5D5D5D] focus:outline-none focus:border-[#BBEB42] tracking-wide"
                     />
                   </div>
                 </div>
-                <div className="text-[10px] text-slate-500 mt-1 pl-1">
+                <div className="text-[10px] text-[#888888] mt-1 pl-1">
                   {phoneOperator !== "OTHER" && phoneSubscriber ? (
-                    <span className="text-amber-400/90 font-mono">
+                    <span className="text-[#BBEB42] font-mono font-semibold">
                       Número: +58 {phoneOperator.replace(/^0/, "")} {phoneSubscriber}
                     </span>
                   ) : (
@@ -591,20 +591,20 @@ export default function PublicOrderForm({ merchant }: { merchant: MerchantData }
             </div>
 
             {/* 3. Punto de Entrega */}
-            <div className="pt-2 border-t border-slate-800/80 space-y-2.5">
+            <div className="pt-2 border-t border-[#282828] space-y-2.5">
               <div className="flex items-center justify-between">
-                <label className="block text-[11px] font-semibold text-slate-300 uppercase tracking-wider">
-                  Punto de Entrega <span className="text-amber-400">*</span>
+                <label className="block text-[11px] font-semibold text-[#D1D1D1] uppercase tracking-wider">
+                  Punto de Entrega <span className="text-[#BBEB42]">*</span>
                 </label>
 
-                <div className="flex bg-slate-950 p-0.5 rounded-lg border border-slate-800 text-[10px]">
+                <div className="flex bg-[#191919] p-0.5 rounded-lg border border-[#282828] text-[10px]">
                   <button
                     type="button"
                     onClick={() => setDestinationMode("paste")}
                     className={`px-2.5 py-1 rounded-md font-semibold transition-colors cursor-pointer ${
                       destinationMode === "paste"
-                        ? "bg-amber-500 text-slate-950"
-                        : "text-slate-400 hover:text-white"
+                        ? "bg-[#BBEB42] text-[#080808] font-black"
+                        : "text-[#888888] hover:text-white"
                     }`}
                   >
                     Pegar Enlace
@@ -614,8 +614,8 @@ export default function PublicOrderForm({ merchant }: { merchant: MerchantData }
                     onClick={() => setDestinationMode("manual")}
                     className={`px-2.5 py-1 rounded-md font-semibold transition-colors cursor-pointer ${
                       destinationMode === "manual"
-                        ? "bg-amber-500 text-slate-950"
-                        : "text-slate-400 hover:text-white"
+                        ? "bg-[#BBEB42] text-[#080808] font-black"
+                        : "text-[#888888] hover:text-white"
                     }`}
                   >
                     Zonas Rápidas
@@ -627,7 +627,7 @@ export default function PublicOrderForm({ merchant }: { merchant: MerchantData }
                 <div className="space-y-2">
                   <div className="flex gap-2">
                     <div className="relative flex-1">
-                      <LinkIcon className="absolute left-3 top-3 w-3.5 h-3.5 text-slate-500" />
+                      <LinkIcon className="absolute left-3 top-3 w-3.5 h-3.5 text-[#888888]" />
                       <input
                         type="text"
                         value={pastedUrl}
@@ -648,22 +648,22 @@ export default function PublicOrderForm({ merchant }: { merchant: MerchantData }
                           }
                         }}
                         placeholder="Pega link de Google Maps o WhatsApp..."
-                        className="w-full bg-slate-950 border border-slate-700/80 rounded-xl pl-8 pr-3 py-2.5 text-white text-base sm:text-xs placeholder:text-slate-500 focus:outline-none focus:border-amber-500"
+                        className="w-full bg-[#191919] border border-[#282828] rounded-xl pl-8 pr-3 py-2.5 text-white text-base sm:text-xs placeholder:text-[#5D5D5D] focus:outline-none focus:border-[#BBEB42]"
                       />
                     </div>
                     <button
                       type="button"
                       onClick={pastedUrl.trim() ? () => handleResolveLink(pastedUrl, false) : handlePasteFromClipboard}
-                      className="bg-amber-500 hover:bg-amber-400 active:scale-95 text-slate-950 font-bold px-3.5 py-2.5 rounded-xl text-xs flex items-center gap-1.5 cursor-pointer shrink-0 transition-all shadow-md shadow-amber-500/10"
+                      className="bg-[#BBEB42] hover:bg-[#CDF561] active:scale-95 text-[#080808] font-black px-3.5 py-2.5 rounded-xl text-xs flex items-center gap-1.5 cursor-pointer shrink-0 transition-all shadow-md shadow-[#BBEB42]/15"
                     >
                       {resolvingLink ? (
                         <>
-                          <span className="w-3.5 h-3.5 border-2 border-slate-950 border-t-transparent rounded-full animate-spin" />
+                          <span className="w-3.5 h-3.5 border-2 border-[#080808] border-t-transparent rounded-full animate-spin" />
                           <span>Detectando...</span>
                         </>
                       ) : pastedUrl.trim() ? (
                         <>
-                          <Navigation className="w-3.5 h-3.5 fill-slate-950/20" />
+                          <Navigation className="w-3.5 h-3.5 fill-[#080808]/20" />
                           <span>Detectar</span>
                         </>
                       ) : (
@@ -675,13 +675,13 @@ export default function PublicOrderForm({ merchant }: { merchant: MerchantData }
                     </button>
                   </div>
 
-                  <div className="flex items-center justify-between text-[10px] text-slate-500 px-1">
+                  <div className="flex items-center justify-between text-[10px] text-[#6D6D6D] px-1">
                     <span>Soporta links de Maps, Plus Codes y WhatsApp</span>
                     {!pastedUrl && (
                       <button
                         type="button"
                         onClick={handlePasteFromClipboard}
-                        className="text-amber-400 hover:underline flex items-center gap-1 font-medium cursor-pointer"
+                        className="text-[#BBEB42] hover:underline flex items-center gap-1 font-semibold cursor-pointer"
                       >
                         <Sparkles className="w-3 h-3" />
                         <span>Pegar desde portapapeles</span>
@@ -690,14 +690,14 @@ export default function PublicOrderForm({ merchant }: { merchant: MerchantData }
                   </div>
 
                   {resolvingLink && (
-                    <div className="text-[11px] text-amber-400 flex items-center gap-1.5 pl-1 animate-pulse">
-                      <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping" />
+                    <div className="text-[11px] text-[#BBEB42] flex items-center gap-1.5 pl-1 animate-pulse">
+                      <span className="w-2 h-2 rounded-full bg-[#BBEB42] animate-ping" />
                       <span>Procesando enlace y extrayendo ubicación...</span>
                     </div>
                   )}
 
                   {dropoffLat && dropoffLng && (
-                    <div className="text-[11px] text-emerald-400 flex items-start gap-1.5 pl-1 bg-emerald-500/10 border border-emerald-500/20 p-2 rounded-lg">
+                    <div className="text-[11px] text-[#BBEB42] flex items-start gap-1.5 pl-1 bg-[#BBEB42]/10 border border-[#BBEB42]/25 p-2 rounded-lg">
                       <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0 mt-0.5" />
                       <span className="line-clamp-2">
                         {resolvedPlaceName
@@ -716,8 +716,8 @@ export default function PublicOrderForm({ merchant }: { merchant: MerchantData }
                       onClick={() => handleSelectPreset(preset)}
                       className={`p-2 rounded-lg border text-left text-[11px] transition-all cursor-pointer ${
                         dropoffLat === preset.lat && dropoffLng === preset.lng
-                          ? "bg-amber-500/10 border-amber-500 text-amber-400 font-semibold"
-                          : "bg-slate-950/40 border-slate-800 text-slate-300 hover:border-slate-700"
+                          ? "bg-[#BBEB42]/10 border-[#BBEB42] text-[#BBEB42] font-bold"
+                          : "bg-[#191919] border-[#282828] text-[#D1D1D1] hover:border-[#454545]"
                       }`}
                     >
                       <div className="truncate">{preset.name}</div>
@@ -727,8 +727,8 @@ export default function PublicOrderForm({ merchant }: { merchant: MerchantData }
               )}
 
               <div>
-                <label className="block text-[10px] text-slate-400 uppercase mb-1">
-                  Dirección o Referencia Específica <span className="text-amber-400">*</span>
+                <label className="block text-[10px] text-[#888888] uppercase mb-1">
+                  Dirección o Referencia Específica <span className="text-[#BBEB42]">*</span>
                 </label>
                 <input
                   type="text"
@@ -736,14 +736,14 @@ export default function PublicOrderForm({ merchant }: { merchant: MerchantData }
                   value={dropoffAddress}
                   onChange={(e) => setDropoffAddress(e.target.value)}
                   placeholder="Ej. Res. Puerta Real 1, Apto 4-B, Naguanagua"
-                  className="w-full bg-slate-950 border border-slate-700/80 rounded-xl px-3.5 py-2.5 text-white text-base sm:text-xs placeholder:text-slate-500 focus:outline-none focus:border-amber-500"
+                  className="w-full bg-[#191919] border border-[#282828] rounded-xl px-3.5 py-2.5 text-white text-base sm:text-xs placeholder:text-[#5D5D5D] focus:outline-none focus:border-[#BBEB42]"
                 />
               </div>
 
               {/* Cotización en vivo */}
               {calculatingQuote ? (
-                <div className="p-3 bg-slate-950 border border-slate-800 rounded-xl flex items-center justify-center gap-2 text-xs text-slate-400">
-                  <div className="w-3.5 h-3.5 border-2 border-amber-400 border-t-transparent rounded-full animate-spin" />
+                <div className="p-3 bg-[#191919] border border-[#282828] rounded-xl flex items-center justify-center gap-2 text-xs text-[#888888]">
+                  <div className="w-3.5 h-3.5 border-2 border-[#BBEB42] border-t-transparent rounded-full animate-spin" />
                   <span>Calculando tarifa...</span>
                 </div>
               ) : quoteError ? (
@@ -752,13 +752,13 @@ export default function PublicOrderForm({ merchant }: { merchant: MerchantData }
                   <span>{quoteError}</span>
                 </div>
               ) : quote && isCovered ? (
-                <div className="p-3 bg-slate-950/80 border border-amber-500/30 rounded-xl flex items-center justify-between">
+                <div className="p-3 bg-[#191919] border border-[#BBEB42]/30 rounded-xl flex items-center justify-between">
                   <div className="space-y-0.5">
-                    <span className="text-[10px] uppercase tracking-wider text-slate-400">Tarifa Estimada</span>
-                    <div className="text-lg font-black text-amber-400">${quote.totalCost.toFixed(2)}</div>
+                    <span className="text-[10px] uppercase tracking-wider text-[#888888]">Tarifa Estimada</span>
+                    <div className="text-lg font-black text-[#BBEB42] font-mono">${quote.totalCost.toFixed(2)}</div>
                   </div>
 
-                  <div className="text-right text-[11px] text-slate-300 space-y-0.5">
+                  <div className="text-right text-[11px] text-[#D1D1D1] space-y-0.5">
                     <div>📏 {quote.distanceKm.toFixed(2)} km</div>
                     <div>⏱️ ~{quote.estimatedMinutes} min</div>
                   </div>
@@ -771,7 +771,7 @@ export default function PublicOrderForm({ merchant }: { merchant: MerchantData }
           <button
             type="button"
             onClick={handleProceedToStep2}
-            className="w-full min-h-[48px] bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 active:scale-[0.99] text-slate-950 font-extrabold py-3.5 px-4 rounded-xl transition-all shadow-lg shadow-orange-500/10 flex items-center justify-center gap-2 text-sm cursor-pointer"
+            className="w-full min-h-[48px] bg-[#BBEB42] hover:bg-[#CDF561] active:scale-[0.99] text-[#080808] font-black py-3.5 px-4 rounded-xl transition-all shadow-lg shadow-[#BBEB42]/15 flex items-center justify-center gap-2 text-sm cursor-pointer"
           >
             <span>Siguiente: Opciones y Confirmar</span>
             <ArrowRight className="w-4 h-4" />
@@ -785,13 +785,13 @@ export default function PublicOrderForm({ merchant }: { merchant: MerchantData }
       {currentStep === 2 && (
         <div className="space-y-3.5 animate-in fade-in duration-150">
           {/* Resumen Compacto del Paso 1 */}
-          <div className="bg-slate-900/80 border border-slate-800 rounded-xl p-3 text-xs text-slate-300 flex items-center justify-between">
+          <div className="bg-[#191919] border border-[#282828] rounded-xl p-3 text-xs text-[#D1D1D1] flex items-center justify-between">
             <div className="space-y-0.5 min-w-0 pr-2">
               <div className="font-bold text-white truncate">{packageDescription}</div>
-              <div className="text-slate-400 text-[11px] truncate">
+              <div className="text-[#888888] text-[11px] truncate">
                 Recibe: {recipientName} ({getFullRecipientPhone()})
               </div>
-              <div className="text-slate-400 text-[11px] truncate">
+              <div className="text-[#888888] text-[11px] truncate">
                 Destino: {dropoffAddress}
               </div>
             </div>
@@ -799,20 +799,20 @@ export default function PublicOrderForm({ merchant }: { merchant: MerchantData }
             <button
               type="button"
               onClick={() => setCurrentStep(1)}
-              className="text-[11px] text-amber-400 hover:underline flex-shrink-0 font-semibold cursor-pointer"
+              className="text-[11px] text-[#BBEB42] hover:underline flex-shrink-0 font-bold cursor-pointer"
             >
               Editar
             </button>
           </div>
 
           {/* Campos Opcionales */}
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-5 space-y-3.5 shadow-md">
-            <div className="flex items-center justify-between border-b border-slate-800/80 pb-2">
+          <div className="bg-[#101010] border border-[#282828] rounded-2xl p-4 sm:p-5 space-y-3.5 shadow-md">
+            <div className="flex items-center justify-between border-b border-[#282828] pb-2">
               <span className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
-                <Layers className="w-4 h-4 text-amber-400" />
+                <Layers className="w-4 h-4 text-[#BBEB42]" />
                 <span>Detalles Opcionales</span>
               </span>
-              <span className="text-[10px] text-slate-400 bg-slate-800 px-2 py-0.5 rounded-md">
+              <span className="text-[10px] text-[#888888] bg-[#191919] px-2 py-0.5 rounded-md border border-[#282828]">
                 Paso 2 de 2
               </span>
             </div>
@@ -820,10 +820,10 @@ export default function PublicOrderForm({ merchant }: { merchant: MerchantData }
             {/* Tamaño del Paquete (Opcional) */}
             <div>
               <div className="flex items-center justify-between mb-1.5">
-                <label className="block text-[11px] font-semibold text-slate-300 uppercase tracking-wider">
+                <label className="block text-[11px] font-semibold text-[#D1D1D1] uppercase tracking-wider">
                   Tamaño del Paquete
                 </label>
-                <span className="text-[10px] text-slate-500">Opcional (por defecto: Mediano)</span>
+                <span className="text-[10px] text-[#6D6D6D]">Opcional (por defecto: Mediano)</span>
               </div>
 
               <div className="grid grid-cols-3 gap-2">
@@ -838,12 +838,12 @@ export default function PublicOrderForm({ merchant }: { merchant: MerchantData }
                     onClick={() => setPackageSize(size.id as any)}
                     className={`p-2 rounded-xl border text-center transition-all cursor-pointer ${
                       packageSize === size.id
-                        ? "bg-amber-500/10 border-amber-500 text-amber-400 font-bold"
-                        : "bg-slate-950/40 border-slate-800 text-slate-400 hover:border-slate-700"
+                        ? "bg-[#BBEB42]/10 border-[#BBEB42] text-[#BBEB42] font-bold"
+                        : "bg-[#191919] border-[#282828] text-[#888888] hover:border-[#454545]"
                     }`}
                   >
                     <div className="text-xs text-white">{size.label}</div>
-                    <div className="text-[10px] text-slate-500 mt-0.5">{size.desc}</div>
+                    <div className="text-[10px] text-[#6D6D6D] mt-0.5">{size.desc}</div>
                   </button>
                 ))}
               </div>
@@ -852,28 +852,28 @@ export default function PublicOrderForm({ merchant }: { merchant: MerchantData }
             {/* Notas Especiales (Opcional) */}
             <div>
               <div className="flex items-center justify-between mb-1">
-                <label className="block text-[11px] font-semibold text-slate-300 uppercase tracking-wider">
+                <label className="block text-[11px] font-semibold text-[#D1D1D1] uppercase tracking-wider">
                   Instrucciones o Notas Especiales
                 </label>
-                <span className="text-[10px] text-slate-500">Opcional</span>
+                <span className="text-[10px] text-[#6D6D6D]">Opcional</span>
               </div>
               <input
                 type="text"
                 value={packageNotes}
                 onChange={(e) => setPackageNotes(e.target.value)}
                 placeholder="Ej. Tocar timbre 3B, llevar vuelto de $20"
-                className="w-full bg-slate-950 border border-slate-700/80 rounded-xl px-3.5 py-2.5 text-white text-base sm:text-xs placeholder:text-slate-500 focus:outline-none focus:border-amber-500"
+                className="w-full bg-[#191919] border border-[#282828] rounded-xl px-3.5 py-2.5 text-white text-base sm:text-xs placeholder:text-[#5D5D5D] focus:outline-none focus:border-[#BBEB42]"
               />
             </div>
 
             {/* Caja de Tarifa Final */}
             {quote && (
-              <div className="p-3.5 bg-slate-950 border border-amber-500/30 rounded-xl flex items-center justify-between">
+              <div className="p-3.5 bg-[#191919] border border-[#BBEB42]/30 rounded-xl flex items-center justify-between">
                 <div>
-                  <span className="text-[10px] text-slate-400 uppercase">Tarifa Total del Despacho</span>
-                  <div className="text-xl font-black text-amber-400">${quote.totalCost.toFixed(2)}</div>
+                  <span className="text-[10px] text-[#888888] uppercase">Tarifa Total del Despacho</span>
+                  <div className="text-xl font-black text-[#BBEB42] font-mono">${quote.totalCost.toFixed(2)}</div>
                 </div>
-                <div className="text-right text-xs text-slate-400">
+                <div className="text-right text-xs text-[#888888]">
                   <span>{quote.distanceKm.toFixed(2)} km</span> · <span>~{quote.estimatedMinutes} min</span>
                 </div>
               </div>
@@ -886,10 +886,10 @@ export default function PublicOrderForm({ merchant }: { merchant: MerchantData }
               type="button"
               onClick={() => handleSubmitOrder()}
               disabled={submitting || !quote}
-              className="w-full min-h-[50px] bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-black py-3.5 px-4 rounded-xl transition-all shadow-xl shadow-orange-500/20 flex items-center justify-center gap-2 text-sm disabled:opacity-40 cursor-pointer active:scale-95"
+              className="w-full min-h-[50px] bg-[#BBEB42] hover:bg-[#CDF561] text-[#080808] font-black py-3.5 px-4 rounded-xl transition-all shadow-xl shadow-[#BBEB42]/20 flex items-center justify-center gap-2 text-sm disabled:opacity-40 cursor-pointer active:scale-95"
             >
               {submitting ? (
-                <span className="w-4 h-4 border-2 border-slate-950 border-t-transparent rounded-full animate-spin" />
+                <span className="w-4 h-4 border-2 border-[#080808] border-t-transparent rounded-full animate-spin" />
               ) : (
                 <>
                   <Sparkles className="w-4 h-4" />
@@ -901,7 +901,7 @@ export default function PublicOrderForm({ merchant }: { merchant: MerchantData }
             <button
               type="button"
               onClick={() => setCurrentStep(1)}
-              className="w-full py-2 px-4 text-xs font-semibold text-slate-400 hover:text-white transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+              className="w-full py-2 px-4 text-xs font-semibold text-[#888888] hover:text-white transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
               <span>Volver al Paso 1</span>

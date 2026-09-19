@@ -4,7 +4,7 @@ import { Footer } from "@/components/shared/Footer";
 import "./globals.css";
 
 export const viewport: Viewport = {
-  themeColor: "#090d16",
+  themeColor: "#080808",
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
@@ -34,7 +34,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es" className="dark h-full antialiased">
-      <body className="min-h-full flex flex-col bg-[#090d16] text-slate-100 selection:bg-amber-500/30 selection:text-amber-300">
+      <body className="min-h-full flex flex-col bg-[#080808] text-[#F6F6F6] selection:bg-[#BBEB42]/30 selection:text-[#BBEB42]">
         <Navbar />
         <main className="w-full flex-1 flex flex-col">
           {children}

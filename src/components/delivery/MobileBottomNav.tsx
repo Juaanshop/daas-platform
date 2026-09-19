@@ -74,7 +74,7 @@ export function MobileBottomNav() {
   return (
     <nav
       aria-label="Navegación Móvil Principal"
-      className="fixed bottom-0 inset-x-0 z-50 md:hidden bg-slate-950/95 backdrop-blur-xl border-t border-slate-800/90 pb-[env(safe-area-inset-bottom,0px)] shadow-[0_-8px_24px_rgba(0,0,0,0.6)]"
+      className="fixed bottom-0 inset-x-0 z-50 md:hidden bg-[#101010]/95 backdrop-blur-xl border-t border-[#282828] pb-[env(safe-area-inset-bottom,0px)] shadow-[0_-8px_24px_rgba(0,0,0,0.8)]"
     >
       <div className="grid grid-cols-4 h-16 max-w-lg mx-auto px-2">
         {navItems.map((item) => {
@@ -91,25 +91,25 @@ export function MobileBottomNav() {
               onClick={handleTouch}
               className={`relative flex flex-col items-center justify-center gap-1 transition-all select-none touch-manipulation cursor-pointer ${
                 isActive
-                  ? "text-amber-400 font-bold"
-                  : "text-slate-400 hover:text-slate-200"
+                  ? "text-[#BBEB42] font-bold"
+                  : "text-[#888888] hover:text-[#E7E7E7]"
               }`}
             >
               {/* Active Indicator Top Light Bar */}
               {isActive && (
-                <span className="absolute top-0 inset-x-5 h-0.5 bg-gradient-to-r from-amber-400 to-orange-400 rounded-full shadow-[0_0_8px_rgba(251,191,36,0.8)]" />
+                <span className="absolute top-0 inset-x-5 h-0.5 bg-[#BBEB42] rounded-full shadow-[0_0_10px_rgba(187,235,66,0.8)]" />
               )}
 
               <div className="relative">
                 <Icon
                   className={`w-5 h-5 transition-transform ${
-                    isActive ? "scale-110 text-amber-400" : "text-slate-400"
+                    isActive ? "scale-110 text-[#BBEB42]" : "text-[#888888]"
                   }`}
                 />
 
                 {/* Badge de Despachos Activos */}
                 {item.badge !== null && item.badge !== undefined && (
-                  <span className="absolute -top-1.5 -right-2.5 min-w-[18px] h-[18px] px-1 bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 font-black text-[10px] rounded-full flex items-center justify-center shadow-md animate-pulse">
+                  <span className="absolute -top-1.5 -right-2.5 min-w-[18px] h-[18px] px-1 bg-[#BBEB42] text-[#080808] font-black text-[10px] rounded-full flex items-center justify-center shadow-md shadow-[#BBEB42]/30 animate-pulse">
                     {item.badge}
                   </span>
                 )}
@@ -117,7 +117,7 @@ export function MobileBottomNav() {
 
               <span
                 className={`text-[11px] tracking-tight ${
-                  isActive ? "text-white font-bold" : "font-medium"
+                  isActive ? "text-white font-bold" : "text-[#888888] font-medium"
                 }`}
               >
                 {item.label}

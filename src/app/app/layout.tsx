@@ -16,27 +16,27 @@ export default async function AppLayout({
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col selection:bg-amber-500/30 selection:text-amber-300">
+    <div className="min-h-screen bg-[#080808] text-[#F6F6F6] flex flex-col selection:bg-[#BBEB42]/30 selection:text-[#BBEB42]">
       {/* Top Navbar con protección Safe Area para notch/isla dinámica de iPhone */}
-      <header className="sticky top-0 z-40 bg-slate-950/95 backdrop-blur-xl border-b border-slate-800/80 px-3.5 sm:px-6 lg:px-8 pt-[calc(env(safe-area-inset-top,0px)+0.75rem)] pb-2.5 shadow-sm">
+      <header className="sticky top-0 z-40 bg-[#080808]/95 backdrop-blur-xl border-b border-[#282828] px-3.5 sm:px-6 lg:px-8 pt-[calc(env(safe-area-inset-top,0px)+0.75rem)] pb-2.5 shadow-sm">
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-2">
           {/* Brand & Driver Status */}
           <div className="flex items-center gap-2.5 min-w-0">
-            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-gradient-to-tr from-amber-500 to-orange-400 flex items-center justify-center text-slate-950 font-bold shadow-md shadow-orange-500/15 shrink-0">
-              <Bike className="w-4 h-4 sm:w-5 sm:h-5" />
+            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-[#BBEB42] flex items-center justify-center text-[#080808] font-black shadow-md shadow-[#BBEB42]/20 shrink-0">
+              <Bike className="w-4 h-4 sm:w-5 sm:h-5 stroke-[2.5]" />
             </div>
             <div className="min-w-0">
               <div className="flex items-center gap-1.5">
                 <span className="font-bold tracking-tight text-white block text-xs sm:text-sm truncate">
                   Panel Delivery
                 </span>
-                <span className="inline-flex items-center gap-1 text-[9px] font-semibold text-emerald-400 bg-emerald-500/10 px-1.5 py-0.5 rounded-full border border-emerald-500/20 shrink-0">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                <span className="inline-flex items-center gap-1 text-[9px] font-bold text-[#BBEB42] bg-[#BBEB42]/10 px-1.5 py-0.5 rounded-full border border-[#BBEB42]/25 shrink-0">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#BBEB42] animate-pulse" />
                   <span>En Línea</span>
                 </span>
               </div>
-              <span className="text-[11px] sm:text-xs text-amber-400/90 block font-medium truncate">
-                {user.name} &bull; {user.phone}
+              <span className="text-[11px] sm:text-xs text-[#B0B0B0] block font-medium truncate">
+                {user.name} &bull; <span className="text-[#BBEB42]/90">{user.phone}</span>
               </span>
             </div>
           </div>
@@ -45,7 +45,7 @@ export default async function AppLayout({
           <nav className="hidden md:flex items-center gap-2 lg:gap-3">
             <Link
               href="/app"
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-800 transition-all"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-[#A0A0A0] hover:text-white hover:bg-[#191919] hover:border hover:border-[#282828] transition-all"
             >
               <Package className="w-4 h-4" />
               <span>Resumen</span>
@@ -53,7 +53,7 @@ export default async function AppLayout({
 
             <Link
               href="/app/orders"
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-800 transition-all"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-[#A0A0A0] hover:text-white hover:bg-[#191919] hover:border hover:border-[#282828] transition-all"
             >
               <Bike className="w-4 h-4" />
               <span>Despachos</span>
@@ -61,7 +61,7 @@ export default async function AppLayout({
 
             <Link
               href="/app/merchants"
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-800 transition-all"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-[#A0A0A0] hover:text-white hover:bg-[#191919] hover:border hover:border-[#282828] transition-all"
             >
               <Store className="w-4 h-4" />
               <span>Comercios & Links</span>
@@ -69,9 +69,9 @@ export default async function AppLayout({
 
             <Link
               href="/app/settlements"
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-800 transition-all"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-[#A0A0A0] hover:text-white hover:bg-[#191919] hover:border hover:border-[#282828] transition-all"
             >
-              <DollarSign className="w-4 h-4 text-emerald-400" />
+              <DollarSign className="w-4 h-4 text-[#BBEB42]" />
               <span>Liquidación</span>
             </Link>
           </nav>

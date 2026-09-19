@@ -14,23 +14,23 @@ export function Badge({
   ...props
 }: BadgeProps) {
   const variantStyles = {
-    default: "bg-slate-800/80 text-slate-300 border-slate-700/60",
-    success: "bg-emerald-500/15 text-emerald-300 border-emerald-500/30",
-    warning: "bg-amber-500/15 text-amber-300 border-amber-500/30",
-    info: "bg-sky-500/15 text-sky-300 border-sky-500/30",
-    destructive: "bg-rose-500/15 text-rose-300 border-rose-500/30",
-    outline: "bg-transparent text-slate-300 border-white/20",
-    purple: "bg-indigo-500/15 text-indigo-300 border-indigo-500/30",
+    default: "bg-[#191919] text-[#D1D1D1] border-[#282828]",
+    success: "bg-emerald-500/15 text-emerald-400 border-emerald-500/30",
+    warning: "bg-[#BBEB42]/15 text-[#BBEB42] border-[#BBEB42]/30",
+    info: "bg-sky-500/15 text-sky-400 border-sky-500/30",
+    destructive: "bg-rose-500/15 text-rose-400 border-rose-500/30",
+    outline: "bg-transparent text-[#D1D1D1] border-[#282828]",
+    purple: "bg-[#BBEB42]/15 text-[#BBEB42] border-[#BBEB42]/30",
   };
 
   const pulseColors = {
-    default: "bg-slate-400",
+    default: "bg-[#888888]",
     success: "bg-emerald-400",
-    warning: "bg-amber-400",
+    warning: "bg-[#BBEB42]",
     info: "bg-sky-400",
     destructive: "bg-rose-400",
     outline: "bg-white",
-    purple: "bg-indigo-400",
+    purple: "bg-[#BBEB42]",
   };
 
   return (

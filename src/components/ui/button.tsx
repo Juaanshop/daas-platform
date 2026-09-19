@@ -26,21 +26,21 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     ref
   ) => {
     const baseStyles =
-      "relative inline-flex items-center justify-center font-medium rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-950 disabled:opacity-50 disabled:cursor-not-allowed select-none cursor-pointer";
+      "relative inline-flex items-center justify-center font-bold rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#080808] disabled:opacity-50 disabled:cursor-not-allowed select-none cursor-pointer";
 
     const variantStyles = {
       primary:
-        "bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 text-slate-950 font-bold shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/30 hover:brightness-105 focus:ring-emerald-400 border border-emerald-400/30",
+        "bg-[#BBEB42] hover:bg-[#CDF561] text-[#080808] font-black shadow-lg shadow-[#BBEB42]/15 hover:brightness-105 focus:ring-[#BBEB42] border border-[#BBEB42]/30",
       secondary:
-        "bg-slate-900/80 hover:bg-slate-800 text-slate-100 border border-white/10 hover:border-white/20 shadow-sm focus:ring-slate-400",
+        "bg-[#191919] hover:bg-[#282828] text-white border border-[#282828] hover:border-[#454545] shadow-sm focus:ring-[#282828]",
       outline:
-        "bg-transparent hover:bg-white/5 text-slate-200 border border-white/15 hover:border-white/30 focus:ring-emerald-400",
+        "bg-transparent hover:bg-[#191919] text-[#D1D1D1] hover:text-white border border-[#282828] hover:border-[#454545] focus:ring-[#BBEB42]",
       ghost:
-        "bg-transparent hover:bg-white/5 text-slate-300 hover:text-white focus:ring-slate-400",
+        "bg-transparent hover:bg-[#191919] text-[#888888] hover:text-white focus:ring-[#282828]",
       destructive:
         "bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/40 focus:ring-rose-400",
       cyber:
-        "bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/35 hover:brightness-110 focus:ring-cyan-400 border border-cyan-300/30",
+        "bg-gradient-to-r from-[#BBEB42] to-[#CDF561] text-[#080808] font-black shadow-lg shadow-[#BBEB42]/20 hover:brightness-105 focus:ring-[#BBEB42] border border-[#E3FB9B]",
     };
 
     const sizeStyles = {

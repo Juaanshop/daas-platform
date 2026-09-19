@@ -228,14 +228,14 @@ export default function MerchantsPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-white tracking-tight">Comercios Afiliados & Links</h1>
-          <p className="text-sm text-slate-400 mt-1">
+          <p className="text-sm text-[#888888] mt-1">
             Cada comercio cuenta con un enlace único. Cópialo y compárteselo por WhatsApp para que pidan sus carreras.
           </p>
         </div>
 
         <button
           onClick={handleOpenCreateModal}
-          className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-bold px-4 py-2.5 rounded-xl text-sm transition-all shadow-md shadow-orange-500/10 cursor-pointer"
+          className="inline-flex items-center justify-center gap-2 bg-[#BBEB42] hover:bg-[#CDF561] text-[#080808] font-black px-4 py-2.5 rounded-xl text-sm transition-all shadow-md shadow-[#BBEB42]/15 cursor-pointer active:scale-95"
         >
           <Plus className="w-4 h-4" />
           <span>Afiliar Nuevo Comercio</span>
@@ -243,7 +243,7 @@ export default function MerchantsPage() {
       </div>
 
       {actionFeedback && (
-        <div className="p-3 bg-emerald-500/10 border border-emerald-500/30 rounded-xl text-xs text-emerald-400 flex items-center gap-2 animate-in fade-in">
+        <div className="p-3 bg-[#BBEB42]/10 border border-[#BBEB42]/25 rounded-xl text-xs text-[#BBEB42] flex items-center gap-2 animate-in fade-in">
           <Check className="w-4 h-4 shrink-0" />
           <span>{actionFeedback}</span>
         </div>
@@ -252,18 +252,18 @@ export default function MerchantsPage() {
       {/* Merchants List */}
       {loading ? (
         <div className="flex items-center justify-center py-20">
-          <div className="w-8 h-8 border-2 border-amber-400 border-t-transparent rounded-full animate-spin" />
+          <div className="w-8 h-8 border-2 border-[#BBEB42] border-t-transparent rounded-full animate-spin" />
         </div>
       ) : merchants.length === 0 ? (
-        <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-12 text-center">
-          <Store className="w-12 h-12 text-slate-600 mx-auto mb-4" />
+        <div className="bg-[#101010] border border-[#282828] rounded-2xl p-12 text-center">
+          <Store className="w-12 h-12 text-[#454545] mx-auto mb-4" />
           <h3 className="text-lg font-bold text-white">No tienes comercios registrados aún</h3>
-          <p className="text-sm text-slate-400 max-w-md mx-auto mt-1 mb-6">
+          <p className="text-sm text-[#888888] max-w-md mx-auto mt-1 mb-6">
             Afilia un restaurante o negocio local para generarle su link público y comenzar a recibir solicitudes.
           </p>
           <button
             onClick={handleOpenCreateModal}
-            className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-4 py-2 rounded-xl text-sm transition-all cursor-pointer"
+            className="inline-flex items-center gap-2 bg-[#BBEB42] hover:bg-[#CDF561] text-[#080808] font-black px-4 py-2 rounded-xl text-sm transition-all cursor-pointer active:scale-95"
           >
             <Plus className="w-4 h-4" />
             <span>Afiliar primer comercio</span>
@@ -276,10 +276,10 @@ export default function MerchantsPage() {
             return (
               <div
                 key={m.id}
-                className={`bg-slate-900/90 border rounded-2xl p-3.5 sm:p-5 flex flex-col justify-between transition-all shadow-md ${
+                className={`bg-[#101010] border rounded-2xl p-3.5 sm:p-5 flex flex-col justify-between transition-all shadow-md ${
                   m.isActive
-                    ? "border-slate-800 hover:border-slate-700/80"
-                    : "border-slate-800/50 opacity-75 bg-slate-900/40"
+                    ? "border-[#282828] hover:border-[#454545]"
+                    : "border-[#282828]/50 opacity-75 bg-[#101010]/50"
                 }`}
               >
                 <div>
@@ -291,24 +291,24 @@ export default function MerchantsPage() {
                         <span
                           className={`text-[9px] font-bold px-1.5 py-0.5 rounded-full border shrink-0 ${
                             m.isActive
-                              ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/30"
-                              : "bg-slate-800 text-slate-400 border-slate-700"
+                              ? "bg-[#BBEB42]/10 text-[#BBEB42] border-[#BBEB42]/25"
+                              : "bg-[#191919] text-[#888888] border-[#282828]"
                           }`}
                         >
                           {m.isActive ? "Activo" : "Inactivo"}
                         </span>
                       </div>
-                      <div className="flex items-center gap-1.5 text-xs text-slate-400 mt-0.5">
-                        <Phone className="w-3 h-3 text-slate-500 shrink-0" />
+                      <div className="flex items-center gap-1.5 text-xs text-[#888888] mt-0.5">
+                        <Phone className="w-3 h-3 text-[#6D6D6D] shrink-0" />
                         <span className="font-mono text-[11px]">{m.phone}</span>
                       </div>
                     </div>
 
                     {/* Action Buttons: Edit, Toggle Active, Delete */}
-                    <div className="flex items-center gap-0.5 shrink-0 bg-slate-950/60 p-0.5 rounded-xl border border-slate-800/80">
+                    <div className="flex items-center gap-0.5 shrink-0 bg-[#191919] p-0.5 rounded-xl border border-[#282828]">
                       <button
                         onClick={() => handleOpenEditModal(m)}
-                        className="p-1.5 text-slate-400 hover:text-amber-400 hover:bg-slate-800/80 rounded-lg transition-colors cursor-pointer"
+                        className="p-1.5 text-[#888888] hover:text-[#BBEB42] hover:bg-[#282828] rounded-lg transition-colors cursor-pointer"
                         title="Editar datos del comercio"
                       >
                         <Edit2 className="w-3.5 h-3.5" />
@@ -318,8 +318,8 @@ export default function MerchantsPage() {
                         onClick={() => handleToggleActive(m)}
                         className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
                           m.isActive
-                            ? "text-emerald-400 hover:text-amber-400 hover:bg-slate-800/80"
-                            : "text-slate-500 hover:text-emerald-400 hover:bg-slate-800/80"
+                            ? "text-[#BBEB42] hover:text-white hover:bg-[#282828]"
+                            : "text-[#5D5D5D] hover:text-[#BBEB42] hover:bg-[#282828]"
                         }`}
                         title={m.isActive ? "Desactivar comercio" : "Activar comercio"}
                       >
@@ -328,7 +328,7 @@ export default function MerchantsPage() {
 
                       <button
                         onClick={() => setMerchantToDelete(m)}
-                        className="p-1.5 text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 rounded-lg transition-colors cursor-pointer"
+                        className="p-1.5 text-[#888888] hover:text-rose-400 hover:bg-rose-500/10 rounded-lg transition-colors cursor-pointer"
                         title="Eliminar comercio"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
@@ -336,32 +336,32 @@ export default function MerchantsPage() {
                     </div>
                   </div>
 
-                  <div className="flex items-start gap-1.5 text-xs text-slate-400 mt-2.5 bg-slate-950/60 p-2 sm:p-2.5 rounded-xl border border-slate-800/60">
-                    <MapPin className="w-3.5 h-3.5 text-amber-400 shrink-0 mt-0.5" />
-                    <span className="line-clamp-2 leading-relaxed text-slate-300 text-[11px] sm:text-xs">{m.address}</span>
+                  <div className="flex items-start gap-1.5 text-xs text-[#888888] mt-2.5 bg-[#191919] p-2 sm:p-2.5 rounded-xl border border-[#282828]">
+                    <MapPin className="w-3.5 h-3.5 text-[#BBEB42] shrink-0 mt-0.5" />
+                    <span className="line-clamp-2 leading-relaxed text-[#D1D1D1] text-[11px] sm:text-xs">{m.address}</span>
                   </div>
 
-                  <div className="mt-2 flex items-center justify-between text-[11px] text-slate-400 px-1">
+                  <div className="mt-2 flex items-center justify-between text-[11px] text-[#888888] px-1">
                     <span>
-                      Órdenes: <strong className="text-slate-200">{m._count?.orders || 0}</strong>
+                      Órdenes: <strong className="text-white font-mono">{m._count?.orders || 0}</strong>
                     </span>
-                    <span className="font-mono text-slate-500">
+                    <span className="font-mono text-[#6D6D6D]">
                       {m.latitude.toFixed(3)}, {m.longitude.toFixed(3)}
                     </span>
                   </div>
                 </div>
 
                 {/* Public Link Section */}
-                <div className="mt-3 pt-2.5 border-t border-slate-800/80">
+                <div className="mt-3 pt-2.5 border-t border-[#282828]">
                   <div className="flex items-center justify-between gap-2 mb-1.5">
-                    <span className="text-[10px] uppercase tracking-wider text-slate-400 font-semibold">
+                    <span className="text-[10px] uppercase tracking-wider text-[#888888] font-semibold">
                       Link del comercio
                     </span>
                     <a
                       href={`/m/${m.publicToken}`}
                       target="_blank"
                       rel="noreferrer"
-                      className="text-[11px] text-slate-400 hover:text-amber-400 flex items-center gap-1 transition-colors"
+                      className="text-[11px] text-[#888888] hover:text-[#BBEB42] flex items-center gap-1 transition-colors"
                     >
                       <span>Vista previa</span>
                       <ExternalLink className="w-3 h-3" />
@@ -369,7 +369,7 @@ export default function MerchantsPage() {
                   </div>
 
                   <div className="space-y-2">
-                    <div className="bg-slate-950 border border-slate-800 rounded-xl px-2.5 py-1.5 text-xs font-mono text-slate-300 truncate">
+                    <div className="bg-[#080808] border border-[#282828] rounded-xl px-2.5 py-1.5 text-xs font-mono text-[#D1D1D1] truncate">
                       {typeof window !== "undefined" ? window.location.origin : ""}/m/{m.publicToken}
                     </div>
 
@@ -378,8 +378,8 @@ export default function MerchantsPage() {
                         onClick={() => handleCopyLink(m.publicToken)}
                         className={`w-full py-2 px-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer active:scale-95 ${
                           isCopied
-                            ? "bg-emerald-500 text-slate-950 shadow-sm"
-                            : "bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700"
+                            ? "bg-[#BBEB42] text-[#080808] font-black shadow-sm"
+                            : "bg-[#191919] hover:bg-[#282828] text-[#F6F6F6] border border-[#282828]"
                         }`}
                       >
                         {isCopied ? (
@@ -397,7 +397,7 @@ export default function MerchantsPage() {
 
                       <button
                         onClick={() => handleShareWhatsApp(m)}
-                        className="w-full py-2 px-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer bg-emerald-500 hover:bg-emerald-400 text-slate-950 shadow-sm active:scale-95"
+                        className="w-full py-2 px-2.5 rounded-xl text-xs font-black flex items-center justify-center gap-1.5 transition-all cursor-pointer bg-[#25D366] hover:bg-[#20ba5a] text-black shadow-sm active:scale-95"
                         title="Enviar link por WhatsApp al cliente"
                       >
                         <MessageCircle className="w-3.5 h-3.5" />
@@ -415,10 +415,10 @@ export default function MerchantsPage() {
       {/* Modal: Crear o Editar Comercio (Adaptado a Bottom Sheet en Móvil) */}
       {showModal && (
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4">
-          <div className="bg-slate-900 border-t sm:border border-slate-800 rounded-t-3xl sm:rounded-2xl w-full max-w-lg p-5 sm:p-6 shadow-2xl overflow-y-auto max-h-[88vh]">
+          <div className="bg-[#101010] border-t sm:border border-[#282828] rounded-t-3xl sm:rounded-2xl w-full max-w-lg p-5 sm:p-6 shadow-2xl overflow-y-auto max-h-[88vh]">
             <div className="flex items-center justify-between mb-5">
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-400 flex items-center justify-center">
+                <div className="w-8 h-8 rounded-lg bg-[#BBEB42]/10 text-[#BBEB42] flex items-center justify-center">
                   {editingMerchant ? <Edit2 className="w-4 h-4" /> : <Store className="w-4 h-4" />}
                 </div>
                 <h2 className="text-base sm:text-lg font-bold text-white">
@@ -427,7 +427,7 @@ export default function MerchantsPage() {
               </div>
               <button
                 onClick={() => setShowModal(false)}
-                className="w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center text-sm font-semibold cursor-pointer"
+                className="w-8 h-8 rounded-full bg-[#191919] hover:bg-[#282828] text-[#888888] hover:text-white flex items-center justify-center text-sm font-semibold cursor-pointer"
               >
                 ✕
               </button>
@@ -442,7 +442,7 @@ export default function MerchantsPage() {
 
             <form onSubmit={handleSubmitMerchantForm} className="space-y-4 text-sm">
               <div>
-                <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">
+                <label className="block text-xs font-semibold text-[#D1D1D1] uppercase tracking-wider mb-1">
                   Nombre Comercial
                 </label>
                 <input
@@ -451,12 +451,12 @@ export default function MerchantsPage() {
                   value={businessName}
                   onChange={(e) => setBusinessName(e.target.value)}
                   placeholder="Ej. Hamburguesas El Viñedo"
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-3 text-white text-base sm:text-sm placeholder:text-slate-500 focus:outline-none focus:border-amber-500"
+                  className="w-full bg-[#191919] border border-[#282828] rounded-xl px-3.5 py-3 text-white text-base sm:text-sm placeholder:text-[#5D5D5D] focus:outline-none focus:border-[#BBEB42]"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">
+                <label className="block text-xs font-semibold text-[#D1D1D1] uppercase tracking-wider mb-1">
                   Teléfono de Contacto (WhatsApp del Comercio)
                 </label>
                 <input
@@ -466,12 +466,12 @@ export default function MerchantsPage() {
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                   placeholder="+58 414 123-4567"
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-3 text-white text-base sm:text-sm placeholder:text-slate-500 focus:outline-none focus:border-amber-500"
+                  className="w-full bg-[#191919] border border-[#282828] rounded-xl px-3.5 py-3 text-white text-base sm:text-sm placeholder:text-[#5D5D5D] focus:outline-none focus:border-[#BBEB42]"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">
+                <label className="block text-xs font-semibold text-[#D1D1D1] uppercase tracking-wider mb-1">
                   Dirección Comercial (Punto de Retiro)
                 </label>
                 <textarea
@@ -480,16 +480,16 @@ export default function MerchantsPage() {
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
                   placeholder="Calle 139, El Viñedo, Valencia, Carabobo"
-                  className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3.5 py-2.5 text-white text-base sm:text-xs placeholder:text-slate-500 focus:outline-none focus:border-amber-500 resize-none"
+                  className="w-full bg-[#191919] border border-[#282828] rounded-xl px-3.5 py-2.5 text-white text-base sm:text-xs placeholder:text-[#5D5D5D] focus:outline-none focus:border-[#BBEB42] resize-none"
                 />
               </div>
 
               <div>
                 <div className="flex items-center justify-between mb-1">
-                  <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider">
+                  <label className="block text-xs font-semibold text-[#D1D1D1] uppercase tracking-wider">
                     Ubicación Geográfica (Coordenadas)
                   </label>
-                  <span className="text-[11px] text-slate-400">Valencia, Naguanagua, San Diego</span>
+                  <span className="text-[11px] text-[#888888]">Valencia, Naguanagua, San Diego</span>
                 </div>
 
                 <div className="grid grid-cols-2 gap-3 mb-2">
@@ -500,7 +500,7 @@ export default function MerchantsPage() {
                     value={latitude}
                     onChange={(e) => setLatitude(e.target.value)}
                     placeholder="Latitud (ej. 10.2135)"
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2.5 text-white text-base sm:text-xs"
+                    className="w-full bg-[#191919] border border-[#282828] rounded-xl px-3 py-2.5 text-white text-base sm:text-xs focus:outline-none focus:border-[#BBEB42]"
                   />
                   <input
                     type="number"
@@ -509,19 +509,19 @@ export default function MerchantsPage() {
                     value={longitude}
                     onChange={(e) => setLongitude(e.target.value)}
                     placeholder="Longitud (ej. -68.0062)"
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2.5 text-white text-base sm:text-xs"
+                    className="w-full bg-[#191919] border border-[#282828] rounded-xl px-3 py-2.5 text-white text-base sm:text-xs focus:outline-none focus:border-[#BBEB42]"
                   />
                 </div>
 
                 {/* Zona Presets como carrusel táctil deslizable */}
                 <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none touch-pan-x">
-                  <span className="text-[10px] text-slate-500 shrink-0 mr-1">Zonas rápidas:</span>
+                  <span className="text-[10px] text-[#6D6D6D] shrink-0 mr-1">Zonas rápidas:</span>
                   {PRESET_ZONES.map((z) => (
                     <button
                       key={z.name}
                       type="button"
                       onClick={() => handleApplyPreset(z.lat, z.lng)}
-                      className="text-[10px] whitespace-nowrap bg-slate-800 hover:bg-slate-700 text-slate-300 px-2.5 py-1 rounded-lg border border-slate-700 transition-colors cursor-pointer active:scale-95 shrink-0"
+                      className="text-[10px] whitespace-nowrap bg-[#191919] hover:bg-[#282828] text-[#D1D1D1] px-2.5 py-1 rounded-lg border border-[#282828] transition-colors cursor-pointer active:scale-95 shrink-0"
                     >
                       {z.name}
                     </button>
@@ -529,21 +529,21 @@ export default function MerchantsPage() {
                 </div>
               </div>
 
-              <div className="flex justify-end gap-3 pt-4 border-t border-slate-800">
+              <div className="flex justify-end gap-3 pt-4 border-t border-[#282828]">
                 <button
                   type="button"
                   onClick={() => setShowModal(false)}
-                  className="px-4 py-2.5 text-xs text-slate-400 hover:text-white transition-colors cursor-pointer"
+                  className="px-4 py-2.5 text-xs text-[#888888] hover:text-white transition-colors cursor-pointer"
                 >
                   Cancelar
                 </button>
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="min-h-[46px] bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-black px-5 py-2.5 rounded-xl text-xs sm:text-sm transition-all disabled:opacity-50 cursor-pointer flex items-center gap-2 shadow-md shadow-orange-500/15 active:scale-95"
+                  className="min-h-[46px] bg-[#BBEB42] hover:bg-[#CDF561] text-[#080808] font-black px-5 py-2.5 rounded-xl text-xs sm:text-sm transition-all disabled:opacity-50 cursor-pointer flex items-center gap-2 shadow-md shadow-[#BBEB42]/15 active:scale-95"
                 >
                   {submitting ? (
-                    <span className="inline-block w-4 h-4 border-2 border-slate-950 border-t-transparent rounded-full animate-spin" />
+                    <span className="inline-block w-4 h-4 border-2 border-[#080808] border-t-transparent rounded-full animate-spin" />
                   ) : (
                     <>
                       <Sparkles className="w-4 h-4" />
@@ -560,37 +560,37 @@ export default function MerchantsPage() {
       {/* Modal: Confirmar Eliminación */}
       {merchantToDelete && (
         <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-xs flex items-center justify-center p-4 animate-in fade-in">
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-md p-6 shadow-2xl space-y-4">
+          <div className="bg-[#101010] border border-[#282828] rounded-2xl w-full max-w-md p-6 shadow-2xl space-y-4">
             <div className="w-12 h-12 rounded-full bg-rose-500/10 text-rose-400 flex items-center justify-center mx-auto">
               <Trash2 className="w-6 h-6" />
             </div>
 
             <div className="text-center">
               <h3 className="text-lg font-bold text-white">¿Eliminar este comercio?</h3>
-              <p className="text-xs text-slate-400 mt-1">
+              <p className="text-xs text-[#888888] mt-1">
                 Vas a procesar el comercio{" "}
-                <strong className="text-slate-200">"{merchantToDelete.businessName}"</strong>.
+                <strong className="text-white">"{merchantToDelete.businessName}"</strong>.
               </p>
               {merchantToDelete._count?.orders && merchantToDelete._count.orders > 0 ? (
-                <div className="mt-3 p-3 bg-amber-500/10 border border-amber-500/20 rounded-xl text-left text-xs text-amber-400">
+                <div className="mt-3 p-3 bg-[#BBEB42]/10 border border-[#BBEB42]/20 rounded-xl text-left text-xs text-[#BBEB42]">
                   <p className="font-semibold">⚠️ Este comercio tiene {merchantToDelete._count.orders} órdenes registradas.</p>
-                  <p className="text-[11px] text-amber-300/80 mt-0.5">
+                  <p className="text-[11px] text-[#CDF561]/80 mt-0.5">
                     Para resguardar el historial contable y balances, el comercio será <strong>desactivado</strong> en lugar de borrado físico.
                   </p>
                 </div>
               ) : (
-                <p className="text-[11px] text-slate-500 mt-2">
+                <p className="text-[11px] text-[#6D6D6D] mt-2">
                   No cuenta con órdenes asociadas, por lo que será eliminado de forma definitiva.
                 </p>
               )}
             </div>
 
-            <div className="flex justify-end gap-2.5 pt-2 border-t border-slate-800">
+            <div className="flex justify-end gap-2.5 pt-2 border-t border-[#282828]">
               <button
                 type="button"
                 disabled={deleting}
                 onClick={() => setMerchantToDelete(null)}
-                className="px-4 py-2 text-xs text-slate-400 hover:text-white transition-colors cursor-pointer"
+                className="px-4 py-2 text-xs text-[#888888] hover:text-white transition-colors cursor-pointer"
               >
                 Cancelar
               </button>

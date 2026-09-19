@@ -42,9 +42,9 @@ export interface DeliveryOrderCardProps {
 }
 
 const STATUS_BADGES: Record<string, { label: string; color: string }> = {
-  DRAFT_SUBMITTED: { label: "Solicitada", color: "bg-amber-500/10 text-amber-400 border-amber-500/30" },
-  CONFIRMED_PICKUP: { label: "Por Retirar", color: "bg-blue-500/10 text-blue-400 border-blue-500/30" },
-  IN_TRANSIT: { label: "En Camino", color: "bg-purple-500/10 text-purple-400 border-purple-500/30" },
+  DRAFT_SUBMITTED: { label: "Solicitada", color: "bg-[#BBEB42]/10 text-[#BBEB42] border-[#BBEB42]/30" },
+  CONFIRMED_PICKUP: { label: "Por Retirar", color: "bg-sky-500/10 text-sky-400 border-sky-500/30" },
+  IN_TRANSIT: { label: "En Camino", color: "bg-[#BBEB42]/15 text-[#BBEB42] border-[#BBEB42]/40" },
   DELIVERED: { label: "Entregada", color: "bg-emerald-500/10 text-emerald-400 border-emerald-500/30" },
   CANCELLED: { label: "Cancelada", color: "bg-rose-500/10 text-rose-400 border-rose-500/30" },
 };
@@ -56,7 +56,7 @@ export function DeliveryOrderCard({ order, onStatusUpdated }: DeliveryOrderCardP
 
   const statusInfo = STATUS_BADGES[order.status] || {
     label: order.status,
-    color: "bg-slate-800 text-slate-300 border-slate-700",
+    color: "bg-[#191919] text-[#A0A0A0] border-[#282828]",
   };
 
   const effectiveFee = order.fee ?? order.totalCost ?? 0;
@@ -139,13 +139,13 @@ export function DeliveryOrderCard({ order, onStatusUpdated }: DeliveryOrderCardP
   const recipientWa = cleanPhone ? `https://wa.me/${cleanPhone}` : null;
 
   return (
-    <div className="bg-slate-900/90 border border-slate-800 hover:border-slate-700/80 rounded-2xl p-3.5 sm:p-5 flex flex-col justify-between h-full gap-3 sm:gap-4 shadow-xl transition-all">
+    <div className="bg-[#101010] border border-[#282828] hover:border-[#454545] rounded-2xl p-3.5 sm:p-5 flex flex-col justify-between h-full gap-3 sm:gap-4 shadow-xl transition-all">
       {/* 1. Header con Orden, Estado, Comercio y Ganancias */}
       <div>
         <div className="flex items-start justify-between gap-2.5">
           <div className="min-w-0 flex-1">
             <div className="flex items-center gap-1.5 flex-wrap">
-              <span className="font-mono text-base sm:text-lg font-black text-white tracking-tight whitespace-nowrap shrink-0">
+              <span className="font-mono text-base sm:text-lg font-black text-[#BBEB42] tracking-tight whitespace-nowrap shrink-0">
                 {cleanOrderNumber}
               </span>
               <span
@@ -155,7 +155,7 @@ export function DeliveryOrderCard({ order, onStatusUpdated }: DeliveryOrderCardP
               </span>
             </div>
             {merchantName && (
-              <p className="text-xs sm:text-sm text-slate-400 mt-1 font-medium truncate">
+              <p className="text-xs sm:text-sm text-[#A0A0A0] mt-1 font-medium truncate">
                 {merchantName}
               </p>
             )}
@@ -163,30 +163,30 @@ export function DeliveryOrderCard({ order, onStatusUpdated }: DeliveryOrderCardP
 
           {/* Earnings Badge (100% para el delivery) */}
           <div className="text-right">
-            <span className="text-[11px] text-emerald-400 font-semibold uppercase tracking-wider">Tarifa (100%)</span>
-            <p className="text-lg sm:text-xl font-extrabold text-emerald-400 font-mono">
+            <span className="text-[11px] text-[#BBEB42] font-semibold uppercase tracking-wider">Tarifa (100%)</span>
+            <p className="text-lg sm:text-xl font-extrabold text-[#BBEB42] font-mono">
               {formatCurrency(effectiveFee)}
             </p>
-            <span className="text-[10px] text-slate-500">100% para ti</span>
+            <span className="text-[10px] text-[#888888]">100% para ti</span>
           </div>
         </div>
 
         {/* 2. Datos del Cliente que Recibe con Botón de Llamada Directa y WhatsApp */}
-        <div className="mt-3.5 pt-3 border-t border-slate-800/80 flex items-center justify-between gap-2 bg-slate-950/70 p-3 rounded-xl border border-slate-800/60">
+        <div className="mt-3.5 pt-3 border-t border-[#282828] flex items-center justify-between gap-2 bg-[#191919] p-3 rounded-xl border border-[#282828]">
           <div className="min-w-0 flex-1">
-            <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Cliente Recibe:</p>
+            <p className="text-[10px] font-bold uppercase tracking-wider text-[#888888]">Cliente Recibe:</p>
             <p className="text-sm font-bold text-white truncate">{order.recipientName}</p>
-            <p className="text-xs text-slate-300 font-mono">{order.recipientPhone}</p>
+            <p className="text-xs text-[#B0B0B0] font-mono">{order.recipientPhone}</p>
           </div>
           
           <div className="flex items-center gap-1.5 shrink-0">
             {cleanPhone && (
               <a
                 href={`tel:${cleanPhone}`}
-                className="inline-flex items-center gap-1 px-2.5 py-2 text-xs font-bold text-slate-200 bg-slate-800/90 hover:bg-slate-700 rounded-xl border border-slate-700/80 transition-all shadow-xs cursor-pointer"
+                className="inline-flex items-center gap-1 px-2.5 py-2 text-xs font-bold text-[#F6F6F6] bg-[#282828] hover:bg-[#454545] rounded-xl border border-[#454545] transition-all shadow-xs cursor-pointer"
                 title="Llamada telefónica directa"
               >
-                <Phone className="w-3.5 h-3.5 text-amber-400" />
+                <Phone className="w-3.5 h-3.5 text-[#BBEB42]" />
                 <span className="hidden xs:inline">Llamar</span>
               </a>
             )}
@@ -207,12 +207,12 @@ export function DeliveryOrderCard({ order, onStatusUpdated }: DeliveryOrderCardP
       </div>
 
       {/* 3. Package & Route Details */}
-      <div className="bg-slate-950/80 border border-slate-800/80 rounded-xl p-3.5 space-y-3 text-sm">
-        <div className="flex items-center justify-between text-xs text-slate-400 border-b border-slate-800/80 pb-2">
+      <div className="bg-[#191919]/70 border border-[#282828] rounded-xl p-3.5 space-y-3 text-sm">
+        <div className="flex items-center justify-between text-xs text-[#888888] border-b border-[#282828] pb-2">
           <span>
-            Paquete: <strong className="text-slate-200 font-medium">{displayDescription}</strong>
+            Paquete: <strong className="text-white font-medium">{displayDescription}</strong>
           </span>
-          <span className="font-semibold text-amber-400 text-[11px] uppercase tracking-wider">
+          <span className="font-semibold text-[#BBEB42] text-[11px] uppercase tracking-wider">
             {order.packageSize || "Estándar"}
           </span>
         </div>
@@ -220,27 +220,27 @@ export function DeliveryOrderCard({ order, onStatusUpdated }: DeliveryOrderCardP
         {/* Addresses con Botones GPS de Alto Contraste y Acceso Directo */}
         <div className="space-y-2.5">
           {/* Punto de Retiro (Pickup) */}
-          <div className="bg-slate-900 border border-slate-800 rounded-xl p-3 shadow-xs">
+          <div className="bg-[#101010] border border-[#282828] rounded-xl p-3 shadow-xs">
             <div className="flex items-center justify-between gap-2 mb-1.5">
               <div className="flex items-center gap-1.5 min-w-0">
-                <div className="h-2.5 w-2.5 rounded-full bg-emerald-500 shrink-0 ring-4 ring-emerald-500/20" />
-                <span className="text-[11px] font-bold text-emerald-400 uppercase tracking-wide truncate">Retiro</span>
+                <div className="h-2.5 w-2.5 rounded-full bg-[#BBEB42] shrink-0 ring-4 ring-[#BBEB42]/20" />
+                <span className="text-[11px] font-bold text-[#BBEB42] uppercase tracking-wide truncate">Retiro</span>
               </div>
               <a
                 href={getMapsUrl(order.pickupLat, order.pickupLng, order.pickupAddress)}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 min-h-[34px] text-xs font-black text-slate-950 bg-emerald-400 hover:bg-emerald-300 rounded-lg shadow-sm transition-colors cursor-pointer shrink-0 whitespace-nowrap"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 min-h-[34px] text-xs font-black text-[#080808] bg-[#BBEB42] hover:bg-[#CDF561] rounded-lg shadow-sm transition-colors cursor-pointer shrink-0 whitespace-nowrap"
               >
                 <Navigation className="w-3.5 h-3.5" />
                 <span>GPS Recogida ↗</span>
               </a>
             </div>
-            <p className="text-xs text-slate-300 font-medium leading-snug line-clamp-2">{order.pickupAddress}</p>
+            <p className="text-xs text-[#D1D1D1] font-medium leading-snug line-clamp-2">{order.pickupAddress}</p>
           </div>
 
           {/* Punto de Entrega (Dropoff) */}
-          <div className="bg-slate-900 border border-slate-800 rounded-xl p-3 shadow-xs">
+          <div className="bg-[#101010] border border-[#282828] rounded-xl p-3 shadow-xs">
             <div className="flex items-center justify-between gap-2 mb-1.5">
               <div className="flex items-center gap-1.5 min-w-0">
                 <div className="h-2.5 w-2.5 rounded-full bg-rose-500 shrink-0 ring-4 ring-rose-500/20" />
@@ -256,14 +256,14 @@ export function DeliveryOrderCard({ order, onStatusUpdated }: DeliveryOrderCardP
                 <span>GPS Destino ↗</span>
               </a>
             </div>
-            <p className="text-xs text-slate-300 font-medium leading-snug line-clamp-2">{order.dropoffAddress}</p>
+            <p className="text-xs text-[#D1D1D1] font-medium leading-snug line-clamp-2">{order.dropoffAddress}</p>
           </div>
         </div>
 
         {/* Distance & Duration */}
-        <div className="flex items-center justify-between pt-2 border-t border-slate-800/80 text-xs text-slate-400 font-medium">
-          <span>Distancia: <strong className="text-slate-200">{formatDistance(effectiveDistance)}</strong></span>
-          <span>Tiempo estimado: <strong className="text-slate-200">{formatDuration(effectiveDuration)}</strong></span>
+        <div className="flex items-center justify-between pt-2 border-t border-[#282828] text-xs text-[#888888] font-medium">
+          <span>Distancia: <strong className="text-white">{formatDistance(effectiveDistance)}</strong></span>
+          <span>Tiempo estimado: <strong className="text-white">{formatDuration(effectiveDuration)}</strong></span>
         </div>
       </div>
 
@@ -278,7 +278,7 @@ export function DeliveryOrderCard({ order, onStatusUpdated }: DeliveryOrderCardP
             target="_blank"
             rel="noopener noreferrer"
             onClick={() => setPendingWhatsappUrl(null)}
-            className="px-3.5 py-2 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs rounded-xl whitespace-nowrap shadow-sm cursor-pointer"
+            className="px-3.5 py-2 bg-emerald-500 hover:bg-emerald-400 text-[#080808] font-bold text-xs rounded-xl whitespace-nowrap shadow-sm cursor-pointer"
           >
             Abrir WhatsApp
           </a>
@@ -305,7 +305,7 @@ export function DeliveryOrderCard({ order, onStatusUpdated }: DeliveryOrderCardP
             <button
               onClick={() => handleStatusChange("CONFIRMED_PICKUP")}
               disabled={!!loadingAction}
-              className="min-h-[50px] px-3 py-3 text-sm font-black text-slate-950 bg-gradient-to-r from-amber-400 to-orange-400 hover:from-amber-300 hover:to-orange-300 rounded-xl transition-all disabled:opacity-50 shadow-md shadow-amber-500/20 cursor-pointer active:scale-[0.98]"
+              className="min-h-[50px] px-3 py-3 text-sm font-black text-[#080808] bg-[#BBEB42] hover:bg-[#CDF561] rounded-xl transition-all disabled:opacity-50 shadow-md shadow-[#BBEB42]/20 cursor-pointer active:scale-[0.98]"
             >
               {loadingAction === "CONFIRMED_PICKUP" ? "Aceptando..." : "Aceptar Pedido"}
             </button>
@@ -316,14 +316,14 @@ export function DeliveryOrderCard({ order, onStatusUpdated }: DeliveryOrderCardP
           <button
             onClick={() => handleStatusChange("IN_TRANSIT")}
             disabled={!!loadingAction}
-            className="w-full min-h-[52px] px-4 py-3.5 text-sm font-black text-white bg-blue-600 hover:bg-blue-500 rounded-xl transition-all disabled:opacity-50 shadow-md shadow-blue-600/20 flex items-center justify-center gap-2 cursor-pointer active:scale-[0.98]"
+            className="w-full min-h-[52px] px-4 py-3.5 text-sm font-black text-[#080808] bg-[#BBEB42] hover:bg-[#CDF561] rounded-xl transition-all disabled:opacity-50 shadow-md shadow-[#BBEB42]/20 flex items-center justify-center gap-2 cursor-pointer active:scale-[0.98]"
           >
             {loadingAction === "IN_TRANSIT" ? (
               "Actualizando..."
             ) : (
               <>
                 <span>Ya Retiré &bull; Voy en Camino</span>
-                <span className="text-xs opacity-80">(Avisar a Cliente)</span>
+                <span className="text-xs opacity-75">(Avisar a Cliente)</span>
               </>
             )}
           </button>
@@ -333,14 +333,14 @@ export function DeliveryOrderCard({ order, onStatusUpdated }: DeliveryOrderCardP
           <button
             onClick={() => handleStatusChange("DELIVERED")}
             disabled={!!loadingAction}
-            className="w-full min-h-[52px] px-4 py-3.5 text-sm font-black text-slate-950 bg-emerald-400 hover:bg-emerald-300 rounded-xl transition-all disabled:opacity-50 shadow-md shadow-emerald-400/20 cursor-pointer active:scale-[0.98]"
+            className="w-full min-h-[52px] px-4 py-3.5 text-sm font-black text-[#080808] bg-emerald-400 hover:bg-emerald-300 rounded-xl transition-all disabled:opacity-50 shadow-md shadow-emerald-400/20 cursor-pointer active:scale-[0.98]"
           >
             {loadingAction === "DELIVERED" ? "Confirmando..." : "✓ Marcar como Entregado"}
           </button>
         )}
 
         {order.status === "DELIVERED" && (
-          <div className="min-h-[48px] flex items-center justify-center text-center py-2.5 px-3 text-xs sm:text-sm font-black text-emerald-400 bg-emerald-500/10 rounded-xl border border-emerald-500/20">
+          <div className="min-h-[48px] flex items-center justify-center text-center py-2.5 px-3 text-xs sm:text-sm font-black text-[#BBEB42] bg-[#BBEB42]/10 rounded-xl border border-[#BBEB42]/20">
             Pedido Entregado con Éxito (+{formatCurrency(effectiveFee)})
           </div>
         )}

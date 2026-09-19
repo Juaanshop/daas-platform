@@ -134,13 +134,13 @@ export default function DeliverySettlementsPage() {
         {/* Date / Period Controls & Confirm Global Action */}
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 w-full sm:w-auto">
           <div className="flex items-center gap-2">
-            <div className="bg-slate-900 border border-slate-800 p-1 rounded-xl flex items-center gap-1 text-xs flex-1 sm:flex-none">
+            <div className="bg-[#191919] border border-[#282828] p-1 rounded-xl flex items-center gap-1 text-xs flex-1 sm:flex-none">
               <button
                 onClick={() => setViewMode("daily")}
                 className={`flex-1 sm:flex-none px-3 py-2 sm:py-1.5 rounded-lg font-bold transition-all cursor-pointer ${
                   viewMode === "daily"
-                    ? "bg-amber-500 text-slate-950 shadow"
-                    : "text-slate-400 hover:text-white"
+                    ? "bg-[#BBEB42] text-[#080808] shadow font-black"
+                    : "text-[#888888] hover:text-white"
                 }`}
               >
                 Día Específico
@@ -149,8 +149,8 @@ export default function DeliverySettlementsPage() {
                 onClick={() => setViewMode("all")}
                 className={`flex-1 sm:flex-none px-3 py-2 sm:py-1.5 rounded-lg font-bold transition-all cursor-pointer ${
                   viewMode === "all"
-                    ? "bg-amber-500 text-slate-950 shadow"
-                    : "text-slate-400 hover:text-white"
+                    ? "bg-[#BBEB42] text-[#080808] shadow font-black"
+                    : "text-[#888888] hover:text-white"
                 }`}
               >
                 Histórico
@@ -158,8 +158,8 @@ export default function DeliverySettlementsPage() {
             </div>
 
             {viewMode === "daily" && (
-              <div className="flex items-center gap-2 bg-slate-900 border border-slate-800 px-3 py-2 sm:py-1.5 rounded-xl flex-1 sm:flex-none">
-                <Calendar className="w-4 h-4 text-amber-400 shrink-0" />
+              <div className="flex items-center gap-2 bg-[#191919] border border-[#282828] px-3 py-2 sm:py-1.5 rounded-xl flex-1 sm:flex-none">
+                <Calendar className="w-4 h-4 text-[#BBEB42] shrink-0" />
                 <input
                   type="date"
                   value={selectedDate}
@@ -185,15 +185,15 @@ export default function DeliverySettlementsPage() {
       </div>
 
       {isLoading ? (
-        <div className="py-20 text-center text-slate-500">
-          <div className="w-8 h-8 border-2 border-amber-500 border-t-transparent rounded-full animate-spin mx-auto mb-3" />
-          <p className="text-xs font-semibold uppercase tracking-wider">Calculando corte y liquidación...</p>
+        <div className="py-20 text-center text-[#888888]">
+          <div className="w-8 h-8 border-2 border-[#BBEB42] border-t-transparent rounded-full animate-spin mx-auto mb-3" />
+          <p className="text-xs font-semibold uppercase tracking-wider text-[#A0A0A0]">Calculando corte y liquidación...</p>
         </div>
       ) : (
         <>
           {/* Banner de Cobro Completado (si ya no hay pendientes) */}
           {!hasPendingSettlement && (settlement?.totalOrders || 0) > 0 && (
-            <div className="bg-emerald-950/40 border border-emerald-500/30 rounded-2xl p-4 flex items-center justify-between gap-3 text-emerald-300">
+            <div className="bg-[#101010] border border-emerald-500/30 rounded-2xl p-4 flex items-center justify-between gap-3 text-emerald-300">
               <div className="flex items-center gap-3">
                 <div className="w-9 h-9 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
                   <CheckCircle2 className="w-5 h-5" />
@@ -213,28 +213,28 @@ export default function DeliverySettlementsPage() {
 
           {/* Pendiente por Cobrar Banner si existe */}
           {hasPendingSettlement && (
-            <div className="bg-gradient-to-r from-amber-950/50 to-slate-900 border border-amber-500/40 rounded-xl p-3 sm:p-4 flex items-center justify-between gap-3 shadow-sm">
+            <div className="bg-[#191919] border border-[#BBEB42]/40 rounded-xl p-3 sm:p-4 flex items-center justify-between gap-3 shadow-sm">
               <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center shrink-0">
+                <div className="w-8 h-8 rounded-lg bg-[#BBEB42]/20 text-[#BBEB42] flex items-center justify-center shrink-0">
                   <TrendingUp className="w-4 h-4" />
                 </div>
                 <div>
-                  <div className="text-[10px] font-bold text-amber-400 uppercase tracking-wider">
+                  <div className="text-[10px] font-bold text-[#BBEB42] uppercase tracking-wider">
                     Pendiente por Cobrar
                   </div>
-                  <div className="text-xl sm:text-2xl font-black text-amber-400 font-mono">
+                  <div className="text-xl sm:text-2xl font-black text-[#BBEB42] font-mono">
                     ${settlement?.pendingVolume?.toFixed(2) || "0.00"}
                   </div>
                 </div>
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-[11px] text-slate-400 hidden sm:inline">
+                <span className="text-[11px] text-[#A0A0A0] hidden sm:inline">
                   {settlement?.pendingOrders} {settlement?.pendingOrders === 1 ? "carrera" : "carreras"}
                 </span>
                 <button
                   onClick={() => handleMarkAsSettled()}
                   disabled={isSettling}
-                  className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl shadow-xs active:scale-95 transition-all cursor-pointer whitespace-nowrap"
+                  className="px-3 py-1.5 bg-[#BBEB42] hover:bg-[#CDF561] text-[#080808] font-black text-xs rounded-xl shadow-xs active:scale-95 transition-all cursor-pointer whitespace-nowrap"
                 >
                   {isSettling ? "..." : "Marcar Cobrado"}
                 </button>
@@ -245,44 +245,44 @@ export default function DeliverySettlementsPage() {
           {/* KPI Metrics: 3 Columnas Compactas en Móvil */}
           <div className="grid grid-cols-3 gap-2 sm:gap-4">
             {/* Total Facturado */}
-            <div className="bg-slate-900/70 border border-slate-800 rounded-xl p-2.5 sm:p-4 relative overflow-hidden">
-              <div className="flex items-center justify-between text-slate-400 text-[10px] sm:text-xs font-semibold uppercase tracking-wider">
+            <div className="bg-[#101010] border border-[#282828] rounded-xl p-2.5 sm:p-4 relative overflow-hidden">
+              <div className="flex items-center justify-between text-[#888888] text-[10px] sm:text-xs font-semibold uppercase tracking-wider">
                 <span className="truncate">Recaudado</span>
-                <DollarSign className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+                <DollarSign className="w-3.5 h-3.5 text-[#BBEB42] shrink-0" />
               </div>
-              <div className="text-lg sm:text-3xl font-extrabold text-white mt-1.5 font-mono">
+              <div className="text-lg sm:text-3xl font-extrabold text-[#BBEB42] mt-1.5 font-mono">
                 ${settlement?.totalVolume?.toFixed(2) || "0.00"}
               </div>
-              <p className="text-[9px] sm:text-[11px] text-slate-500 mt-0.5 truncate">
+              <p className="text-[9px] sm:text-[11px] text-[#6D6D6D] mt-0.5 truncate">
                 100% para ti
               </p>
             </div>
 
             {/* Carreras Completadas */}
-            <div className="bg-slate-900/70 border border-slate-800 rounded-xl p-2.5 sm:p-4 relative overflow-hidden">
-              <div className="flex items-center justify-between text-slate-400 text-[10px] sm:text-xs font-semibold uppercase tracking-wider">
+            <div className="bg-[#101010] border border-[#282828] rounded-xl p-2.5 sm:p-4 relative overflow-hidden">
+              <div className="flex items-center justify-between text-[#888888] text-[10px] sm:text-xs font-semibold uppercase tracking-wider">
                 <span className="truncate">Carreras</span>
-                <Bike className="w-3.5 h-3.5 text-indigo-400 shrink-0" />
+                <Bike className="w-3.5 h-3.5 text-[#BBEB42] shrink-0" />
               </div>
               <div className="text-lg sm:text-3xl font-extrabold text-white mt-1.5 font-mono">
                 {settlement?.totalOrders || 0}
               </div>
-              <p className="text-[9px] sm:text-[11px] text-slate-500 mt-0.5 truncate">
+              <p className="text-[9px] sm:text-[11px] text-[#6D6D6D] mt-0.5 truncate">
                 Completadas
               </p>
             </div>
 
             {/* Distancia Total */}
-            <div className="bg-slate-900/70 border border-slate-800 rounded-xl p-2.5 sm:p-4 relative overflow-hidden">
-              <div className="flex items-center justify-between text-slate-400 text-[10px] sm:text-xs font-semibold uppercase tracking-wider">
+            <div className="bg-[#101010] border border-[#282828] rounded-xl p-2.5 sm:p-4 relative overflow-hidden">
+              <div className="flex items-center justify-between text-[#888888] text-[10px] sm:text-xs font-semibold uppercase tracking-wider">
                 <span className="truncate">Distancia</span>
-                <Route className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
+                <Route className="w-3.5 h-3.5 text-[#BBEB42] shrink-0" />
               </div>
               <div className="text-lg sm:text-3xl font-extrabold text-white mt-1.5 font-mono">
                 {settlement?.totalKmDelivered?.toFixed(1) || "0.0"}{" "}
                 <span className="text-xs sm:text-lg">km</span>
               </div>
-              <p className="text-[9px] sm:text-[11px] text-slate-500 mt-0.5 truncate">
+              <p className="text-[9px] sm:text-[11px] text-[#6D6D6D] mt-0.5 truncate">
                 En ruta
               </p>
             </div>
@@ -290,36 +290,36 @@ export default function DeliverySettlementsPage() {
 
           {/* Search Bar */}
           <div className="relative max-w-md">
-            <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+            <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-[#888888]" />
             <input
               type="text"
               placeholder="Buscar comercio u orden..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-slate-900/80 border border-slate-800 rounded-xl pl-10 pr-4 py-2.5 text-base sm:text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 transition-colors"
+              className="w-full bg-[#191919] border border-[#282828] rounded-xl pl-10 pr-4 py-2.5 text-base sm:text-xs text-[#F6F6F6] placeholder-[#5D5D5D] focus:outline-none focus:border-[#BBEB42] transition-colors"
             />
           </div>
 
           {/* Section: Liquidación y Cobro por Comercio (se oculta cuando todo está cobrado) */}
           {hasPendingSettlement && (
-          <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-6">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6 pb-4 border-b border-slate-800">
+          <div className="bg-[#101010] border border-[#282828] rounded-2xl p-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-6 pb-4 border-b border-[#282828]">
               <div>
                 <h2 className="text-lg font-bold text-white flex items-center gap-2">
-                  <Store className="w-5 h-5 text-amber-400" />
+                  <Store className="w-5 h-5 text-[#BBEB42]" />
                   Liquidación por Comercio Asociado
                 </h2>
-                <p className="text-xs text-slate-400 mt-0.5">
+                <p className="text-xs text-[#888888] mt-0.5">
                   Haz clic en &quot;Cobrar por WhatsApp&quot; para enviar automáticamente el desglose de cierre diario a cada local.
                 </p>
               </div>
-              <span className="text-xs bg-slate-800 text-slate-300 font-bold px-3 py-1 rounded-full border border-slate-700 w-fit">
+              <span className="text-xs bg-[#191919] text-[#D1D1D1] font-bold px-3 py-1 rounded-full border border-[#282828] w-fit">
                 {filteredMerchants.length} Comercio{filteredMerchants.length === 1 ? "" : "s"}
               </span>
             </div>
 
             {filteredMerchants.length === 0 ? (
-              <div className="text-center py-12 text-slate-500">
+              <div className="text-center py-12 text-[#6D6D6D]">
                 <Store className="w-10 h-10 mx-auto mb-2 opacity-30" />
                 <p className="text-sm">No hay despachos registrados para liquidar en este período.</p>
               </div>
@@ -328,32 +328,32 @@ export default function DeliverySettlementsPage() {
                 {filteredMerchants.map((m: any) => (
                   <div
                     key={m.merchantId}
-                    className="bg-slate-900/90 border border-slate-800/90 hover:border-slate-700 rounded-2xl p-5 flex flex-col justify-between transition-all"
+                    className="bg-[#191919] border border-[#282828] hover:border-[#454545] rounded-2xl p-5 flex flex-col justify-between transition-all"
                   >
                     <div>
                       <div className="flex items-start justify-between gap-2">
                         <div>
                           <h3 className="font-bold text-white text-base tracking-tight">{m.businessName}</h3>
                           {m.phone && (
-                            <p className="text-xs font-mono text-slate-400 mt-0.5">{m.phone}</p>
+                            <p className="text-xs font-mono text-[#888888] mt-0.5">{m.phone}</p>
                           )}
                         </div>
-                        <span className="text-xs font-bold bg-amber-500/10 text-amber-400 px-2.5 py-1 rounded-lg border border-amber-500/20">
+                        <span className="text-xs font-bold bg-[#BBEB42]/10 text-[#BBEB42] px-2.5 py-1 rounded-lg border border-[#BBEB42]/20">
                           {m.totalOrders} {m.totalOrders === 1 ? "carrera" : "carreras"}
                         </span>
                       </div>
 
                       {/* Financial info */}
-                      <div className="bg-slate-950/70 border border-slate-800/80 rounded-xl p-3.5 my-4">
-                        <div className="flex justify-between items-center text-xs text-slate-400 mb-1">
+                      <div className="bg-[#101010] border border-[#282828] rounded-xl p-3.5 my-4">
+                        <div className="flex justify-between items-center text-xs text-[#888888] mb-1">
                           <span>Total Recaudado (100%):</span>
-                          <span className="font-mono text-base font-bold text-emerald-400">
+                          <span className="font-mono text-base font-bold text-[#BBEB42]">
                             ${m.totalSpent.toFixed(2)}
                           </span>
                         </div>
                         {m.orderNumbers && m.orderNumbers.length > 0 && (
-                          <div className="mt-2 pt-2 border-t border-slate-800 text-[10px] text-slate-500">
-                            <span className="font-medium text-slate-400">Órdenes: </span>
+                          <div className="mt-2 pt-2 border-t border-[#282828] text-[10px] text-[#6D6D6D]">
+                            <span className="font-medium text-[#888888]">Órdenes: </span>
                             {m.orderNumbers.join(", ")}
                           </div>
                         )}
@@ -367,9 +367,9 @@ export default function DeliverySettlementsPage() {
                           href={m.whatsappUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="w-full min-h-[42px] flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 px-4 rounded-xl text-xs transition-all shadow-md shadow-emerald-600/20 active:scale-95 cursor-pointer"
+                          className="w-full min-h-[42px] flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20bd5a] text-black font-black py-2.5 px-4 rounded-xl text-xs transition-all shadow-md active:scale-95 cursor-pointer"
                         >
-                          <MessageSquare className="w-4 h-4 fill-white" />
+                          <MessageSquare className="w-4 h-4 fill-black" />
                           <span>Cobrar por WhatsApp</span>
                         </a>
                       )}
@@ -377,9 +377,9 @@ export default function DeliverySettlementsPage() {
                         onClick={() => handleMarkAsSettled({ merchantId: m.merchantId })}
                         disabled={isSettling}
                         variant="outline"
-                        className="w-full min-h-[42px] border-slate-700 hover:border-emerald-500 hover:bg-emerald-500/10 text-slate-300 hover:text-emerald-400 font-bold py-2.5 rounded-xl text-xs flex items-center justify-center gap-1.5 transition-all active:scale-95 cursor-pointer"
+                        className="w-full min-h-[42px] border-[#282828] hover:border-[#BBEB42]/50 hover:bg-[#BBEB42]/10 text-[#D1D1D1] hover:text-[#BBEB42] font-bold py-2.5 rounded-xl text-xs flex items-center justify-center gap-1.5 transition-all active:scale-95 cursor-pointer"
                       >
-                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                        <CheckCircle2 className="w-3.5 h-3.5 text-[#BBEB42]" />
                         <span>Marcar Comercio Cobrado</span>
                       </Button>
                     </div>
@@ -391,24 +391,24 @@ export default function DeliverySettlementsPage() {
           )}
 
           {/* Section: Libro de Carreras Detalladas */}
-          <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-6">
-            <div className="flex items-center justify-between mb-4 pb-3 border-b border-slate-800">
+          <div className="bg-[#101010] border border-[#282828] rounded-2xl p-6">
+            <div className="flex items-center justify-between mb-4 pb-3 border-b border-[#282828]">
               <div>
                 <h2 className="text-lg font-bold text-white flex items-center gap-2">
-                  <Layers className="w-5 h-5 text-indigo-400" />
+                  <Layers className="w-5 h-5 text-[#BBEB42]" />
                   Detalle de Despachos Entregados
                 </h2>
-                <p className="text-xs text-slate-400 mt-0.5">
+                <p className="text-xs text-[#888888] mt-0.5">
                   Registro individual de cada carrera entregada con su estado de cobro
                 </p>
               </div>
-              <span className="text-xs font-mono text-slate-400">
+              <span className="text-xs font-mono text-[#888888]">
                 {filteredDispatches.length} registros
               </span>
             </div>
 
             {filteredDispatches.length === 0 ? (
-              <div className="text-center py-10 text-slate-500 text-xs">
+              <div className="text-center py-10 text-[#6D6D6D] text-xs">
                 No hay carreras finalizadas que coincidan con la búsqueda.
               </div>
             ) : (
@@ -418,12 +418,12 @@ export default function DeliverySettlementsPage() {
                   {filteredDispatches.map((d: any) => (
                     <div
                       key={d.id}
-                      className="bg-slate-950/70 border border-slate-800/90 rounded-xl p-3 space-y-2 shadow-xs"
+                      className="bg-[#191919] border border-[#282828] rounded-xl p-3 space-y-2 shadow-xs"
                     >
                       {/* Fila 1: Orden + Estado + Monto */}
                       <div className="flex items-center justify-between gap-2">
                         <div className="flex items-center gap-1.5">
-                          <span className="font-mono text-xs font-black text-amber-400 whitespace-nowrap">
+                          <span className="font-mono text-xs font-black text-[#BBEB42] whitespace-nowrap">
                             {d.orderNumber}
                           </span>
                           {d.isSettled ? (
@@ -431,12 +431,12 @@ export default function DeliverySettlementsPage() {
                               <CheckCircle2 className="w-2.5 h-2.5" /> Cobrado
                             </span>
                           ) : (
-                            <span className="inline-flex items-center gap-1 text-[9px] font-bold text-amber-400 bg-amber-500/10 px-1.5 py-0.5 rounded-full border border-amber-500/20 whitespace-nowrap">
+                            <span className="inline-flex items-center gap-1 text-[9px] font-bold text-[#BBEB42] bg-[#BBEB42]/10 px-1.5 py-0.5 rounded-full border border-[#BBEB42]/20 whitespace-nowrap">
                               <Clock className="w-2.5 h-2.5" /> Pendiente
                             </span>
                           )}
                         </div>
-                        <span className="font-mono font-black text-sm text-emerald-400 whitespace-nowrap">
+                        <span className="font-mono font-black text-sm text-[#BBEB42] whitespace-nowrap">
                           ${d.totalCost.toFixed(2)}
                         </span>
                       </div>
@@ -444,13 +444,13 @@ export default function DeliverySettlementsPage() {
                       {/* Fila 2: Comercio + Distancia */}
                       <div className="flex items-center justify-between text-xs text-white font-semibold">
                         <span className="truncate">{d.merchantName}</span>
-                        <span className="font-mono text-[11px] text-slate-400 shrink-0">{d.distanceKm} km</span>
+                        <span className="font-mono text-[11px] text-[#888888] shrink-0">{d.distanceKm} km</span>
                       </div>
 
                       {/* Fila 3: Destinatario y Dirección */}
-                      <div className="text-[11px] text-slate-400 pt-1 border-t border-slate-800/60 truncate">
-                        <span className="text-slate-500">Destino:</span>{" "}
-                        <strong className="text-slate-300 font-medium">{d.recipientName}</strong>{" "}
+                      <div className="text-[11px] text-[#888888] pt-1 border-t border-[#282828] truncate">
+                        <span className="text-[#6D6D6D]">Destino:</span>{" "}
+                        <strong className="text-[#D1D1D1] font-medium">{d.recipientName}</strong>{" "}
                         &bull; {d.dropoffAddress}
                       </div>
                     </div>
@@ -458,10 +458,10 @@ export default function DeliverySettlementsPage() {
                 </div>
 
                 {/* 2. Vista Tablet & Desktop (Tabla con min-w y cabeceras nítidas) */}
-                <div className="hidden sm:block overflow-x-auto rounded-xl border border-slate-800/80">
+                <div className="hidden sm:block overflow-x-auto rounded-xl border border-[#282828]">
                   <table className="w-full text-left text-xs min-w-[640px]">
                     <thead>
-                      <tr className="border-b border-slate-800 bg-slate-950/60 text-slate-400 uppercase font-bold text-[10px] tracking-wider">
+                      <tr className="border-b border-[#282828] bg-[#191919] text-[#888888] uppercase font-bold text-[10px] tracking-wider">
                         <th className="py-3 px-3.5 whitespace-nowrap">Orden</th>
                         <th className="py-3 px-3.5 whitespace-nowrap">Comercio</th>
                         <th className="py-3 px-3.5 whitespace-nowrap">Destinatario</th>
@@ -470,25 +470,25 @@ export default function DeliverySettlementsPage() {
                         <th className="py-3 px-3.5 text-right whitespace-nowrap">Estado Cobro</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-800/60">
+                    <tbody className="divide-y divide-[#282828]">
                       {filteredDispatches.map((d: any) => (
-                        <tr key={d.id} className="hover:bg-slate-800/30 transition-colors">
-                          <td className="py-3 px-3.5 font-mono font-bold text-amber-400 whitespace-nowrap">
+                        <tr key={d.id} className="hover:bg-[#191919]/60 transition-colors">
+                          <td className="py-3 px-3.5 font-mono font-bold text-[#BBEB42] whitespace-nowrap">
                             {d.orderNumber}
                           </td>
                           <td className="py-3 px-3.5 font-semibold text-white whitespace-nowrap">
                             {d.merchantName}
                           </td>
-                          <td className="py-3 px-3.5 text-slate-300">
+                          <td className="py-3 px-3.5 text-[#D1D1D1]">
                             <div>{d.recipientName}</div>
-                            <div className="text-[10px] text-slate-500 truncate max-w-[200px]">
+                            <div className="text-[10px] text-[#888888] truncate max-w-[200px]">
                               {d.dropoffAddress}
                             </div>
                           </td>
-                          <td className="py-3 px-3.5 text-center font-mono text-slate-300 whitespace-nowrap">
+                          <td className="py-3 px-3.5 text-center font-mono text-[#D1D1D1] whitespace-nowrap">
                             {d.distanceKm} km
                           </td>
-                          <td className="py-3 px-3.5 text-right font-mono font-bold text-emerald-400 text-sm whitespace-nowrap">
+                          <td className="py-3 px-3.5 text-right font-mono font-bold text-[#BBEB42] text-sm whitespace-nowrap">
                             ${d.totalCost.toFixed(2)}
                           </td>
                           <td className="py-3 px-3.5 text-right whitespace-nowrap">
@@ -497,7 +497,7 @@ export default function DeliverySettlementsPage() {
                                 <CheckCircle2 className="w-3 h-3" /> Cobrado
                               </span>
                             ) : (
-                              <span className="inline-flex items-center gap-1 text-[11px] font-bold text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded-full border border-amber-500/20">
+                              <span className="inline-flex items-center gap-1 text-[11px] font-bold text-[#BBEB42] bg-[#BBEB42]/10 px-2 py-0.5 rounded-full border border-[#BBEB42]/20">
                                 <Clock className="w-3 h-3" /> Pendiente
                               </span>
                             )}

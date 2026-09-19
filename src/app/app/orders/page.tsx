@@ -54,45 +54,45 @@ export default function DeliveryOrdersPage() {
 
   return (
     <div className="space-y-5">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-slate-900/60 border border-slate-800 rounded-2xl p-4 sm:p-5">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-[#101010] border border-[#282828] rounded-2xl p-4 sm:p-5">
         <div>
-          <h1 className="text-xl sm:text-2xl font-bold text-white flex items-center gap-2">
-            <Bike className="w-6 h-6 text-amber-400" />
+          <h1 className="text-xl sm:text-2xl font-black text-white flex items-center gap-2">
+            <Bike className="w-6 h-6 text-[#BBEB42]" />
             <span>Gestión de Despachos</span>
           </h1>
-          <p className="text-xs sm:text-sm text-slate-400 mt-1">
+          <p className="text-xs sm:text-sm text-[#A0A0A0] mt-1">
             Confirma retiros, avisa al cliente por WhatsApp y completa tus entregas.
           </p>
         </div>
 
         <div className="flex items-center justify-between sm:justify-end gap-3">
-          <div className="bg-slate-800/80 border border-slate-700 px-3.5 py-2 rounded-xl">
-            <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider block">
+          <div className="bg-[#191919] border border-[#282828] px-3.5 py-2 rounded-xl">
+            <span className="text-[10px] font-semibold text-[#888888] uppercase tracking-wider block">
               Ganancias (100%)
             </span>
-            <span className="text-lg sm:text-xl font-extrabold text-emerald-400 font-mono">
+            <span className="text-lg sm:text-xl font-extrabold text-[#BBEB42] font-mono">
               ${totalEarnings.toFixed(2)}
             </span>
           </div>
           <button
             onClick={fetchOrders}
-            className="p-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white rounded-xl transition-all cursor-pointer active:scale-95"
+            className="p-2.5 bg-[#191919] hover:bg-[#282828] text-[#A0A0A0] hover:text-white border border-[#282828] rounded-xl transition-all cursor-pointer active:scale-95"
             title="Actualizar lista"
           >
-            <RefreshCw className={`w-4 h-4 ${loading ? "animate-spin" : ""}`} />
+            <RefreshCw className={`w-4 h-4 ${loading ? "animate-spin text-[#BBEB42]" : ""}`} />
           </button>
         </div>
       </div>
 
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
         {/* Horizontal scrollable filter pills for mobile */}
-        <div className="flex items-center gap-1.5 bg-slate-900/80 border border-slate-800 p-1 rounded-xl overflow-x-auto scrollbar-none touch-pan-x">
+        <div className="flex items-center gap-1.5 bg-[#101010] border border-[#282828] p-1 rounded-xl overflow-x-auto scrollbar-none touch-pan-x">
           {filterButtons.map((btn) => (
             <button
               key={btn.key}
               onClick={() => setFilter(btn.key)}
               className={`flex-1 sm:flex-none px-3.5 py-2 rounded-lg text-xs font-bold transition-all whitespace-nowrap cursor-pointer active:scale-95 text-center ${
-                filter === btn.key ? "bg-amber-500 text-slate-950 shadow-md shadow-amber-500/20" : "text-slate-400 hover:text-white"
+                filter === btn.key ? "bg-[#BBEB42] text-[#080808] font-black shadow-md shadow-[#BBEB42]/20" : "text-[#888888] hover:text-white"
               }`}
             >
               {btn.label}
@@ -101,27 +101,27 @@ export default function DeliveryOrdersPage() {
         </div>
 
         <div className="relative w-full sm:w-72">
-          <Search className="w-4 h-4 text-slate-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
+          <Search className="w-4 h-4 text-[#6D6D6D] absolute left-3.5 top-1/2 -translate-y-1/2" />
           <input
             type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Buscar por orden, cliente o zona..."
-            className="w-full bg-slate-900/80 border border-slate-800 text-base sm:text-xs text-white pl-9 pr-4 py-2.5 rounded-xl focus:outline-none focus:border-amber-400 transition-colors"
+            className="w-full bg-[#191919] border border-[#282828] text-base sm:text-xs text-white pl-9 pr-4 py-2.5 rounded-xl focus:outline-none focus:border-[#BBEB42] transition-colors placeholder:text-[#5D5D5D]"
           />
         </div>
       </div>
 
       {loading ? (
-        <div className="text-center py-16 border border-dashed border-slate-800 rounded-2xl">
-          <RefreshCw className="w-8 h-8 text-amber-400/60 animate-spin mx-auto mb-2" />
-          <p className="text-sm text-slate-400">Cargando órdenes...</p>
+        <div className="text-center py-16 border border-dashed border-[#282828] rounded-2xl">
+          <RefreshCw className="w-8 h-8 text-[#BBEB42]/80 animate-spin mx-auto mb-2" />
+          <p className="text-sm text-[#A0A0A0]">Cargando órdenes...</p>
         </div>
       ) : filteredOrders.length === 0 ? (
-        <div className="text-center py-16 border border-dashed border-slate-800 rounded-2xl">
-          <Package className="w-12 h-12 text-slate-600 mx-auto mb-3" />
-          <p className="text-sm font-semibold text-slate-300">No se encontraron órdenes</p>
-          <p className="text-xs text-slate-500 mt-1">
+        <div className="text-center py-16 border border-dashed border-[#282828] rounded-2xl">
+          <Package className="w-12 h-12 text-[#4F4F4F] mx-auto mb-3" />
+          <p className="text-sm font-semibold text-[#D1D1D1]">No se encontraron órdenes</p>
+          <p className="text-xs text-[#6D6D6D] mt-1">
             {searchTerm
               ? "No hay resultados para tu búsqueda."
               : "Cuando tus comercios afiliados soliciten carreras, aparecerán aquí para gestionarlas."}
