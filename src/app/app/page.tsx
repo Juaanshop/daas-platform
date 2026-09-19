@@ -41,13 +41,22 @@ export default async function AppDashboardPage() {
       {/* Header Banner Compacto */}
       <div className="bg-[#101010] border border-[#282828] rounded-2xl p-3.5 sm:p-5 shadow-sm">
         <div className="flex items-center justify-between gap-2">
-          <div>
-            <h1 className="text-base sm:text-2xl font-black text-white tracking-tight">
-              ¡Hola, {user!.name}! 🛵
-            </h1>
-            <p className="text-[#A0A0A0] mt-0.5 text-xs sm:text-sm">
-              Panel operativo de despachos y comercios afiliados.
-            </p>
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl overflow-hidden border-2 border-[#BBEB42]/40 shadow-md shadow-[#BBEB42]/15 shrink-0 bg-[#191919]">
+              <img
+                src="/avatar.png"
+                alt={user!.name}
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <div>
+              <h1 className="text-base sm:text-2xl font-black text-white tracking-tight">
+                ¡Hola, {user!.name}! 🛵
+              </h1>
+              <p className="text-[#A0A0A0] mt-0.5 text-xs sm:text-sm">
+                Panel operativo de despachos y comercios afiliados.
+              </p>
+            </div>
           </div>
         </div>
 

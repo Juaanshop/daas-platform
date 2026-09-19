@@ -22,8 +22,12 @@ export default async function AppLayout({
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-2">
           {/* Brand & Driver Status */}
           <div className="flex items-center gap-2.5 min-w-0">
-            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-[#BBEB42] flex items-center justify-center text-[#080808] font-black shadow-md shadow-[#BBEB42]/20 shrink-0">
-              <Bike className="w-4 h-4 sm:w-5 sm:h-5 stroke-[2.5]" />
+            <div className="relative w-9 h-9 sm:w-10 sm:h-10 rounded-xl overflow-hidden border border-[#282828] shadow-md shadow-[#BBEB42]/15 shrink-0 bg-[#101010]">
+              <img
+                src="/avatar.png"
+                alt="Juan Romero"
+                className="w-full h-full object-cover"
+              />
             </div>
             <div className="min-w-0">
               <div className="flex items-center gap-1.5">

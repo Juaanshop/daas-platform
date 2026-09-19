@@ -48,8 +48,12 @@ export default function LoginPage() {
     <div className="min-h-screen bg-[#080808] flex items-center justify-center p-4">
       <div className="w-full max-w-md bg-[#101010] border border-[#282828] rounded-2xl p-8 shadow-2xl backdrop-blur-sm">
         <div className="flex flex-col items-center text-center mb-8">
-          <div className="w-16 h-16 rounded-2xl bg-[#BBEB42] flex items-center justify-center shadow-lg shadow-[#BBEB42]/20 mb-4">
-            <Bike className="w-9 h-9 text-[#080808]" />
+          <div className="w-20 h-20 rounded-2xl overflow-hidden border-2 border-[#BBEB42]/40 shadow-xl shadow-[#BBEB42]/20 mb-4 bg-[#191919]">
+            <img
+              src="/avatar.png"
+              alt="Juan Romero"
+              className="w-full h-full object-cover"
+            />
           </div>
           <h1 className="text-2xl font-bold text-white tracking-tight">Panel del Repartidor</h1>
           <p className="text-sm text-[#888888] mt-1">

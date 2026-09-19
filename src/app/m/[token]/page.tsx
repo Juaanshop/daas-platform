@@ -57,9 +57,15 @@ export default async function MerchantPublicPage({
           </div>
 
           {merchant.deliveryUser && (
-            <div className="hidden xs:flex items-center gap-1.5 text-[11px] text-[#D1D1D1] bg-[#191919] px-2.5 py-1 rounded-lg border border-[#282828] shrink-0">
-              <Bike className="w-3.5 h-3.5 text-[#BBEB42]" />
-              <span className="truncate max-w-[120px]">{merchant.deliveryUser.name}</span>
+            <div className="hidden xs:flex items-center gap-1.5 text-[11px] text-[#D1D1D1] bg-[#191919] pl-1.5 pr-2.5 py-1 rounded-xl border border-[#282828] shrink-0 shadow-xs">
+              <div className="w-5 h-5 rounded-md overflow-hidden border border-[#282828] shrink-0 bg-[#080808]">
+                <img
+                  src="/avatar.png"
+                  alt={merchant.deliveryUser.name}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <span className="truncate max-w-[120px] font-semibold">{merchant.deliveryUser.name}</span>
             </div>
           )}
         </div>
