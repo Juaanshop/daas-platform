@@ -521,7 +521,7 @@ export default function PublicOrderForm({ merchant }: { merchant: MerchantData }
                 required
                 value={packageDescription}
                 onChange={(e) => setPackageDescription(e.target.value)}
-                placeholder="Ej. 2x Hamburguesas dobles con papas y refresco"
+                placeholder="Ej. 2 hamburguesas, 1 refresco..."
                 className="w-full bg-slate-950 border border-slate-700/80 rounded-xl px-3.5 py-2.5 text-white text-base sm:text-xs placeholder:text-slate-500 focus:outline-none focus:border-amber-500"
               />
             </div>
@@ -624,16 +624,7 @@ export default function PublicOrderForm({ merchant }: { merchant: MerchantData }
               </div>
 
               {destinationMode === "paste" ? (
-                <div className="space-y-2.5">
-                  <button
-                    type="button"
-                    onClick={handlePasteFromClipboard}
-                    className="w-full py-2.5 px-3 bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 font-bold rounded-xl border border-amber-500/30 flex items-center justify-center gap-2 text-xs transition-all active:scale-95 cursor-pointer shadow-xs"
-                  >
-                    <Sparkles className="w-3.5 h-3.5" />
-                    <span>📋 Pegar enlace desde el portapapeles</span>
-                  </button>
-
+                <div className="space-y-2">
                   <div className="flex gap-2">
                     <div className="relative flex-1">
                       <LinkIcon className="absolute left-3 top-3 w-3.5 h-3.5 text-slate-500" />
@@ -656,28 +647,46 @@ export default function PublicOrderForm({ merchant }: { merchant: MerchantData }
                             handleResolveLink(pastedUrl, false);
                           }
                         }}
-                        placeholder="O escribe o pega el link aquí..."
+                        placeholder="Pega link de Google Maps o WhatsApp..."
                         className="w-full bg-slate-950 border border-slate-700/80 rounded-xl pl-8 pr-3 py-2.5 text-white text-base sm:text-xs placeholder:text-slate-500 focus:outline-none focus:border-amber-500"
                       />
                     </div>
                     <button
                       type="button"
-                      onClick={() => handleResolveLink(pastedUrl, false)}
-                      disabled={!pastedUrl.trim()}
-                      className="bg-amber-500 hover:bg-amber-400 active:scale-95 disabled:opacity-40 disabled:pointer-events-none text-slate-950 font-bold px-3.5 py-2.5 rounded-xl text-xs flex items-center gap-1.5 cursor-pointer flex-shrink-0 transition-all shadow-md shadow-amber-500/10"
+                      onClick={pastedUrl.trim() ? () => handleResolveLink(pastedUrl, false) : handlePasteFromClipboard}
+                      className="bg-amber-500 hover:bg-amber-400 active:scale-95 text-slate-950 font-bold px-3.5 py-2.5 rounded-xl text-xs flex items-center gap-1.5 cursor-pointer shrink-0 transition-all shadow-md shadow-amber-500/10"
                     >
                       {resolvingLink ? (
                         <>
                           <span className="w-3.5 h-3.5 border-2 border-slate-950 border-t-transparent rounded-full animate-spin" />
                           <span>Detectando...</span>
                         </>
-                      ) : (
+                      ) : pastedUrl.trim() ? (
                         <>
                           <Navigation className="w-3.5 h-3.5 fill-slate-950/20" />
                           <span>Detectar</span>
                         </>
+                      ) : (
+                        <>
+                          <Sparkles className="w-3.5 h-3.5" />
+                          <span>Pegar</span>
+                        </>
                       )}
                     </button>
+                  </div>
+
+                  <div className="flex items-center justify-between text-[10px] text-slate-500 px-1">
+                    <span>Soporta links de Maps, Plus Codes y WhatsApp</span>
+                    {!pastedUrl && (
+                      <button
+                        type="button"
+                        onClick={handlePasteFromClipboard}
+                        className="text-amber-400 hover:underline flex items-center gap-1 font-medium cursor-pointer"
+                      >
+                        <Sparkles className="w-3 h-3" />
+                        <span>Pegar desde portapapeles</span>
+                      </button>
+                    )}
                   </div>
 
                   {resolvingLink && (
@@ -727,7 +736,7 @@ export default function PublicOrderForm({ merchant }: { merchant: MerchantData }
                   value={dropoffAddress}
                   onChange={(e) => setDropoffAddress(e.target.value)}
                   placeholder="Ej. Res. Puerta Real 1, Apto 4-B, Naguanagua"
-                  className="w-full bg-slate-950 border border-slate-700/80 rounded-xl px-3 py-2 text-white text-xs placeholder:text-slate-500 focus:outline-none focus:border-amber-500"
+                  className="w-full bg-slate-950 border border-slate-700/80 rounded-xl px-3.5 py-2.5 text-white text-base sm:text-xs placeholder:text-slate-500 focus:outline-none focus:border-amber-500"
                 />
               </div>
 
@@ -762,7 +771,7 @@ export default function PublicOrderForm({ merchant }: { merchant: MerchantData }
           <button
             type="button"
             onClick={handleProceedToStep2}
-            className="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-extrabold py-3 px-4 rounded-xl transition-all shadow-lg shadow-orange-500/10 flex items-center justify-center gap-2 text-sm cursor-pointer"
+            className="w-full min-h-[48px] bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 active:scale-[0.99] text-slate-950 font-extrabold py-3.5 px-4 rounded-xl transition-all shadow-lg shadow-orange-500/10 flex items-center justify-center gap-2 text-sm cursor-pointer"
           >
             <span>Siguiente: Opciones y Confirmar</span>
             <ArrowRight className="w-4 h-4" />

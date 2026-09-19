@@ -363,16 +363,16 @@ export function DispatchMonitor({
         </div>
 
         {/* Tabla de Órdenes */}
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs">
+        <div className="overflow-x-auto rounded-xl border border-white/5">
+          <table className="w-full text-left text-xs min-w-[760px]">
             <thead>
-              <tr className="border-b border-white/10 text-slate-400 uppercase tracking-wider font-semibold">
-                <th className="pb-3.5 pl-2">Orden</th>
-                <th className="pb-3.5">Comercio (Retiro)</th>
-                <th className="pb-3.5">Destino (Google Maps)</th>
-                <th className="pb-3.5">Distancia / Tarifa</th>
-                <th className="pb-3.5">Estado</th>
-                <th className="pb-3.5 pr-2 text-right">Repartidor & WhatsApp</th>
+              <tr className="border-b border-white/10 bg-white/[0.02] text-slate-400 uppercase tracking-wider font-semibold text-[10px]">
+                <th className="py-3 pl-3 whitespace-nowrap">Orden</th>
+                <th className="py-3 whitespace-nowrap">Comercio (Retiro)</th>
+                <th className="py-3 whitespace-nowrap">Destino (Google Maps)</th>
+                <th className="py-3 whitespace-nowrap">Distancia / Tarifa</th>
+                <th className="py-3 whitespace-nowrap">Estado</th>
+                <th className="py-3 pr-3 text-right whitespace-nowrap">Repartidor & WhatsApp</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5">

@@ -380,18 +380,18 @@ export default function SettlementsPage() {
                     No se encontraron despachos con los filtros actuales.
                   </div>
                 ) : (
-                  <div className="overflow-x-auto">
-                    <table className="w-full text-left text-xs">
+                  <div className="overflow-x-auto rounded-xl border border-white/5">
+                    <table className="w-full text-left text-xs min-w-[720px]">
                       <thead>
-                        <tr className="border-b border-white/[0.08] text-slate-400 uppercase font-semibold text-[10px] tracking-wider">
-                          <th className="pb-3">Orden & Fecha</th>
-                          <th className="pb-3">Comercio</th>
-                          <th className="pb-3">Cliente / Destino</th>
-                          <th className="pb-3">Repartidor</th>
-                          <th className="pb-3 text-center">Distancia</th>
-                          <th className="pb-3 text-right">Tarifa Total</th>
-                          <th className="pb-3 text-right">Rider (80%)</th>
-                          <th className="pb-3 text-right">DaaS (20%)</th>
+                        <tr className="border-b border-white/[0.08] bg-white/[0.02] text-slate-400 uppercase font-semibold text-[10px] tracking-wider">
+                          <th className="py-3 px-3 whitespace-nowrap">Orden & Fecha</th>
+                          <th className="py-3 px-3 whitespace-nowrap">Comercio</th>
+                          <th className="py-3 px-3 whitespace-nowrap">Cliente / Destino</th>
+                          <th className="py-3 px-3 whitespace-nowrap">Repartidor</th>
+                          <th className="py-3 px-3 text-center whitespace-nowrap">Distancia</th>
+                          <th className="py-3 px-3 text-right whitespace-nowrap">Tarifa Total</th>
+                          <th className="py-3 px-3 text-right whitespace-nowrap">Rider (80%)</th>
+                          <th className="py-3 px-3 text-right whitespace-nowrap">DaaS (20%)</th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-white/5">
